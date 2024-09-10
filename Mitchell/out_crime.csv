@@ -1,253 +1,76 @@
-Year,CouncilArea,Yearly Incidents Recorded,"Yearly Rate per 100,000 population"
-2023,Banyule City Council,6007,4541
-2023,Bayside City Council,4240,3975
-2023,Boroondara City Council,5921,3342
-2023,Brimbank City Council,13158,6656
-2023,Cardinia City Council,5045,3899
-2023,Casey City Council,17069,4265
-2023,Darebin City Council,10605,6689
-2023,Frankston City Council,10759,7472
-2023,Glen Eira City Council,6002,3756
-2023,Greater Dandenong City Council,14075,8482
-2023,Hobsons Bay City Council,4649,4915
-2023,Hume City Council,13763,5125
-2023,Kingston City Council,9002,5424
-2023,Knox City Council,7210,4431
-2023,Manningham City Council,3608,2746
-2023,Maribyrnong City Council,7786,8335
-2023,Maroondah City Council,5516,4656
-2023,Melbourne City Council,27131,14311
-2023,Melton City Council,9559,4492
-2023,Merri-bek City Council,10072,5390
-2023,Monash City Council,10037,4811
-2023,Moonee Valley City Council,6369,4913
-2023,Nillumbik City Council,1244,1964
-2023,Port Phillip City Council,9988,8902
-2023,Stonnington City Council,8803,7665
-2023,Whittlesea City Council,9875,3953
-2023,Wyndham City Council,14283,4283
-2023,Yarra City Council,10245,10271
-2022,Banyule City Council,5450,4222
-2022,Bayside City Council,3769,3630
-2022,Boroondara City Council,5662,3266
-2022,Brimbank City Council,12390,6341
-2022,Cardinia City Council,4623,3668
-2022,Casey City Council,15193,3906
-2022,Darebin City Council,9565,6194
-2022,Frankston City Council,9175,6440
-2022,Glen Eira City Council,5441,3496
-2022,Greater Dandenong City Council,12898,7924
-2022,Hobsons Bay City Council,4611,4943
-2022,Hume City Council,12756,4898
-2022,Kingston City Council,7685,4718
-2022,Knox City Council,6743,4182
-2022,Manningham City Council,2997,2326
-2022,Maribyrnong City Council,6868,7576
-2022,Maroondah City Council,5256,4492
-2022,Melbourne City Council,25005,14470
-2022,Melton City Council,8689,4287
-2022,Merri-bek City Council,9353,5207
-2022,Monash City Council,8989,4460
-2022,Moonee Valley City Council,5870,4673
-2022,Nillumbik City Council,1202,1902
-2022,Port Phillip City Council,9640,8912
-2022,Stonnington City Council,8321,7553
-2022,Whittlesea City Council,9103,3745
-2022,Wyndham City Council,13353,4164
-2022,Yarra City Council,9342,9710
-2021,Banyule City Council,5493,4311
-2021,Bayside City Council,3457,3380
-2021,Boroondara City Council,5563,3278
-2021,Brimbank City Council,12839,6608
-2021,Cardinia City Council,4733,3876
-2021,Casey City Council,14702,3906
-2021,Darebin City Council,9806,6515
-2021,Frankston City Council,8776,6221
-2021,Glen Eira City Council,5268,3477
-2021,Greater Dandenong City Council,12060,7560
-2021,Hobsons Bay City Council,4554,4952
-2021,Hume City Council,12971,5162
-2021,Kingston City Council,7106,4443
-2021,Knox City Council,7028,4397
-2021,Manningham City Council,2985,2362
-2021,Maribyrnong City Council,7021,8043
-2021,Maroondah City Council,5235,4519
-2021,Melbourne City Council,25209,15915
-2021,Melton City Council,9045,4763
-2021,Merri-bek City Council,9393,5382
-2021,Monash City Council,8606,4426
-2021,Moonee Valley City Council,6030,4900
-2021,Nillumbik City Council,1364,2160
-2021,Port Phillip City Council,9395,9041
-2021,Stonnington City Council,8078,7589
-2021,Whittlesea City Council,9551,4055
-2021,Wyndham City Council,12200,3988
-2021,Yarra City Council,9284,10076
-2020,Banyule City Council,6530,5094
-2020,Bayside City Council,3917,3801
-2020,Boroondara City Council,6095,3546
-2020,Brimbank City Council,14753,7429
-2020,Cardinia City Council,5441,4580
-2020,Casey City Council,16472,4475
-2020,Darebin City Council,11579,7619
-2020,Frankston City Council,10425,7383
-2020,Glen Eira City Council,6039,3983
-2020,Greater Dandenong City Council,14341,8880
-2020,Hobsons Bay City Council,4569,4911
-2020,Hume City Council,15578,6331
-2020,Kingston City Council,8290,5164
-2020,Knox City Council,8426,5227
-2020,Manningham City Council,3463,2739
-2020,Maribyrnong City Council,7112,8161
-2020,Maroondah City Council,5758,4937
-2020,Melbourne City Council,26185,16652
-2020,Melton City Council,9735,5426
-2020,Merri-bek City Council,10379,5924
-2020,Monash City Council,9568,4911
-2020,Moonee Valley City Council,6260,5051
-2020,Nillumbik City Council,1564,2456
-2020,Port Phillip City Council,10118,9626
-2020,Stonnington City Council,9071,8415
-2020,Whittlesea City Council,11648,5029
-2020,Wyndham City Council,12987,4419
-2020,Yarra City Council,10976,11827
-2019,Banyule City Council,7198,5522
-2019,Bayside City Council,4045,3851
-2019,Boroondara City Council,6282,3524
-2019,Brimbank City Council,15275,7458
-2019,Cardinia City Council,5129,4442
-2019,Casey City Council,17043,4720
-2019,Darebin City Council,11732,7467
-2019,Frankston City Council,11111,7817
-2019,Glen Eira City Council,5803,3756
-2019,Greater Dandenong City Council,14591,8800
-2019,Hobsons Bay City Council,4891,5130
-2019,Hume City Council,15817,6548
-2019,Kingston City Council,8927,5470
-2019,Knox City Council,8676,5315
-2019,Manningham City Council,3659,2864
-2019,Maribyrnong City Council,7146,7990
-2019,Maroondah City Council,5948,5032
-2019,Melbourne City Council,26820,15760
-2019,Melton City Council,9073,5285
-2019,Merri-bek City Council,11176,6214
-2019,Monash City Council,9188,4581
-2019,Moonee Valley City Council,6659,5257
-2019,Nillumbik City Council,1674,2601
-2019,Port Phillip City Council,9879,8911
-2019,Stonnington City Council,9139,8096
-2019,Whittlesea City Council,12159,5291
-2019,Wyndham City Council,13269,4670
-2019,Yarra City Council,11365,11761
-2018,Banyule City Council,7096,5444
-2018,Bayside City Council,3678,3503
-2018,Boroondara City Council,5586,3110
-2018,Brimbank City Council,14383,6954
-2018,Cardinia City Council,4526,4085
-2018,Casey City Council,15913,4563
-2018,Darebin City Council,11289,7179
-2018,Frankston City Council,11047,7786
-2018,Glen Eira City Council,4978,3242
-2018,Greater Dandenong City Council,14051,8467
-2018,Hobsons Bay City Council,4842,5062
-2018,Hume City Council,15510,6660
-2018,Kingston City Council,8432,5179
-2018,Knox City Council,8194,5025
-2018,Manningham City Council,3473,2747
-2018,Maribyrnong City Council,6647,7442
-2018,Maroondah City Council,5996,5092
-2018,Melbourne City Council,26650,15909
-2018,Melton City Council,8198,5016
-2018,Merri-bek City Council,11309,6320
-2018,Monash City Council,8096,4062
-2018,Moonee Valley City Council,6537,5181
-2018,Nillumbik City Council,1666,2584
-2018,Port Phillip City Council,9681,8682
-2018,Stonnington City Council,8128,7149
-2018,Whittlesea City Council,11767,5236
-2018,Wyndham City Council,11312,4203
-2018,Yarra City Council,11048,11473
-2017,Banyule City Council,7386,5708
-2017,Bayside City Council,3955,3789
-2017,Boroondara City Council,5975,3335
-2017,Brimbank City Council,13829,6689
-2017,Cardinia City Council,4502,4266
-2017,Casey City Council,15586,4664
-2017,Darebin City Council,11869,7562
-2017,Frankston City Council,11126,7876
-2017,Glen Eira City Council,5392,3549
-2017,Greater Dandenong City Council,14082,8569
-2017,Hobsons Bay City Council,4929,5189
-2017,Hume City Council,15707,7046
-2017,Kingston City Council,8024,4976
-2017,Knox City Council,8717,5374
-2017,Manningham City Council,3761,3013
-2017,Maribyrnong City Council,6734,7595
-2017,Maroondah City Council,6178,5287
-2017,Melbourne City Council,27165,16834
-2017,Melton City Council,8093,5234
-2017,Merri-bek City Council,11213,6335
-2017,Monash City Council,8481,4297
-2017,Moonee Valley City Council,6959,5560
-2017,Nillumbik City Council,1889,2929
-2017,Port Phillip City Council,9951,9013
-2017,Stonnington City Council,8278,7325
-2017,Whittlesea City Council,11721,5355
-2017,Wyndham City Council,11138,4408
-2017,Yarra City Council,10813,11353
-2016,Banyule City Council,7391,5758
-2016,Bayside City Council,4052,3916
-2016,Boroondara City Council,6793,3809
-2016,Brimbank City Council,14744,7171
-2016,Cardinia City Council,5137,5081
-2016,Casey City Council,17526,5441
-2016,Darebin City Council,12872,8241
-2016,Frankston City Council,12058,8591
-2016,Glen Eira City Council,5707,3799
-2016,Greater Dandenong City Council,15109,9310
-2016,Hobsons Bay City Council,5306,5629
-2016,Hume City Council,16673,7790
-2016,Kingston City Council,8377,5241
-2016,Knox City Council,8910,5524
-2016,Manningham City Council,3898,3149
-2016,Maribyrnong City Council,7189,8186
-2016,Maroondah City Council,6820,5884
-2016,Melbourne City Council,27509,17917
-2016,Melton City Council,8923,6077
-2016,Merri-bek City Council,11641,6673
-2016,Monash City Council,8739,4483
-2016,Moonee Valley City Council,7585,6118
-2016,Nillumbik City Council,2151,3343
-2016,Port Phillip City Council,10310,9433
-2016,Stonnington City Council,8842,7904
-2016,Whittlesea City Council,12423,5840
-2016,Wyndham City Council,11962,5031
-2016,Yarra City Council,11076,11769
-2015,Banyule City Council,7061,5555
-2015,Bayside City Council,3710,3619
-2015,Boroondara City Council,6023,3409
-2015,Brimbank City Council,14659,7207
-2015,Cardinia City Council,4702,4877
-2015,Casey City Council,15214,4912
-2015,Darebin City Council,11612,7521
-2015,Frankston City Council,10984,7897
-2015,Glen Eira City Council,5024,3395
-2015,Greater Dandenong City Council,13587,8531
-2015,Hobsons Bay City Council,5500,5913
-2015,Hume City Council,15069,7351
-2015,Kingston City Council,8084,5106
-2015,Knox City Council,7493,4684
-2015,Manningham City Council,3339,2734
-2015,Maribyrnong City Council,6992,8089
-2015,Maroondah City Council,5950,5202
-2015,Melbourne City Council,25184,17511
-2015,Melton City Council,8470,6053
-2015,Merri-bek City Council,10959,6400
-2015,Monash City Council,7634,3979
-2015,Moonee Valley City Council,6921,5662
-2015,Nillumbik City Council,1982,3094
-2015,Port Phillip City Council,9669,8945
-2015,Stonnington City Council,7852,7118
-2015,Whittlesea City Council,10821,5289
-2015,Wyndham City Council,11464,5118
-2015,Yarra City Council,10211,11078
+Year,CouncilArea,Price,Yearly Incidents Recorded,"Yearly Rate per 100,000 population"
+2016,Banyule City Council,819011.8807785888,7391,5758
+2016,Bayside City Council,1403704.3586118252,4052,3916
+2016,Boroondara City Council,1622159.9502487562,6793,3809
+2016,Brimbank City Council,596917.8381962865,14744,7171
+2016,Casey City Council,531279.4117647059,17526,5441
+2016,Darebin City Council,840834.9090909091,12872,8241
+2016,Frankston City Council,598279.6758241758,12058,8591
+2016,Glen Eira City Council,1075053.6852646638,5707,3799
+2016,Greater Dandenong City Council,638390.1234567901,15109,9310
+2016,Hobsons Bay City Council,900948.4423676012,5306,5629
+2016,Hume City Council,516181.7747126437,16673,7790
+2016,Kingston City Council,872387.9394957983,8377,5241
+2016,Knox City Council,776859.695652174,8910,5524
+2016,Manningham City Council,1124682.3351158646,3898,3149
+2016,Maribyrnong City Council,787735.6402569594,7189,8186
+2016,Melbourne City Council,963635.9857819906,27509,17917
+2016,Melton City Council,518183.5294117647,8923,6077
+2016,Merri-bek City Council,788515.2541353384,11641,6673
+2016,Monash City Council,1097726.2554838709,8739,4483
+2016,Moonee Valley City Council,973591.7191558442,7585,6118
+2016,Port Phillip City Council,1028568.9628647215,10310,9433
+2016,Stonnington City Council,1482251.7073863635,8842,7904
+2016,Whittlesea City Council,522165.2789115646,12423,5840
+2016,Wyndham City Council,496355.6451612903,11962,5031
+2016,Yarra City Council,1060775.5801104973,11076,11769
+2017,Banyule City Council,928579.5965488907,7386,5708
+2017,Bayside City Council,1492604.1563106796,3955,3789
+2017,Boroondara City Council,1682208.8829712684,5975,3335
+2017,Brimbank City Council,690045.0219876869,13829,6689
+2017,Casey City Council,636740.4285714285,15586,4664
+2017,Darebin City Council,938141.7489019034,11869,7562
+2017,Frankston City Council,699624.0586319218,11126,7876
+2017,Glen Eira City Council,1148041.7985074627,5392,3549
+2017,Greater Dandenong City Council,685032.584269663,14082,8569
+2017,Hobsons Bay City Council,1042032.4889867841,4929,5189
+2017,Hume City Council,591794.3779527559,15707,7046
+2017,Kingston City Council,962134.8386699507,8024,4976
+2017,Knox City Council,893060.1505376344,8717,5374
+2017,Manningham City Council,1260933.5100864554,3761,3013
+2017,Maribyrnong City Council,851966.1863699582,6734,7595
+2017,Melbourne City Council,1106806.0345679012,27165,16834
+2017,Melton City Council,508038.3161512028,8093,5234
+2017,Merri-bek City Council,886873.581884721,11213,6335
+2017,Monash City Council,1232284.8442211056,8481,4297
+2017,Moonee Valley City Council,1059224.633898305,6959,5560
+2017,Port Phillip City Council,1216720.4854368933,9951,9013
+2017,Stonnington City Council,1594360.5039215686,8278,7325
+2017,Whittlesea City Council,609824.1493868451,11721,5355
+2017,Wyndham City Council,546880.3852889667,11138,4408
+2017,Yarra City Council,1132784.3575418994,10813,11353
+2018,Banyule City Council,911253.1170336037,7096,5444
+2018,Bayside City Council,1501572.343522562,3678,3503
+2018,Boroondara City Council,1605907.3802541546,5586,3110
+2018,Brimbank City Council,699998.5524728589,14383,6954
+2018,Casey City Council,729220.4301075268,15913,4563
+2018,Darebin City Council,908742.5175879397,11289,7179
+2018,Frankston City Council,698441.1796407186,11047,7786
+2018,Glen Eira City Council,1132990.637254902,4978,3242
+2018,Greater Dandenong City Council,709688.628742515,14051,8467
+2018,Hobsons Bay City Council,1042760.237388724,4842,5062
+2018,Hume City Council,617097.7093275489,15510,6660
+2018,Kingston City Council,942633.074433657,8432,5179
+2018,Knox City Council,856621.5041666667,8194,5025
+2018,Manningham City Council,1184184.6,3473,2747
+2018,Maribyrnong City Council,825859.4215328468,6647,7442
+2018,Melbourne City Council,1076024.116013072,26650,15909
+2018,Melton City Council,568695.8011363636,8198,5016
+2018,Merri-bek City Council,901737.6215505913,11309,6320
+2018,Monash City Council,1151091.5282738095,8096,4062
+2018,Moonee Valley City Council,1090740.332326284,6537,5181
+2018,Port Phillip City Council,1153982.7067669174,9681,8682
+2018,Stonnington City Council,1634374.0464480873,8128,7149
+2018,Whittlesea City Council,629440.9667128988,11767,5236
+2018,Wyndham City Council,577867.1546840959,11312,4203
+2018,Yarra City Council,1114903.325415677,11048,11473
