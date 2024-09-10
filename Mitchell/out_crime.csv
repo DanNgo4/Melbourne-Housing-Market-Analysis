@@ -1,281 +1,253 @@
-Year,Year ending,Local Government Area,Incidents Recorded,"Rate per 100,000 population"
-2024,March,Banyule,"6,168","4,633.9"
-2024,March,Brimbank,"13,401","6,762.3"
-2024,March,Darebin,"10,916","6,848.3"
-2024,March,Hobsons Bay,"4,660","4,910.0"
-2024,March,Hume,"14,031","5,188.7"
-2024,March,Maribyrnong,"8,107","8,634.8"
-2024,March,Melbourne,"27,835","14,379.7"
-2024,March,Melton,"9,858","4,589.3"
-2024,March,Merri-bek,"10,289","5,453.9"
-2024,March,Moonee Valley,"6,551","5,015.4"
-2024,March,Nillumbik,"1,269","2,005.4"
-2024,March,Whittlesea,"10,112","4,023.7"
-2024,March,Wyndham,"14,447","4,292.9"
-2024,March,Yarra,"10,482","10,433.9"
-2024,March,Boroondara,"5,982","3,359.5"
-2024,March,Knox,"7,351","4,510.1"
-2024,March,Manningham,"3,796","2,879.0"
-2024,March,Maroondah,"5,583","4,699.0"
-2024,March,Monash,"10,308","4,904.1"
-2024,March,Bayside,"4,349","4,048.9"
-2024,March,Cardinia,"5,169","3,973.6"
-2024,March,Casey,"17,585","4,367.2"
-2024,March,Frankston,"11,190","7,753.4"
-2024,March,Glen Eira,"6,141","3,822.4"
-2024,March,Greater Dandenong,"14,295","8,578.6"
-2024,March,Kingston,"9,342","5,606.9"
-2024,March,Port Phillip,"10,048","8,884.0"
-2024,March,Stonnington,"8,904","7,675.7"
-2023,March,Banyule,"5,524","4,262.3"
-2023,March,Brimbank,"12,426","6,338.3"
-2023,March,Darebin,"9,669","6,210.7"
-2023,March,Hobsons Bay,"4,619","4,927.6"
-2023,March,Hume,"12,962","4,932.9"
-2023,March,Maribyrnong,"6,821","7,433.4"
-2023,March,Melbourne,"25,019","14,103.5"
-2023,March,Melton,"8,663","4,203.9"
-2023,March,Merri-bek,"9,423","5,199.7"
-2023,March,Moonee Valley,"5,825","4,605.3"
-2023,March,Nillumbik,"1,165","1,841.5"
-2023,March,Whittlesea,"9,164","3,740.0"
-2023,March,Wyndham,"13,792","4,255.6"
-2023,March,Yarra,"9,533","9,782.7"
-2023,March,Boroondara,"5,738","3,287.6"
-2023,March,Knox,"6,787","4,195.6"
-2023,March,Manningham,"3,043","2,349.6"
-2023,March,Maroondah,"5,315","4,525.9"
-2023,March,Monash,"9,223","4,530.9"
-2023,March,Bayside,"3,914","3,753.6"
-2023,March,Cardinia,"4,670","3,678.3"
-2023,March,Casey,"15,523","3,958.8"
-2023,March,Frankston,"9,465","6,626.9"
-2023,March,Glen Eira,"5,583","3,559.7"
-2023,March,Greater Dandenong,"13,416","8,190.9"
-2023,March,Kingston,"7,982","4,875.3"
-2023,March,Port Phillip,"9,809","8,956.8"
-2023,March,Stonnington,"8,499","7,633.7"
-2022,March,Banyule,"5,228","4,102.7"
-2022,March,Brimbank,"12,282","6,350.8"
-2022,March,Darebin,"9,249","6,141.2"
-2022,March,Hobsons Bay,"4,586","4,992.2"
-2022,March,Hume,"12,137","4,793.8"
-2022,March,Maribyrnong,"7,012","8,004.1"
-2022,March,Melbourne,"24,964","15,570.6"
-2022,March,Melton,"8,768","4,536.3"
-2022,March,Merri-bek,"9,144","5,228.5"
-2022,March,Moonee Valley,"6,004","4,876.6"
-2022,March,Nillumbik,"1,312","2,080.4"
-2022,March,Whittlesea,"8,918","3,760.6"
-2022,March,Wyndham,"12,036","3,890.1"
-2022,March,Yarra,"8,770","9,492.2"
-2022,March,Boroondara,"5,432","3,202.2"
-2022,March,Knox,"6,612","4,144.2"
-2022,March,Manningham,"2,857","2,257.2"
-2022,March,Maroondah,"5,078","4,386.7"
-2022,March,Monash,"8,286","4,247.5"
-2022,March,Bayside,"3,334","3,260.9"
-2022,March,Cardinia,"4,482","3,638.5"
-2022,March,Casey,"14,203","3,746.5"
-2022,March,Frankston,"8,301","5,880.5"
-2022,March,Glen Eira,"5,018","3,305.1"
-2022,March,Greater Dandenong,"11,343","7,120.8"
-2022,March,Kingston,"6,795","4,244.0"
-2022,March,Port Phillip,"9,136","8,776.5"
-2022,March,Stonnington,"7,790","7,312.9"
-2021,March,Banyule,"6,285","4,934.4"
-2021,March,Brimbank,"14,510","7,379.3"
-2021,March,Darebin,"11,474","7,634.3"
-2021,March,Hobsons Bay,"4,457","4,830.5"
-2021,March,Hume,"15,474","6,266.8"
-2021,March,Maribyrnong,"7,048","8,158.8"
-2021,March,Melbourne,"25,947","16,946.6"
-2021,March,Melton,"9,874","5,444.8"
-2021,March,Merri-bek,"10,139","5,843.8"
-2021,March,Moonee Valley,"6,108","4,967.9"
-2021,March,Nillumbik,"1,521","2,397.2"
-2021,March,Whittlesea,"11,450","4,938.9"
-2021,March,Wyndham,"12,692","4,283.2"
-2021,March,Yarra,"10,825","11,827.9"
-2021,March,Boroondara,"5,953","3,506.1"
-2021,March,Knox,"8,277","5,157.6"
-2021,March,Manningham,"3,369","2,677.6"
-2021,March,Maroondah,"5,705","4,914.9"
-2021,March,Monash,"9,565","4,958.7"
-2021,March,Bayside,"3,825","3,738.0"
-2021,March,Cardinia,"5,488","4,589.7"
-2021,March,Casey,"16,199","4,383.3"
-2021,March,Frankston,"10,201","7,243.8"
-2021,March,Glen Eira,"6,017","3,994.3"
-2021,March,Greater Dandenong,"14,213","8,877.6"
-2021,March,Kingston,"8,042","5,040.3"
-2021,March,Port Phillip,"10,172","9,833.9"
-2021,March,Stonnington,"8,941","8,419.8"
-2020,March,Banyule,"7,262","5,573.5"
-2020,March,Brimbank,"15,480","7,580.3"
-2020,March,Darebin,"11,894","7,573.1"
-2020,March,Hobsons Bay,"4,906","5,153.7"
-2020,March,Hume,"15,892","6,522.7"
-2020,March,Maribyrnong,"7,304","8,168.4"
-2020,March,Melbourne,"26,899","15,768.3"
-2020,March,Melton,"9,320","5,369.7"
-2020,March,Merri-bek,"11,099","6,165.1"
-2020,March,Moonee Valley,"6,718","5,298.7"
-2020,March,Nillumbik,"1,691","2,629.0"
-2020,March,Whittlesea,"12,243","5,299.1"
-2020,March,Wyndham,"13,871","4,828.2"
-2020,March,Yarra,"11,427","11,821.6"
-2020,March,Boroondara,"6,520","3,665.5"
-2020,March,Knox,"8,873","5,435.5"
-2020,March,Manningham,"3,742","2,923.7"
-2020,March,Maroondah,"5,919","5,003.6"
-2020,March,Monash,"9,575","4,768.6"
-2020,March,Bayside,"4,192","3,991.7"
-2020,March,Cardinia,"5,301","4,550.0"
-2020,March,Casey,"17,289","4,750.1"
-2020,March,Frankston,"11,096","7,803.6"
-2020,March,Glen Eira,"6,105","3,947.5"
-2020,March,Greater Dandenong,"14,724","8,888.7"
-2020,March,Kingston,"9,034","5,535.7"
-2020,March,Port Phillip,"9,956","9,003.9"
-2020,March,Stonnington,"9,462","8,402.5"
-2019,March,Banyule,"7,006","5,364.2"
-2019,March,Brimbank,"14,660","7,090.0"
-2019,March,Darebin,"11,244","7,148.2"
-2019,March,Hobsons Bay,"4,846","5,057.5"
-2019,March,Hume,"15,592","6,624.5"
-2019,March,Maribyrnong,"6,669","7,454.7"
-2019,March,Melbourne,"26,584","15,734.6"
-2019,March,Melton,"8,329","5,031.6"
-2019,March,Merri-bek,"11,406","6,360.4"
-2019,March,Moonee Valley,"6,485","5,130.3"
-2019,March,Nillumbik,"1,623","2,517.7"
-2019,March,Whittlesea,"11,910","5,268.2"
-2019,March,Wyndham,"11,462","4,195.4"
-2019,March,Yarra,"11,181","11,581.2"
-2019,March,Boroondara,"5,570","3,100.2"
-2019,March,Knox,"8,087","4,952.0"
-2019,March,Manningham,"3,410","2,687.7"
-2019,March,Maroondah,"6,035","5,115.9"
-2019,March,Monash,"8,028","4,018.8"
-2019,March,Bayside,"3,605","3,429.2"
-2019,March,Cardinia,"4,610","4,116.0"
-2019,March,Casey,"16,302","4,631.2"
-2019,March,Frankston,"11,156","7,858.0"
-2019,March,Glen Eira,"4,893","3,178.6"
-2019,March,Greater Dandenong,"14,194","8,535.4"
-2019,March,Kingston,"8,608","5,275.2"
-2019,March,Port Phillip,"9,648","8,631.1"
-2019,March,Stonnington,"8,169","7,178.4"
-2018,March,Banyule,"7,366","5,681.7"
-2018,March,Brimbank,"13,549","6,546.1"
-2018,March,Darebin,"11,425","7,272.3"
-2018,March,Hobsons Bay,"4,830","5,076.2"
-2018,March,Hume,"15,265","6,768.6"
-2018,March,Maribyrnong,"6,581","7,405.1"
-2018,March,Melbourne,"26,848","16,434.6"
-2018,March,Melton,"7,803","4,969.5"
-2018,March,Merri-bek,"11,019","6,201.6"
-2018,March,Moonee Valley,"6,692","5,332.8"
-2018,March,Nillumbik,"1,795","2,781.1"
-2018,March,Whittlesea,"11,339","5,140.0"
-2018,March,Wyndham,"10,861","4,225.9"
-2018,March,Yarra,"10,648","11,149.3"
-2018,March,Boroondara,"5,632","3,139.6"
-2018,March,Knox,"8,516","5,241.9"
-2018,March,Manningham,"3,660","2,925.9"
-2018,March,Maroondah,"5,880","5,020.3"
-2018,March,Monash,"8,299","4,191.2"
-2018,March,Bayside,"3,897","3,724.8"
-2018,March,Cardinia,"4,271","3,993.6"
-2018,March,Casey,"14,745","4,361.3"
-2018,March,Frankston,"10,718","7,572.9"
-2018,March,Glen Eira,"5,232","3,433.3"
-2018,March,Greater Dandenong,"13,624","8,262.2"
-2018,March,Kingston,"7,906","4,889.8"
-2018,March,Port Phillip,"9,780","8,832.1"
-2018,March,Stonnington,"8,001","7,059.3"
-2017,March,Banyule,"7,447","5,788.1"
-2017,March,Brimbank,"14,670","7,117.4"
-2017,March,Darebin,"13,199","8,432.5"
-2017,March,Hobsons Bay,"5,227","5,528.7"
-2017,March,Hume,"17,032","7,876.1"
-2017,March,Maribyrnong,"7,193","8,162.7"
-2017,March,Melbourne,"28,116","18,028.2"
-2017,March,Melton,"8,967","6,029.8"
-2017,March,Merri-bek,"11,797","6,736.9"
-2017,March,Moonee Valley,"7,758","6,240.3"
-2017,March,Nillumbik,"2,171","3,370.4"
-2017,March,Whittlesea,"12,867","6,000.7"
-2017,March,Wyndham,"11,966","4,953.4"
-2017,March,Yarra,"11,308","11,965.8"
-2017,March,Boroondara,"7,007","3,922.2"
-2017,March,Knox,"9,320","5,770.0"
-2017,March,Manningham,"4,063","3,273.3"
-2017,March,Maroondah,"7,073","6,085.7"
-2017,March,Monash,"9,027","4,613.5"
-2017,March,Bayside,"4,127","3,981.1"
-2017,March,Cardinia,"5,197","5,082.2"
-2017,March,Casey,"18,107","5,572.3"
-2017,March,Frankston,"12,351","8,784.4"
-2017,March,Glen Eira,"5,874","3,897.8"
-2017,March,Greater Dandenong,"15,458","9,487.9"
-2017,March,Kingston,"8,381","5,233.5"
-2017,March,Port Phillip,"10,465","9,555.1"
-2017,March,Stonnington,"9,107","8,121.5"
-2016,March,Banyule,"7,223","5,667.5"
-2016,March,Brimbank,"14,968","7,330.4"
-2016,March,Darebin,"11,892","7,666.0"
-2016,March,Hobsons Bay,"5,542","5,930.8"
-2016,March,Hume,"15,596","7,532.8"
-2016,March,Maribyrnong,"7,177","8,254.9"
-2016,March,Melbourne,"25,687","17,582.3"
-2016,March,Melton,"8,792","6,216.9"
-2016,March,Merri-bek,"11,171","6,483.7"
-2016,March,Moonee Valley,"7,066","5,750.7"
-2016,March,Nillumbik,"2,092","3,259.9"
-2016,March,Whittlesea,"11,094","5,357.9"
-2016,March,Wyndham,"11,948","5,263.3"
-2016,March,Yarra,"10,382","11,176.2"
-2016,March,Boroondara,"6,151","3,469.7"
-2016,March,Knox,"7,680","4,789.4"
-2016,March,Manningham,"3,403","2,776.4"
-2016,March,Maroondah,"6,063","5,281.4"
-2016,March,Monash,"7,876","4,088.8"
-2016,March,Bayside,"3,827","3,718.7"
-2016,March,Cardinia,"4,956","5,079.3"
-2016,March,Casey,"15,785","5,046.5"
-2016,March,Frankston,"11,179","8,013.5"
-2016,March,Glen Eira,"5,207","3,504.4"
-2016,March,Greater Dandenong,"14,062","8,776.6"
-2016,March,Kingston,"8,365","5,263.0"
-2016,March,Port Phillip,"9,846","9,064.0"
-2016,March,Stonnington,"8,047","7,249.4"
-2015,March,Banyule,"6,577","5,216.2"
-2015,March,Brimbank,"13,733","6,837.1"
-2015,March,Darebin,"10,772","7,088.1"
-2015,March,Hobsons Bay,"5,373","5,861.0"
-2015,March,Hume,"13,485","6,804.6"
-2015,March,Maribyrnong,"6,436","7,591.1"
-2015,March,Melbourne,"23,675","17,297.2"
-2015,March,Melton,"7,501","5,559.8"
-2015,March,Merri-bek,"10,322","6,148.8"
-2015,March,Moonee Valley,"6,488","5,396.3"
-2015,March,Nillumbik,"1,653","2,596.0"
-2015,March,Whittlesea,"10,002","5,081.1"
-2015,March,Wyndham,"10,009","4,681.1"
-2015,March,Yarra,"9,696","10,782.6"
-2015,March,Boroondara,"5,639","3,226.8"
-2015,March,Knox,"6,933","4,368.6"
-2015,March,Manningham,"3,146","2,604.6"
-2015,March,Maroondah,"5,613","4,966.2"
-2015,March,Monash,"6,908","3,651.7"
-2015,March,Bayside,"3,361","3,318.9"
-2015,March,Cardinia,"3,942","4,270.9"
-2015,March,Casey,"13,502","4,507.8"
-2015,March,Frankston,"10,397","7,545.5"
-2015,March,Glen Eira,"4,475","3,066.7"
-2015,March,Greater Dandenong,"12,164","7,794.4"
-2015,March,Kingston,"7,240","4,633.8"
-2015,March,Port Phillip,"9,137","8,588.9"
-2015,March,Stonnington,"7,265","6,725.1"
+Year,CouncilArea,Yearly Incidents Recorded,"Yearly Rate per 100,000 population"
+2023,Banyule City Council,6007,4541
+2023,Bayside City Council,4240,3975
+2023,Boroondara City Council,5921,3342
+2023,Brimbank City Council,13158,6656
+2023,Cardinia City Council,5045,3899
+2023,Casey City Council,17069,4265
+2023,Darebin City Council,10605,6689
+2023,Frankston City Council,10759,7472
+2023,Glen Eira City Council,6002,3756
+2023,Greater Dandenong City Council,14075,8482
+2023,Hobsons Bay City Council,4649,4915
+2023,Hume City Council,13763,5125
+2023,Kingston City Council,9002,5424
+2023,Knox City Council,7210,4431
+2023,Manningham City Council,3608,2746
+2023,Maribyrnong City Council,7786,8335
+2023,Maroondah City Council,5516,4656
+2023,Melbourne City Council,27131,14311
+2023,Melton City Council,9559,4492
+2023,Merri-bek City Council,10072,5390
+2023,Monash City Council,10037,4811
+2023,Moonee Valley City Council,6369,4913
+2023,Nillumbik City Council,1244,1964
+2023,Port Phillip City Council,9988,8902
+2023,Stonnington City Council,8803,7665
+2023,Whittlesea City Council,9875,3953
+2023,Wyndham City Council,14283,4283
+2023,Yarra City Council,10245,10271
+2022,Banyule City Council,5450,4222
+2022,Bayside City Council,3769,3630
+2022,Boroondara City Council,5662,3266
+2022,Brimbank City Council,12390,6341
+2022,Cardinia City Council,4623,3668
+2022,Casey City Council,15193,3906
+2022,Darebin City Council,9565,6194
+2022,Frankston City Council,9175,6440
+2022,Glen Eira City Council,5441,3496
+2022,Greater Dandenong City Council,12898,7924
+2022,Hobsons Bay City Council,4611,4943
+2022,Hume City Council,12756,4898
+2022,Kingston City Council,7685,4718
+2022,Knox City Council,6743,4182
+2022,Manningham City Council,2997,2326
+2022,Maribyrnong City Council,6868,7576
+2022,Maroondah City Council,5256,4492
+2022,Melbourne City Council,25005,14470
+2022,Melton City Council,8689,4287
+2022,Merri-bek City Council,9353,5207
+2022,Monash City Council,8989,4460
+2022,Moonee Valley City Council,5870,4673
+2022,Nillumbik City Council,1202,1902
+2022,Port Phillip City Council,9640,8912
+2022,Stonnington City Council,8321,7553
+2022,Whittlesea City Council,9103,3745
+2022,Wyndham City Council,13353,4164
+2022,Yarra City Council,9342,9710
+2021,Banyule City Council,5493,4311
+2021,Bayside City Council,3457,3380
+2021,Boroondara City Council,5563,3278
+2021,Brimbank City Council,12839,6608
+2021,Cardinia City Council,4733,3876
+2021,Casey City Council,14702,3906
+2021,Darebin City Council,9806,6515
+2021,Frankston City Council,8776,6221
+2021,Glen Eira City Council,5268,3477
+2021,Greater Dandenong City Council,12060,7560
+2021,Hobsons Bay City Council,4554,4952
+2021,Hume City Council,12971,5162
+2021,Kingston City Council,7106,4443
+2021,Knox City Council,7028,4397
+2021,Manningham City Council,2985,2362
+2021,Maribyrnong City Council,7021,8043
+2021,Maroondah City Council,5235,4519
+2021,Melbourne City Council,25209,15915
+2021,Melton City Council,9045,4763
+2021,Merri-bek City Council,9393,5382
+2021,Monash City Council,8606,4426
+2021,Moonee Valley City Council,6030,4900
+2021,Nillumbik City Council,1364,2160
+2021,Port Phillip City Council,9395,9041
+2021,Stonnington City Council,8078,7589
+2021,Whittlesea City Council,9551,4055
+2021,Wyndham City Council,12200,3988
+2021,Yarra City Council,9284,10076
+2020,Banyule City Council,6530,5094
+2020,Bayside City Council,3917,3801
+2020,Boroondara City Council,6095,3546
+2020,Brimbank City Council,14753,7429
+2020,Cardinia City Council,5441,4580
+2020,Casey City Council,16472,4475
+2020,Darebin City Council,11579,7619
+2020,Frankston City Council,10425,7383
+2020,Glen Eira City Council,6039,3983
+2020,Greater Dandenong City Council,14341,8880
+2020,Hobsons Bay City Council,4569,4911
+2020,Hume City Council,15578,6331
+2020,Kingston City Council,8290,5164
+2020,Knox City Council,8426,5227
+2020,Manningham City Council,3463,2739
+2020,Maribyrnong City Council,7112,8161
+2020,Maroondah City Council,5758,4937
+2020,Melbourne City Council,26185,16652
+2020,Melton City Council,9735,5426
+2020,Merri-bek City Council,10379,5924
+2020,Monash City Council,9568,4911
+2020,Moonee Valley City Council,6260,5051
+2020,Nillumbik City Council,1564,2456
+2020,Port Phillip City Council,10118,9626
+2020,Stonnington City Council,9071,8415
+2020,Whittlesea City Council,11648,5029
+2020,Wyndham City Council,12987,4419
+2020,Yarra City Council,10976,11827
+2019,Banyule City Council,7198,5522
+2019,Bayside City Council,4045,3851
+2019,Boroondara City Council,6282,3524
+2019,Brimbank City Council,15275,7458
+2019,Cardinia City Council,5129,4442
+2019,Casey City Council,17043,4720
+2019,Darebin City Council,11732,7467
+2019,Frankston City Council,11111,7817
+2019,Glen Eira City Council,5803,3756
+2019,Greater Dandenong City Council,14591,8800
+2019,Hobsons Bay City Council,4891,5130
+2019,Hume City Council,15817,6548
+2019,Kingston City Council,8927,5470
+2019,Knox City Council,8676,5315
+2019,Manningham City Council,3659,2864
+2019,Maribyrnong City Council,7146,7990
+2019,Maroondah City Council,5948,5032
+2019,Melbourne City Council,26820,15760
+2019,Melton City Council,9073,5285
+2019,Merri-bek City Council,11176,6214
+2019,Monash City Council,9188,4581
+2019,Moonee Valley City Council,6659,5257
+2019,Nillumbik City Council,1674,2601
+2019,Port Phillip City Council,9879,8911
+2019,Stonnington City Council,9139,8096
+2019,Whittlesea City Council,12159,5291
+2019,Wyndham City Council,13269,4670
+2019,Yarra City Council,11365,11761
+2018,Banyule City Council,7096,5444
+2018,Bayside City Council,3678,3503
+2018,Boroondara City Council,5586,3110
+2018,Brimbank City Council,14383,6954
+2018,Cardinia City Council,4526,4085
+2018,Casey City Council,15913,4563
+2018,Darebin City Council,11289,7179
+2018,Frankston City Council,11047,7786
+2018,Glen Eira City Council,4978,3242
+2018,Greater Dandenong City Council,14051,8467
+2018,Hobsons Bay City Council,4842,5062
+2018,Hume City Council,15510,6660
+2018,Kingston City Council,8432,5179
+2018,Knox City Council,8194,5025
+2018,Manningham City Council,3473,2747
+2018,Maribyrnong City Council,6647,7442
+2018,Maroondah City Council,5996,5092
+2018,Melbourne City Council,26650,15909
+2018,Melton City Council,8198,5016
+2018,Merri-bek City Council,11309,6320
+2018,Monash City Council,8096,4062
+2018,Moonee Valley City Council,6537,5181
+2018,Nillumbik City Council,1666,2584
+2018,Port Phillip City Council,9681,8682
+2018,Stonnington City Council,8128,7149
+2018,Whittlesea City Council,11767,5236
+2018,Wyndham City Council,11312,4203
+2018,Yarra City Council,11048,11473
+2017,Banyule City Council,7386,5708
+2017,Bayside City Council,3955,3789
+2017,Boroondara City Council,5975,3335
+2017,Brimbank City Council,13829,6689
+2017,Cardinia City Council,4502,4266
+2017,Casey City Council,15586,4664
+2017,Darebin City Council,11869,7562
+2017,Frankston City Council,11126,7876
+2017,Glen Eira City Council,5392,3549
+2017,Greater Dandenong City Council,14082,8569
+2017,Hobsons Bay City Council,4929,5189
+2017,Hume City Council,15707,7046
+2017,Kingston City Council,8024,4976
+2017,Knox City Council,8717,5374
+2017,Manningham City Council,3761,3013
+2017,Maribyrnong City Council,6734,7595
+2017,Maroondah City Council,6178,5287
+2017,Melbourne City Council,27165,16834
+2017,Melton City Council,8093,5234
+2017,Merri-bek City Council,11213,6335
+2017,Monash City Council,8481,4297
+2017,Moonee Valley City Council,6959,5560
+2017,Nillumbik City Council,1889,2929
+2017,Port Phillip City Council,9951,9013
+2017,Stonnington City Council,8278,7325
+2017,Whittlesea City Council,11721,5355
+2017,Wyndham City Council,11138,4408
+2017,Yarra City Council,10813,11353
+2016,Banyule City Council,7391,5758
+2016,Bayside City Council,4052,3916
+2016,Boroondara City Council,6793,3809
+2016,Brimbank City Council,14744,7171
+2016,Cardinia City Council,5137,5081
+2016,Casey City Council,17526,5441
+2016,Darebin City Council,12872,8241
+2016,Frankston City Council,12058,8591
+2016,Glen Eira City Council,5707,3799
+2016,Greater Dandenong City Council,15109,9310
+2016,Hobsons Bay City Council,5306,5629
+2016,Hume City Council,16673,7790
+2016,Kingston City Council,8377,5241
+2016,Knox City Council,8910,5524
+2016,Manningham City Council,3898,3149
+2016,Maribyrnong City Council,7189,8186
+2016,Maroondah City Council,6820,5884
+2016,Melbourne City Council,27509,17917
+2016,Melton City Council,8923,6077
+2016,Merri-bek City Council,11641,6673
+2016,Monash City Council,8739,4483
+2016,Moonee Valley City Council,7585,6118
+2016,Nillumbik City Council,2151,3343
+2016,Port Phillip City Council,10310,9433
+2016,Stonnington City Council,8842,7904
+2016,Whittlesea City Council,12423,5840
+2016,Wyndham City Council,11962,5031
+2016,Yarra City Council,11076,11769
+2015,Banyule City Council,7061,5555
+2015,Bayside City Council,3710,3619
+2015,Boroondara City Council,6023,3409
+2015,Brimbank City Council,14659,7207
+2015,Cardinia City Council,4702,4877
+2015,Casey City Council,15214,4912
+2015,Darebin City Council,11612,7521
+2015,Frankston City Council,10984,7897
+2015,Glen Eira City Council,5024,3395
+2015,Greater Dandenong City Council,13587,8531
+2015,Hobsons Bay City Council,5500,5913
+2015,Hume City Council,15069,7351
+2015,Kingston City Council,8084,5106
+2015,Knox City Council,7493,4684
+2015,Manningham City Council,3339,2734
+2015,Maribyrnong City Council,6992,8089
+2015,Maroondah City Council,5950,5202
+2015,Melbourne City Council,25184,17511
+2015,Melton City Council,8470,6053
+2015,Merri-bek City Council,10959,6400
+2015,Monash City Council,7634,3979
+2015,Moonee Valley City Council,6921,5662
+2015,Nillumbik City Council,1982,3094
+2015,Port Phillip City Council,9669,8945
+2015,Stonnington City Council,7852,7118
+2015,Whittlesea City Council,10821,5289
+2015,Wyndham City Council,11464,5118
+2015,Yarra City Council,10211,11078
