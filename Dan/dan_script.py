@@ -3,17 +3,15 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.cluster import KMeans
 import numpy as np
 
 def main():
     # func1()
     # func2()
-    # func3()
     func4()
 
 def func1():
-    df = pd.read_csv("./MELBOURNE_HOUSE_PRICES_LESS.csv")
+    df = pd.read_csv("./Dan/MELBOURNE_HOUSE_PRICES_LESS.csv")
 
     # Dropping rows that has null cells in Price
     df.dropna(subset=["Price"], inplace=True)
@@ -116,83 +114,60 @@ def func2():
     plt.legend()
     plt.show()
 
-def func3():
-    df = pd.read_csv("./Australian Bureau of Statistics.csv", skiprows=1)
-
-    df1 = df.drop(df.index[[1, 2, 3, 4, -1]]).reset_index(drop=True)
-
-    df1.rename(columns={df1.columns[0]: "Year"}, inplace=True)
-
-    # Remove quotation marks and commas in numeric values, convert them to float
-    df1.iloc[:, 1:] = df1.iloc[:, 1:].replace('[\$,]', '', regex=True).astype(float)
-
-    # Create a new DataFrame to store Year and Average Income
-    avg_df = pd.DataFrame(columns=["Year", "Income"])
-
-    print(df1)
-
-    data = []
-
-    # Loop over the DataFrame to calculate the averages between consecutive years
-    for i in range(len(df1.columns) - 2):
-        year = int(df1.columns[i + 1].split('-')[1]) + 2000 # Extract the end year
-        avg_income = (df1.iloc[0, i + 1] + df1.iloc[0, i + 2]) / 2  # Calculate the average
-        data.append({"Year": year, "Income": avg_income})
-
-    avg_df = pd.DataFrame(data)
-
-    avg_df['Year'] = avg_df['Year'].astype(int)
-
-    # Print the resulting DataFrame
-    print(avg_df)
-
-    avg_df.to_csv("out.csv", index=False)
-
 def func4():
     data = []
 
     # income: equivalised disposable household income per week
 
-    data.append({"Year": "1999-00", "Median Income": None})
-
-    df = pd.read_excel("./65230_complete_set.xls", sheet_name="Table 12 Cap city")
-    income = df.iloc[11, 7] * 52
+    df = pd.read_excel("./Dan/65230_complete_set.xls", sheet_name="Table 12 Cap city")
+    income = prev = df.iloc[11, 7] * 52
     data.append({"Year": "2000-01", "Median Income": income})
 
-    data.append({"Year": "2001-02", "Median Income": None})
-
-    df = pd.read_excel("./6523.0_datacube_2002-03.xls", sheet_name="Table 13A")
-    income = df.iloc[12, 8] * 52
+    df = pd.read_excel("./Dan/6523.0_datacube_2002-03.xls", sheet_name="Table 13A")
+    income = next = df.iloc[12, 8] * 52
     data.append({"Year": "2002-03", "Median Income": income})
 
-    df = pd.read_excel("./65230_data_2003-04.xls", sheet_name="Table 14")
-    income = df.iloc[12, 6] * 52
+    data.append({"Year": "2001-02", "Median Income": int((prev + next) / 2)})
+
+
+    df = pd.read_excel("./Dan/65230_data_2003-04.xls", sheet_name="Table 14")
+    income = prev = df.iloc[12, 6] * 52
     data.append({"Year": "2003-04", "Median Income": income})
 
-    data.append({"Year": "2004-05", "Median Income": None})
-
-    df = pd.read_excel("./65230DO001_200506.XLS", sheet_name="Table 14")
-    income = df.iloc[13, 3] * 52
+    df = pd.read_excel("./Dan/65230DO001_200506.XLS", sheet_name="Table 14")
+    income = next = df.iloc[13, 3] * 52
     data.append({"Year": "2005-06", "Median Income": income})
 
-    data.append({"Year": "2006-07", "Median Income": None})
+    data.append({"Year": "2004-05", "Median Income": int((prev + next) / 2)})
 
-    df = pd.read_excel("./65230do001_200708.xls", sheet_name="Table_14")
-    income = df.iloc[11, 3] * 52
+
+    prev = next # income 05-06
+
+    df = pd.read_excel("./Dan/65230do001_200708.xls", sheet_name="Table_14")
+    income = next = df.iloc[11, 3] * 52
     data.append({"Year": "2007-08", "Median Income": income})
 
-    data.append({"Year": "2008-09", "Median Income": None})
+    data.append({"Year": "2006-07", "Median Income": int((prev + next) / 2)})
 
-    df = pd.read_excel("./65230do001_200910.xls", sheet_name="Table_15")
-    income = df.iloc[11, 3] * 52
+
+    prev = next # income 07-08
+
+    df = pd.read_excel("./Dan/65230do001_200910.xls", sheet_name="Table_15")
+    income = next = df.iloc[11, 3] * 52
     data.append({"Year": "2009-10", "Median Income": income})
 
-    data.append({"Year": "2010-11", "Median Income": None})
+    data.append({"Year": "2008-09", "Median Income": int((prev + next) / 2)})
 
-    df = pd.read_excel("./6124055002ds0001_2019.xls", sheet_name="Table 1.1")
-    income = df.iloc[11, 20]
+
+    prev = next # income 09-10
+
+    df = pd.read_excel("./Dan/6124055002ds0001_2019.xls", sheet_name="Table 1.1")
+    income = next = df.iloc[11, 20]
     data.append({"Year": "2011-12", "Median Income": income})
     
+    data.append({"Year": "2010-11", "Median Income": int(prev + next) / 2})
+
+
     income = df.iloc[11, 21]
     data.append({"Year": "2012-13", "Median Income": income})
     
@@ -208,7 +183,26 @@ def func4():
     income = df.iloc[11, 25]
     data.append({"Year": "2016-17", "Median Income": income})
 
-    df = pd.DataFrame(data)
+    data.append({"Year": "1999-00", "Median Income": None})
+
+    data = sorted(data, key=lambda x: x["Year"])
+
+    start_value = data[1]["Median Income"]
+    end_value = data[-1]["Median Income"]
+    n_years = 2016 - 2000 # num of years between 2000-01 and 2016-17
+
+    cagr = ((end_value / start_value) ** (1 / n_years)) - 1
+
+    income = start_value / (1 + cagr)
+    data[0]["Median Income"] = int(income)
+
+    data1 = []
+    for i in range(len(data) - 1):
+        year = int(data[i]["Year"].split("-")[1]) + 2000
+        income = int((data[i]["Median Income"] + data[i + 1]["Median Income"]) / 2)
+        data1.append({"Year": year, "Median Income": income})
+
+    df = pd.DataFrame(data1)
 
     print(df)
 
