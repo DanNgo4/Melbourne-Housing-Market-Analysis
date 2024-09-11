@@ -20,7 +20,7 @@ futureCrime={}
 #Cleans the Data and manipulates crime data
 def clean_and_manipulate_crime_data():
 
-    df = pd.read_csv("./Data_Tables_LGA_Criminal_Incidents_Year_Ending_March_2024.csv")
+    df = pd.read_csv("./Mitchell/Data_Tables_LGA_Criminal_Incidents_Year_Ending_March_2024.csv")
 
     #Remove Police Region, Not applicable for model
     df.drop(columns="Police Region", axis=1, inplace=True)
@@ -87,7 +87,7 @@ def clean_and_manipulate_crime_data():
     return df_yearlyCrime_HousePrice
 
 def clean_house_price_data():
-    house_price_df = pd.read_csv("../Dan/MELBOURNE_HOUSE_PRICES_LESS.csv")
+    house_price_df = pd.read_csv("./Dan/MELBOURNE_HOUSE_PRICES_LESS.csv")
 
     # Dropping rows that has null cells in Price
     house_price_df.dropna(subset=["Price"], inplace=True)
