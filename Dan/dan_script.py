@@ -1,45 +1,34 @@
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
-import numpy as np
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
 
 def main():
-    # func1()
-    # func2()
-    func4()
+    #linear()
+    #logistic()
+    random_forest()
+    #ridge()
+    #polynomial()
 
-def func1():
+def linear():
     df = pd.read_csv("./Dan/MELBOURNE_HOUSE_PRICES_LESS.csv")
-
-    # Dropping rows that has null cells in Price
     df.dropna(subset=["Price"], inplace=True)
 
     # Align date format
     df["Date"] = pd.to_datetime(df["Date"], format="%d/%m/%Y")
 
-    df["Price"] = df["Price"].astype(int) / 1_000_000
-
-    # print(df)
-
-    # Drop unecessary columns
-    # df.drop(columns=["Suburb", "Address", "Method", "SellerG", "Date"], axis=1, inplace=True)
-
-    """ # Cleaned dataset
-    # df.to_csv("out.csv", index=False)
-
-    mean_prices_by_council = df.groupby("CouncilArea")["Price"].mean() / 1_000_000
-
-    plt.figure(figsize=(10, 6))
-    mean_prices_by_council.plot(kind='bar')
-    plt.ylabel("Mean Price (in $1,000,000)")
-    plt.title("Mean House Prices by Council Area")
-    plt.xticks(rotation=45, ha="right")
-    plt.show() """
-
-    x = df[["Price"]]
-    y = df["Distance"]
+    x = df[['Rooms', 'Distance']]  # Independent variables
+    y = df['Price']  # Dependent variable (house price)
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
@@ -48,164 +37,202 @@ def func1():
 
     y_pred = model.predict(x_test)
 
-    # Print model performance
-    print('Mean Squared Error: %.2f' % mean_squared_error(y_test, y_pred))
-    print('R^2 Score: %.2f' % r2_score(y_test, y_pred))
+    print("Mean Squared Error: %.2f" % mean_squared_error(y_test, y_pred))
+    print("R^2 Score: %.2f" % r2_score(y_test, y_pred))
 
     plt.figure(figsize=(10, 6))
-    plt.scatter(x_test, y_test, color='black', label='Actual values')
-    plt.plot(x_test, y_pred, color='blue', linewidth=3, label='Predicted values')
-    plt.xlabel('Distance')
-    plt.ylabel('Price')
-    plt.title('Linear Regression on Melbourne Housing Dataset')
+    plt.scatter(x_test['Rooms'], y_test, color="black", label="Actual Values")
+    plt.plot(x_test['Rooms'], y_pred, color="blue", linewidth=3, label="Predicted Values")
+    plt.xlabel("Rooms")
+    plt.ylabel("Price")
+    plt.title("Linear Regression on Melbourne Housing Dataset")
     plt.legend()
     plt.show()
 
-def func2():
-    df = pd.read_csv("./median-house-prices-by-type-and-sale-year.csv")
+def logistic():
+    df = pd.read_csv("./Dan/MELBOURNE_HOUSE_PRICES_LESS.csv")
+    df.dropna(subset=["Price"], inplace=True)
 
-    # df = df[df["type"] == "House/Townhouse"].sort_values(by="sale_year")
-    df = df[df["type"] == "Residential Apartment"].sort_values(by="sale_year")
+    # Align date format
+    df["Date"] = pd.to_datetime(df["Date"], format="%d/%m/%Y")
 
-    df["median_price"] = df["median_price"].astype(int) / 100_000
-
-    df.reset_index(drop=True, inplace=True)
-
-    """ # Visualise initial dataset 
-    df.drop(columns=["type", "transaction_count"], axis=1, inplace=True)
-
-    # print(df)
-
-    min_year = df["sale_year"].min()
-    max_year = df["sale_year"].max()
-
-    plt.figure(figsize=(10, 6))
-    plt.plot(df["sale_year"], df["median_price"], marker="o", linestyle="-", color="b")
-    plt.ylim(bottom=0)
-    plt.xlim(min_year, max_year)
-    plt.xticks(range(min_year, max_year + 1, 1))
-    plt.xlabel("Year")
-    plt.ylabel("Median House Price")
-    plt.title("Median House/Townhouse Prices by Sale Year")
-    plt.grid(True)
-    plt.show() """
-
-    # Build model
-    x = df[["sale_year"]]
-    y = df["median_price"]
+    x = df[['Rooms', 'Distance', 'Price']]  # Independent variables
+    y = df['Method']  # Dependent variable (house price)
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-    model = LinearRegression()
+    model = LogisticRegression()
     model.fit(x_train, y_train)
 
     y_pred = model.predict(x_test)
 
-    # Print model performance
-    print('Mean Squared Error: %.2f' % mean_squared_error(y_test, y_pred))
-    print('R^2 Score: %.2f' % r2_score(y_test, y_pred))
+    accuracy = accuracy_score(y_test, y_pred)
+    print(f"Accuracy: {accuracy:.2f}")
+
+    # Classification Report
+    report = classification_report(y_test, y_pred, output_dict=True)
+    print("Classification Report:\n", classification_report(y_test, y_pred))
+
+    # Confusion Matrix
+    conf_matrix = confusion_matrix(y_test, y_pred)
+    print("Confusion Matrix:\n", conf_matrix)
+
+    # Visualization: Confusion Matrix
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', cbar=False, 
+                xticklabels=model.classes_, yticklabels=model.classes_)
+    plt.xlabel("Predicted")
+    plt.ylabel("True")
+    plt.title("Confusion Matrix")
+    plt.show()
+
+    # Visualization: Precision, Recall, F1-Score
+    metrics_df = pd.DataFrame(report).T.drop(['accuracy', 'macro avg', 'weighted avg'], axis=0)
+    
+    metrics_df[['precision', 'recall', 'f1-score']].plot(kind='bar', figsize=(10, 6))
+    plt.title("Precision, Recall, F1-Score per Class")
+    plt.ylabel("Score")
+    plt.xlabel("Class")
+    plt.ylim(0, 1)
+    plt.show()
+
+    print("Mean Squared Error: %.2f" % mean_squared_error(y_test, y_pred))
+    print("R^2 Score: %.2f" % r2_score(y_test, y_pred))
 
     plt.figure(figsize=(10, 6))
-    plt.scatter(x_test, y_test, color='black', label='Actual values')
-    plt.plot(x_test, y_pred, color='blue', linewidth=3, label='Predicted values')
-    plt.xlabel('sale_year')
-    plt.ylabel('median_price')
-    plt.title('Linear Regression on Melbourne Housing Dataset')
+    plt.scatter(x_test['Rooms'], y_test, color="black", label="Actual Prices (Rooms)")
+    plt.scatter(x_test['Rooms'], y_pred, color="blue", label="Predicted Prices (Rooms)")
+    plt.xlabel("Number of Rooms")
+    plt.ylabel("Price")
+    plt.title("Linear Regression: Predicted vs Actual Prices by Rooms")
     plt.legend()
     plt.show()
 
-def func4():
-    data = []
+def random_forest():
+    df = pd.read_csv("./Dan/MELBOURNE_HOUSE_PRICES_LESS.csv")
 
-    # income: equivalised disposable household income per week
+    df = df.dropna(axis=0).reset_index(drop=True)
 
-    df = pd.read_excel("./Dan/65230_complete_set.xls", sheet_name="Table 12 Cap city")
-    income = prev = df.iloc[11, 7] * 52
-    data.append({"Year": "2000-01", "Median Income": income})
+    # Align date format
+    df["Date"] = pd.to_datetime(df["Date"], format="%d/%m/%Y")
 
-    df = pd.read_excel("./Dan/6523.0_datacube_2002-03.xls", sheet_name="Table 13A")
-    income = next = df.iloc[12, 8] * 52
-    data.append({"Year": "2002-03", "Median Income": income})
+    df['Year'] = df['Date'].dt.year
+    df['Month'] = df['Date'].dt.month
 
-    data.append({"Year": "2001-02", "Median Income": int((prev + next) / 2)})
+    # Select features (Rooms, Distance, Propertycount) and target (Price)
+    x = df[['Rooms', 'Propertycount', "Distance"]]  # Independent variables
+    y = df['Price']  # Dependent variable (house price) 
 
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=123)
 
-    df = pd.read_excel("./Dan/65230_data_2003-04.xls", sheet_name="Table 14")
-    income = prev = df.iloc[12, 6] * 52
-    data.append({"Year": "2003-04", "Median Income": income})
+    scaler = StandardScaler()
+    x_train_scaled = scaler.fit_transform(x_train)
+    x_test_scaled = scaler.transform(x_test)
 
-    df = pd.read_excel("./Dan/65230DO001_200506.XLS", sheet_name="Table 14")
-    income = next = df.iloc[13, 3] * 52
-    data.append({"Year": "2005-06", "Median Income": income})
+    # Random Forest Regression model
+    model = RandomForestRegressor(n_estimators=100)
+    model.fit(x_train_scaled, y_train)
 
-    data.append({"Year": "2004-05", "Median Income": int((prev + next) / 2)})
+    # Predictions
+    y_pred = model.predict(x_test_scaled)
 
+    # Evaluate the model
+    print("Mean Squared Error: %.2f" % mean_squared_error(y_test, y_pred))
+    print("R^2 Score: %.2f" % r2_score(y_test, y_pred))
 
-    prev = next # income 05-06
+    # Plot actual vs predicted prices
+    plt.figure(figsize=(10, 6))
+    plt.scatter(y_test, y_pred, color="blue")
+    plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], color="red", linewidth=2)
+    plt.xlabel("Actual Prices")
+    plt.ylabel("Predicted Prices")
+    plt.title("Random Forest Regression on Melbourne Housing Dataset")
+    plt.show()
 
-    df = pd.read_excel("./Dan/65230do001_200708.xls", sheet_name="Table_14")
-    income = next = df.iloc[11, 3] * 52
-    data.append({"Year": "2007-08", "Median Income": income})
+def ridge():
+    df = pd.read_csv("./Dan/MELBOURNE_HOUSE_PRICES_LESS.csv")
+    df.dropna(subset=["Price"], inplace=True)
 
-    data.append({"Year": "2006-07", "Median Income": int((prev + next) / 2)})
+    # Align date format
+    df["Date"] = pd.to_datetime(df["Date"], format="%d/%m/%Y")
 
+    x = df[['Rooms', 'Distance', 'Propertycount']]  # Independent variables
+    y = df['Price']  # Dependent variable (house price)
 
-    prev = next # income 07-08
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-    df = pd.read_excel("./Dan/65230do001_200910.xls", sheet_name="Table_15")
-    income = next = df.iloc[11, 3] * 52
-    data.append({"Year": "2009-10", "Median Income": income})
+    # Feature scaling
+    scaler = StandardScaler()
+    x_train_scaled = scaler.fit_transform(x_train)
+    x_test_scaled = scaler.transform(x_test)
 
-    data.append({"Year": "2008-09", "Median Income": int((prev + next) / 2)})
+    # Hyperparameter tuning for Ridge Regression using GridSearchCV
+    ridge_model = Ridge()
+    parameters = {'alpha': [0.1, 1.0, 10.0, 100.0]}
+    ridge_cv = GridSearchCV(ridge_model, parameters, scoring='r2', cv=5)
+    ridge_cv.fit(x_train_scaled, y_train)
 
+    # Best Ridge model
+    best_ridge = ridge_cv.best_estimator_
 
-    prev = next # income 09-10
+    y_pred = best_ridge.predict(x_test_scaled)
 
-    df = pd.read_excel("./Dan/6124055002ds0001_2019.xls", sheet_name="Table 1.1")
-    income = next = df.iloc[11, 20]
-    data.append({"Year": "2011-12", "Median Income": income})
-    
-    data.append({"Year": "2010-11", "Median Income": int(prev + next) / 2})
+    # Evaluate the model
+    print("Best Alpha: ", ridge_cv.best_params_['alpha'])
+    print("Mean Squared Error: %.2f" % mean_squared_error(y_test, y_pred))
+    print("R^2 Score: %.2f" % r2_score(y_test, y_pred))
 
+    # Plot predictions vs actual prices
+    plt.figure(figsize=(10, 6))
+    plt.scatter(y_test, y_pred, color="blue", label="Predicted vs Actual")
+    plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], color="red", linestyle="--", label="Ideal Fit")
+    plt.xlabel("Actual Prices")
+    plt.ylabel("Predicted Prices")
+    plt.title("Ridge Regression: Predicted vs Actual House Prices")
+    plt.legend()
+    plt.show()
 
-    income = df.iloc[11, 21]
-    data.append({"Year": "2012-13", "Median Income": income})
-    
-    income = df.iloc[11, 22]
-    data.append({"Year": "2013-14", "Median Income": income})
-    
-    income = df.iloc[11, 23]
-    data.append({"Year": "2014-15", "Median Income": income})
-    
-    income = df.iloc[11, 24]
-    data.append({"Year": "2015-16", "Median Income": income})
-    
-    income = df.iloc[11, 25]
-    data.append({"Year": "2016-17", "Median Income": income})
+def polynomial():
+    df = pd.read_csv("./Dan/MELBOURNE_HOUSE_PRICES_LESS.csv")
+    df.dropna(subset=["Price"], inplace=True)
 
-    data.append({"Year": "1999-00", "Median Income": None})
+    # Align date format
+    df["Date"] = pd.to_datetime(df["Date"], format="%d/%m/%Y")
 
-    data = sorted(data, key=lambda x: x["Year"])
+    X = df[['Rooms', 'Distance']]  # Independent variables
+    y = df['Price']  # Dependent variable (house price)
 
-    start_value = data[1]["Median Income"]
-    end_value = data[-1]["Median Income"]
-    n_years = 2016 - 2000 # num of years between 2000-01 and 2016-17
+        # Feature scaling before polynomial transformation
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
 
-    cagr = ((end_value / start_value) ** (1 / n_years)) - 1
+    # Create polynomial features (degree=2)
+    poly = PolynomialFeatures(degree=2)
+    X_poly = poly.fit_transform(X_scaled)
 
-    income = start_value / (1 + cagr)
-    data[0]["Median Income"] = int(income)
+    # Split data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X_poly, y, test_size=0.2, random_state=42)
 
-    data1 = []
-    for i in range(len(data) - 1):
-        year = int(data[i]["Year"].split("-")[1]) + 2000
-        income = int((data[i]["Median Income"] + data[i + 1]["Median Income"]) / 2)
-        data1.append({"Year": year, "Median Income": income})
+    # Fit the Polynomial Regression model
+    model = LinearRegression()
+    model.fit(X_train, y_train)
 
-    df = pd.DataFrame(data1)
+    # Predicting the test set results
+    y_pred = model.predict(X_test)
 
-    print(df)
+    # Print performance metrics
+    print("Mean Squared Error: %.2f" % mean_squared_error(y_test, y_pred))
+    print("R^2 Score: %.2f" % r2_score(y_test, y_pred))
 
+    # Visualization: Predicted vs Actual Prices
+    plt.figure(figsize=(10, 6))
+    plt.scatter(y_test, y_pred, color="blue", label="Predicted vs Actual")
+    plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], color="red", linestyle="--", label="Ideal Fit")
+    plt.xlabel("Actual Prices")
+    plt.ylabel("Predicted Prices")
+    plt.title("Polynomial Regression (Degree 2): Predicted vs Actual House Prices")
+    plt.legend()
+    plt.show()
 
 if __name__ == "__main__":
     main()
