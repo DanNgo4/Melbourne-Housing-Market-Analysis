@@ -94,7 +94,7 @@ def clean_house_price_data():
 
 def use_polynomial_regression_to_predict_house_price(df):
     #Encode the features to be 1 or 0
-    df_encoded = pd.get_dummies(df[['Type']])
+    df_encoded = pd.get_dummies(df[['CouncilArea', 'Type']])
     X = pd.concat([df[['Distance', 'Rooms', 'Yearly Incidents Recorded']], df_encoded], axis=1)
     Y = df['Price']
 
