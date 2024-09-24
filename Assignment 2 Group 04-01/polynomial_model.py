@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
@@ -29,7 +28,7 @@ def merge_all_data():
 #Cleans the Data and manipulates crime data
 def clean_and_manipulate_crime_data():
 
-    df = pd.read_csv("./Data_Tables_LGA_Criminal_Incidents_Year_Ending_March_2024.csv")
+    df = pd.read_csv("./datasets/Data_Tables_LGA_Criminal_Incidents_Year_Ending_March_2024.csv")
 
     #Remove Police Region, Not applicable for model
     df.drop(columns="Police Region", axis=1, inplace=True)
@@ -74,7 +73,7 @@ def clean_and_manipulate_crime_data():
 
 #Cleans house price data
 def clean_house_price_data():
-    house_price_df = pd.read_csv("../Dan/MELBOURNE_HOUSE_PRICES_LESS.csv")
+    house_price_df = pd.read_csv("./datasets//MELBOURNE_HOUSE_PRICES_LESS.csv")
 
     # Dropping rows that has null cells in Price
     house_price_df.dropna(subset=["Price"], inplace=True)
@@ -95,7 +94,7 @@ def clean_house_price_data():
 
 def use_polynomial_regression_to_predict_house_price(df):
     #Encode the features to be 1 or 0
-    df_encoded = pd.get_dummies(df[['CouncilArea', 'Type']])
+    df_encoded = pd.get_dummies(df[['Type']])
     X = pd.concat([df[['Distance', 'Rooms', 'Yearly Incidents Recorded']], df_encoded], axis=1)
     Y = df['Price']
 
@@ -133,7 +132,8 @@ def plot_predicted_prices(y_test, y_pred):
 
 #Runs everything
 def run_poly():
-    plot_predicted_prices(use_polynomial_regression_to_predict_house_price(merge_all_data()))
+    y_test, y_pred = use_polynomial_regression_to_predict_house_price(merge_all_data())
+    plot_predicted_prices(y_test, y_pred)
 
 if __name__ == "__main__":
     run_poly()
