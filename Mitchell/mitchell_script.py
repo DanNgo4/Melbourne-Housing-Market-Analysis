@@ -22,12 +22,14 @@ def merge_all_data():
     #Sort them in Year than Council 
     merged_df.sort_values(by=["Year", "CouncilArea"], ascending=[False,True])
 
+    print("Final length: ", len(merged_df))
+
     return merged_df
 
 #Cleans the Data and manipulates crime data
 def clean_and_manipulate_crime_data():
 
-    df = pd.read_csv("./Data_Tables_LGA_Criminal_Incidents_Year_Ending_March_2024.csv")
+    df = pd.read_csv("./Mitchell/Data_Tables_LGA_Criminal_Incidents_Year_Ending_March_2024.csv")
 
     #Remove Police Region, Not applicable for model
     df.drop(columns="Police Region", axis=1, inplace=True)
@@ -72,7 +74,7 @@ def clean_and_manipulate_crime_data():
 
 #Cleans house price data
 def clean_house_price_data():
-    house_price_df = pd.read_csv("../Dan/MELBOURNE_HOUSE_PRICES_LESS.csv")
+    house_price_df = pd.read_csv("./Dan/MELBOURNE_HOUSE_PRICES_LESS.csv")
 
     # Dropping rows that has null cells in Price
     house_price_df.dropna(subset=["Price"], inplace=True)
