@@ -7,13 +7,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.model_selection import train_test_split
 
-GreaterMelbourneLGAs=["Bayside City Council","Merri-bek City Council","Melbourne City Council","Kingston City Council","Greater Dandenong City Council",
-                      "Frankston City Council","Glen Eira City Council","Monash City Council","Stonnington City Council","Port Phillip City Council",
-                      "Yarra City Council","Casey City Council","Wyndham City Council","Whittlesea City Council","Nillumbik City Council",
-                      "Melton City Council","Moonee Valley City Council","Maribyrnong City Council","Hume City Council","Hobsons Bay City Council",
-                      "Darebin City Council","Knox City Council","Brimbank City Council","Banyule City Council","Cardinia City Council","MaroondahCity Council",
-                      "Manningham City Council","Boroondara City Council"]
-
 #Merge all data
 def merge_all_data():
     # Merge DataFrames on 'CouncilArea' and 'HousingYear' with 'Year' from crime data
@@ -28,31 +21,32 @@ def merge_all_data():
 
 #Cleans the Data and manipulates crime data
 def clean_and_manipulate_crime_data():
-
-    df = pd.read_csv("./Mitchell/Data_Tables_LGA_Criminal_Incidents_Year_Ending_March_2024.csv")
+    #Retrieve the data from CSV
+    crime_df = pd.read_csv("./Data_Tables_LGA_Criminal_Incidents_Year_Ending_March_2024.csv")
+    house_price_df = pd.read_csv("../Dan/MELBOURNE_HOUSE_PRICES_LESS.csv")
 
     #Remove Police Region, Not applicable for model
-    df.drop(columns="Police Region", axis=1, inplace=True)
+    crime_df.drop(columns="Police Region", axis=1, inplace=True)
 
     #Remove whitespaces on LGA's
-    df['Local Government Area'] = df['Local Government Area'].str.strip()
+    crime_df['Local Government Area'] = crime_df['Local Government Area'].str.strip()
 
     #Append " City Council" to end to match LGA column in Housing price dataset
-    df['Local Government Area'] = df['Local Government Area'] + " City Council"
+    crime_df['Local Government Area'] = crime_df['Local Government Area'] + " City Council"
 
     #Drop any LGA's not in Greater Melbourne
-    df.drop(df[~df['Local Government Area'].isin(GreaterMelbourneLGAs)].index, inplace = True)
+    crime_df.drop(crime_df[~crime_df['Local Government Area'].isin(house_price_df['CouncilArea'].dropna().unique())].index, inplace = True)
 
     #Convert Crimes in LGA to int
-    df['Incidents Recorded'] = df['Incidents Recorded'].str.replace(",","").astype(int)
+    crime_df['Incidents Recorded'] = crime_df['Incidents Recorded'].str.replace(",","").astype(int)
 
-    df_yearlyCrime_HousePrice=[]
-    for _, row in df.iterrows():
+    house_crime_df=[]
+    for _, row in crime_df.iterrows():
         year = row['Year']
         if year > 2017:#No need to keep years after 2017
             continue     
         #Get next year row for that council area
-        next_year_row = df[(df['Year'] == (row['Year']+ 1)) & (df['Local Government Area'] == row['Local Government Area'])]
+        next_year_row = crime_df[(crime_df['Year'] == (row['Year']+ 1)) & (crime_df['Local Government Area'] == row['Local Government Area'])]
         
         #Calculate the monthly stats for next year
         next_year_incidents = round(next_year_row['Incidents Recorded'].sum() / 12, 1)
@@ -64,17 +58,17 @@ def clean_and_manipulate_crime_data():
         total_crimes_for_year = int(round((incidents_per_month * 3) + (next_year_incidents * 9), 0))
         
         #Append Data to new Dataframe
-        df_yearlyCrime_HousePrice.append({
+        house_crime_df.append({
             "Year": year + 1,
             "CouncilArea": row["Local Government Area"],
             "Yearly Incidents Recorded": total_crimes_for_year
         })
     
-    return pd.DataFrame(df_yearlyCrime_HousePrice)
+    return pd.DataFrame(house_crime_df)
 
 #Cleans house price data
 def clean_house_price_data():
-    house_price_df = pd.read_csv("./Dan/MELBOURNE_HOUSE_PRICES_LESS.csv")
+    house_price_df = pd.read_csv("../Dan/Melbourne_housing_FULL.csv")
 
     # Dropping rows that has null cells in Price
     house_price_df.dropna(subset=["Price"], inplace=True)
@@ -85,11 +79,6 @@ def clean_house_price_data():
     
     #Moreland City Council is now Merri-Bek
     house_price_df.loc[(house_price_df['CouncilArea'] == "Moreland City Council"), "CouncilArea"] = "Merri-bek City Council"
-
-    house_price_df.drop(house_price_df[~house_price_df['CouncilArea'].isin(GreaterMelbourneLGAs)].index, inplace = True)
-    
-    # Calculate average Price per Year and CouncilArea and remove uneccessary columns
-    house_price_df = house_price_df.groupby(['Year', 'CouncilArea','Type','Rooms','Distance'])['Price'].mean().reset_index()
 
     return house_price_df
 
@@ -134,7 +123,8 @@ def plot_predicted_prices(y_test, y_pred):
 
 #Merges the data than runs poly
 def run_poly():
-    plot_predicted_prices(use_polynomial_regression_to_predict_house_price(merge_all_data()))
+    y_test, y_pred = use_polynomial_regression_to_predict_house_price(merge_all_data())
+    plot_predicted_prices(y_test, y_pred)
 
 if __name__ == "__main__":
     run_poly()

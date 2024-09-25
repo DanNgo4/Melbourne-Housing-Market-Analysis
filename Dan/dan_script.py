@@ -6,8 +6,6 @@ from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, classi
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 
 
-GreaterMelbourneLGAs=[]
-
 
 def main():
     prep_data()
@@ -21,14 +19,14 @@ def prep_data():
     # Moreland City Council is now Merri-Bek
     housing_df.loc[(housing_df['CouncilArea'] == "Moreland City Council"), "CouncilArea"] = "Merri-bek City Council"
 
-    GreaterMelbourneLGAs=["Bayside City Council","Merri-bek City Council","Melbourne City Council","Kingston City Council","Greater Dandenong City Council",
-                      "Frankston City Council","Glen Eira City Council","Monash City Council","Stonnington City Council","Port Phillip City Council",
-                      "Yarra City Council","Casey City Council","Wyndham City Council","Whittlesea City Council","Nillumbik City Council",
-                      "Melton City Council","Moonee Valley City Council","Maribyrnong City Council","Hume City Council","Hobsons Bay City Council",
-                      "Darebin City Council","Knox City Council","Brimbank City Council","Banyule City Council","Cardinia City Council","MaroondahCity Council",
-                      "Manningham City Council","Boroondara City Council"]
+    # GreaterMelbourneLGAs=["Bayside City Council","Merri-bek City Council","Melbourne City Council","Kingston City Council","Greater Dandenong City Council",
+    #                   "Frankston City Council","Glen Eira City Council","Monash City Council","Stonnington City Council","Port Phillip City Council",
+    #                   "Yarra City Council","Casey City Council","Wyndham City Council","Whittlesea City Council","Nillumbik City Council",
+    #                   "Melton City Council","Moonee Valley City Council","Maribyrnong City Council","Hume City Council","Hobsons Bay City Council",
+    #                   "Darebin City Council","Knox City Council","Brimbank City Council","Banyule City Council","Cardinia City Council","MaroondahCity Council",
+    #                   "Manningham City Council","Boroondara City Council"]
     #GreaterMelbourneLGAs = housing_df['CouncilArea'].dropna().unique()
-    print(GreaterMelbourneLGAs)
+    #print(GreaterMelbourneLGAs)
     print("Null: ", housing_df['CouncilArea'].isnull().sum())
 
     # Align date format
@@ -38,9 +36,7 @@ def prep_data():
     housing_df["Year"] = pd.to_datetime(housing_df["Year"], format="%d/%m/%Y").dt.year
 
 
-    print(len(housing_df))
 
-    housing_df.drop(housing_df[~housing_df['CouncilArea'].isin(GreaterMelbourneLGAs)].index, inplace=True)
 
     print(len(housing_df))
 
