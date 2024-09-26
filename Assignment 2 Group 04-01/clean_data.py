@@ -13,10 +13,6 @@ def clean_housing_data():
     housing_df.rename(columns={'Date': "Year"}, inplace=True)
     housing_df["Year"] = pd.to_datetime(housing_df["Year"], format="%d/%m/%Y").dt.year
 
-    housing_df.drop(columns=["Suburb", "Address", "Method", "SellerG", "Postcode", "Bathroom", "BuildingArea", "YearBuilt", "Longtitude", "Lattitude", "Regionname", "Landsize", "Bedroom2"], inplace=True)
-
-    housing_df = housing_df.dropna(axis=0).reset_index(drop=True)
-
     return housing_df
 
 def clean_crime_data(local_gov_areas):
@@ -65,6 +61,10 @@ def clean_population_data():
 
 def prep_crime_housing_data():
     housing_df = clean_housing_data()
+    housing_df.drop(columns=["Suburb", "Address", "Method", "SellerG", "Postcode", "Bathroom", "BuildingArea", "YearBuilt", "Longtitude", "Lattitude", "Regionname", "Landsize", "Bedroom2"], inplace=True)
+
+    housing_df = housing_df.dropna(axis=0).reset_index(drop=True)
+    
     crime_df = clean_crime_data(housing_df['CouncilArea'].dropna().unique())
 
     # Merge DataFrames on 'CouncilArea' and 'HousingYear' with 'Year' from crime data
