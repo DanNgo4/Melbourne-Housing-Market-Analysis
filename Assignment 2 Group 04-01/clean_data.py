@@ -3,25 +3,19 @@ import pandas as pd
 def clean_housing_data():
     housing_df = pd.read_csv("./datasets/Melbourne_housing_FULL.csv")
 
-    print("CouncilAreas null: ", housing_df['CouncilArea'].isnull().sum())
-    housing_df.dropna(subset=["CouncilArea"], inplace=True)
-
     #Drop City Council/Shire Council
     housing_df['CouncilArea'] = housing_df['CouncilArea'].str.replace(r' City Council| Shire Council', '', regex=True)
 
     # Moreland City Council is now Merri-Bek
     housing_df.loc[(housing_df['CouncilArea'] == "Moreland"), "CouncilArea"] = "Merri-bek"
 
-    housing_df = housing_df.dropna(axis=0).reset_index(drop=True)
-
-    # Align date format
-    housing_df["Date"] = pd.to_datetime(housing_df["Date"], format="%d/%m/%Y")
     # Set Year
     housing_df.rename(columns={'Date': "Year"}, inplace=True)
     housing_df["Year"] = pd.to_datetime(housing_df["Year"], format="%d/%m/%Y").dt.year
 
-    housing_df.drop(columns=["Suburb", "Address", "Method", "SellerG", "Postcode", "Bathroom", "BuildingArea", "YearBuilt", "Longtitude", "Lattitude", "Regionname"], inplace=True)
-    housing_df.to_csv("house.csv")
+    housing_df.drop(columns=["Suburb", "Address", "Method", "SellerG", "Postcode", "Bathroom", "BuildingArea", "YearBuilt", "Longtitude", "Lattitude", "Regionname", "Landsize", "Bedroom2"], inplace=True)
+
+    housing_df = housing_df.dropna(axis=0).reset_index(drop=True)
 
     return housing_df
 
@@ -71,15 +65,18 @@ def clean_population_data():
 
 def prep_crime_housing_data():
     housing_df = clean_housing_data()
+    crime_df = clean_crime_data(housing_df['CouncilArea'].dropna().unique())
 
     # Merge DataFrames on 'CouncilArea' and 'HousingYear' with 'Year' from crime data
-    merged_df = pd.merge(housing_df, clean_crime_data(housing_df['CouncilArea'].dropna().unique()), left_on=['CouncilArea', 'Year'], right_on=['CouncilArea', 'Year'], how='left')
+    merged_df = pd.merge(housing_df, crime_df, left_on=['CouncilArea', 'Year'], right_on=['CouncilArea', 'Year'], how='left')
+
+    merged_df.drop(columns=["Year"])
+
+    print(len(merged_df))
 
     #Encode the features to be 1 or 0
-    df_encoded = pd.get_dummies(merged_df[['CouncilArea', 'Type']])
-    X = pd.concat([merged_df[['Distance', 'Car', 'Rooms', 'Propertycount', 'Yearly Incidents Recorded']], df_encoded], axis=1)
+    df_encoded = pd.get_dummies(merged_df[['CouncilArea', "Type", 'Car', 'Rooms']])
+    X = pd.concat([merged_df[['Distance', 'Yearly Incidents Recorded', 'Propertycount']], df_encoded], axis=1)
     Y = merged_df['Price']
-
-    X.to_csv('out.csv')
 
     return X, Y 

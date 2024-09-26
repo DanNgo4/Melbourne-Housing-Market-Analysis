@@ -1,9 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.preprocessing import StandardScaler, LabelEncoder
 import clean_data
 
 def main():
@@ -15,24 +14,14 @@ def rf_regression():
     # Split data into training and testing sets
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=724)
 
-    # Drop house prices > 4 million from the training set only
-    train_mask = y_train <= 4000000
-    x_train = x_train[train_mask]
-    y_train = y_train[train_mask]
-
     print("Number of training entries after filtering: ", len(x_train))
-
-    # Standardize features
-    scaler = StandardScaler()
-    x_train_scaled = scaler.fit_transform(x_train)
-    x_test_scaled = scaler.transform(x_test)
 
     # Random Forest Regression model
     model = RandomForestRegressor(n_estimators=100, random_state=724)
-    model.fit(x_train_scaled, y_train)
+    model.fit(x_train, y_train)
 
     # Predictions
-    y_pred = model.predict(x_test_scaled)
+    y_pred = model.predict(x_test)
 
     # Evaluate the model
     print("R^2 Score: %.2f" % r2_score(y_test, y_pred))
