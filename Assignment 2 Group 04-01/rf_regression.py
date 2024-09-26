@@ -9,7 +9,7 @@ def main():
     rf_regression()
 
 def rf_regression():
-    x, y = clean_data.prep_crime_housing_data()
+    x, y = clean_data.prep_final_data()
 
     # Split data into training and testing sets
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=724)

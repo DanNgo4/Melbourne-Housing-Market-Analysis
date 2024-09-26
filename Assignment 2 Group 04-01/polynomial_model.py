@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 import clean_data
 
 def use_polynomial_regression_to_predict_house_price():
-    X, Y = clean_data.prep_crime_housing_data()
+    X, Y = clean_data.prep_final_data()
 
     # Create polynomial features
     poly = PolynomialFeatures(degree=2)

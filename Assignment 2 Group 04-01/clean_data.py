@@ -57,26 +57,48 @@ def clean_crime_data(local_gov_areas):
     return pd.DataFrame(yearly_crime_df)
 
 def clean_population_data():
-    popu_df = ""
+    popu_df = pd.read_csv("./datasets/only_population.csv")
 
-def prep_crime_housing_data():
+    # Remove leading spaces in column names
+    popu_df.columns = popu_df.columns.str.strip()
+
+    # Drop N/A columns
+    popu_df.dropna(axis=1, how="any", inplace=True)
+
+    popu_df.drop(columns=["LGA code", 'ERP Change no.', 'ERP change %', 'Natural Increase', 'Net internal migration', 'Net overseas migration','Area', "2016", "2017", "2018"], inplace=True)
+
+    # Clean the 'Local Government Area' column by removing text within parentheses and spaces
+    popu_df["Local Government Area"] = popu_df["Local Government Area"].str.replace(r'\s*\(.*\)', "", regex=True).str.strip()
+
+    print(popu_df.head())
+
+    return popu_df
+
+
+def prep_final_data():
     housing_df = clean_housing_data()
     housing_df.drop(columns=["Suburb", "Address", "Method", "SellerG", "Postcode", "Bathroom", "BuildingArea", "YearBuilt", "Longtitude", "Lattitude", "Regionname", "Landsize", "Bedroom2"], inplace=True)
 
     housing_df = housing_df.dropna(axis=0).reset_index(drop=True)
-    
+
     crime_df = clean_crime_data(housing_df['CouncilArea'].dropna().unique())
 
     # Merge DataFrames on 'CouncilArea' and 'HousingYear' with 'Year' from crime data
-    merged_df = pd.merge(housing_df, crime_df, left_on=['CouncilArea', 'Year'], right_on=['CouncilArea', 'Year'], how='left')
+    inter_df = pd.merge(housing_df, crime_df, left_on=['CouncilArea', 'Year'], right_on=['CouncilArea', 'Year'], how='left')
 
-    merged_df.drop(columns=["Year"])
+    popu_df = clean_population_data()
 
-    print(len(merged_df))
+    popu_df.rename(columns={'Local Government Area': 'CouncilArea'}, inplace=True)
+
+    merged_df = pd.merge(popu_df, inter_df, how='inner', left_on=['CouncilArea'], right_on=['CouncilArea'])
+
+    merged_df.to_csv("final.csv")
+
+    print(merged_df[['Population Density', 'Price']].corr())
 
     #Encode the features to be 1 or 0
     df_encoded = pd.get_dummies(merged_df[['CouncilArea', "Type", 'Car', 'Rooms']])
-    X = pd.concat([merged_df[['Distance', 'Yearly Incidents Recorded', 'Propertycount']], df_encoded], axis=1)
+    X = pd.concat([merged_df[['Distance', 'Yearly Incidents Recorded', 'Propertycount', "Population Density"]], df_encoded], axis=1)
     Y = merged_df['Price']
 
     return X, Y 
