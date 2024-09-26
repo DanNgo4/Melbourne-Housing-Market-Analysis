@@ -1,20 +1,22 @@
-import pandas as pd
+# Random Forest Regression Model to predict housing price, made by Dan Ngo
+
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 import clean_data
 
+
 def main():
+    print("Random Forest Regresssion to predict housing price")
     rf_regression()
+
 
 def rf_regression():
     x, y = clean_data.prep_final_data()
 
     # Split data into training and testing sets
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=724)
-
-    print("Number of training entries after filtering: ", len(x_train))
 
     # Random Forest Regression model
     model = RandomForestRegressor(n_estimators=100, random_state=724)
@@ -34,6 +36,7 @@ def rf_regression():
     plt.ylabel("Predicted Prices")
     plt.title("Random Forest Regression on Melbourne Housing Dataset")
     plt.show()
+
 
 if __name__ == "__main__":
     main()

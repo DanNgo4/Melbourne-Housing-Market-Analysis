@@ -1,4 +1,5 @@
-import pandas as pd
+# Polynomial Regression Model to predict housing price, made by Mitchell Henry
+
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
@@ -7,6 +8,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.model_selection import train_test_split
 import clean_data
+
+
+def main():
+    print("Polynomial Regression to predict housing price")
+    run_poly()
+
 
 def use_polynomial_regression_to_predict_house_price():
     X, Y = clean_data.prep_final_data()
@@ -31,6 +38,7 @@ def use_polynomial_regression_to_predict_house_price():
     print("R^2 Score: %.2f" % r2_score(y_test, y_pred))
     return y_test, y_pred
 
+
 #Plot Predicted Vs Actual based on crime
 def plot_predicted_prices(y_test, y_pred):
     #Line for best fit, Scatter for actual vs predicted
@@ -43,10 +51,12 @@ def plot_predicted_prices(y_test, y_pred):
     plt.legend()
     plt.show()
 
+
 #Runs everything
 def run_poly():
     y_test, y_pred = use_polynomial_regression_to_predict_house_price()
     plot_predicted_prices(y_test, y_pred)
 
+
 if __name__ == "__main__":
-    run_poly()
+    main()
