@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-house_prices = pd.read_csv('MELBOURNE_HOUSE_PRICES_LESS.csv')
+house_prices = pd.read_csv('MELBOURNE_housing_FULL.csv')
 population_growth = pd.read_csv('population_2017-18.csv')
 
 house_prices['Date'] = pd.to_datetime(house_prices['Date'], format='%d/%m/%Y')
@@ -20,4 +20,4 @@ house_prices['CouncilArea'] = house_prices['CouncilArea'].str.replace('City Coun
 
 merged_data = pd.merge(house_prices, pop_long, left_on=['CouncilArea', 'Year'], right_on=[' Local Government Area', 'Year'])
 
-merged_data.to_csv('output_file.csv')
+merged_data.to_csv('population.csv')
