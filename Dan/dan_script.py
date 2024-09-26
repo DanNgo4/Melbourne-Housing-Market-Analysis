@@ -5,43 +5,12 @@ from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, classification_report
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 
-
-
 def main():
-    prep_data()
-    # random_forest()
-    # rf()
+    rf_regression()
+    rf_classification()
 
 
-def prep_data():
-    housing_df = pd.read_csv("./Dan/Melbourne_housing_FULL.csv")
-
-    # Moreland City Council is now Merri-Bek
-    housing_df.loc[(housing_df['CouncilArea'] == "Moreland City Council"), "CouncilArea"] = "Merri-bek City Council"
-
-    # GreaterMelbourneLGAs=["Bayside City Council","Merri-bek City Council","Melbourne City Council","Kingston City Council","Greater Dandenong City Council",
-    #                   "Frankston City Council","Glen Eira City Council","Monash City Council","Stonnington City Council","Port Phillip City Council",
-    #                   "Yarra City Council","Casey City Council","Wyndham City Council","Whittlesea City Council","Nillumbik City Council",
-    #                   "Melton City Council","Moonee Valley City Council","Maribyrnong City Council","Hume City Council","Hobsons Bay City Council",
-    #                   "Darebin City Council","Knox City Council","Brimbank City Council","Banyule City Council","Cardinia City Council","MaroondahCity Council",
-    #                   "Manningham City Council","Boroondara City Council"]
-    #GreaterMelbourneLGAs = housing_df['CouncilArea'].dropna().unique()
-    #print(GreaterMelbourneLGAs)
-    print("Null: ", housing_df['CouncilArea'].isnull().sum())
-
-    # Align date format
-    housing_df["Date"] = pd.to_datetime(housing_df["Date"], format="%d/%m/%Y")
-    # Set Year
-    housing_df.rename(columns={'Date': "Year"}, inplace=True)
-    housing_df["Year"] = pd.to_datetime(housing_df["Year"], format="%d/%m/%Y").dt.year
-
-
-
-
-    print(len(housing_df))
-
-
-def random_forest():
+def rf_regression():
     df = pd.read_csv("./Dan/Melbourne_housing_FULL.csv")
 
     # Align date format
@@ -77,7 +46,6 @@ def random_forest():
     x_train_scaled = scaler.fit_transform(x_train)
     x_test_scaled = scaler.transform(x_test)
 
-
     # Random Forest Regression model
     model = RandomForestRegressor(n_estimators=100, random_state=123)
     model.fit(x_train_scaled, y_train)
@@ -98,7 +66,7 @@ def random_forest():
     plt.show()
 
 
-def rf():
+def rf_classification():
     df = pd.read_csv("./Dan/Melbourne_housing_FULL.csv")
 
     df.drop(columns=["Suburb", "Address", "Method", "SellerG", "Date", "Postcode", 

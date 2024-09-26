@@ -3,7 +3,6 @@ import pandas as pd
 def clean_housing_data():
     housing_df = pd.read_csv("./datasets/Melbourne_housing_FULL.csv")
 
-
     print("CouncilAreas null: ", housing_df['CouncilArea'].isnull().sum())
     housing_df.dropna(subset=["CouncilArea"], inplace=True)
 
@@ -13,7 +12,6 @@ def clean_housing_data():
     # Moreland City Council is now Merri-Bek
     housing_df.loc[(housing_df['CouncilArea'] == "Moreland"), "CouncilArea"] = "Merri-bek"
 
-
     housing_df = housing_df.dropna(axis=0).reset_index(drop=True)
 
     # Align date format
@@ -22,10 +20,9 @@ def clean_housing_data():
     housing_df.rename(columns={'Date': "Year"}, inplace=True)
     housing_df["Year"] = pd.to_datetime(housing_df["Year"], format="%d/%m/%Y").dt.year
 
-    housing_df.drop(columns=["Suburb", "Address", "Method", "SellerG", "Postcode", 
-                     "Bathroom", "BuildingArea", "YearBuilt", "Longtitude", "Lattitude", 
-                     "Regionname"], inplace=True)
+    housing_df.drop(columns=["Suburb", "Address", "Method", "SellerG", "Postcode", "Bathroom", "BuildingArea", "YearBuilt", "Longtitude", "Lattitude", "Regionname"], inplace=True)
     housing_df.to_csv("house.csv")
+
     return housing_df
 
 def clean_crime_data(local_gov_areas):
@@ -69,16 +66,14 @@ def clean_crime_data(local_gov_areas):
     pd.DataFrame(yearly_crime_df).to_csv("crime.csv")
     return pd.DataFrame(yearly_crime_df)
 
+def clean_population_data():
+    popu_df = ""
+
 def prep_crime_housing_data():
     housing_df = clean_housing_data()
 
     # Merge DataFrames on 'CouncilArea' and 'HousingYear' with 'Year' from crime data
     merged_df = pd.merge(housing_df, clean_crime_data(housing_df['CouncilArea'].dropna().unique()), left_on=['CouncilArea', 'Year'], right_on=['CouncilArea', 'Year'], how='left')
-    
-    #Sort them in Year than Council 
-    merged_df.sort_values(by=["Year", "CouncilArea"], ascending=[False,True])
-
-    print("Final length: ", len(merged_df))
 
     #Encode the features to be 1 or 0
     df_encoded = pd.get_dummies(merged_df[['CouncilArea', 'Type']])

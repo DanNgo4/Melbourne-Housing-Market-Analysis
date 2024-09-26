@@ -1,11 +1,13 @@
 import argparse
 import polynomial_model
+import rf_regression
 
 #main function
 def main(model_type):
     if model_type.upper() == 'P':
         polynomial_model.run_poly()
     elif model_type.upper() == 'R':
+        rf_regression.main()
         pass
     
 if __name__ == "__main__":
