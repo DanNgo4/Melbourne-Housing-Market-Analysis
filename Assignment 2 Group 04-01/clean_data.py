@@ -10,7 +10,7 @@ def clean_housing_data():
     housing_df = pd.read_csv("./datasets/Melbourne_housing_FULL.csv")
 
     # Displaying original data
-    print(f"{colorama.Fore.GREEN}Original Housing dataset:\n{colorama.Fore.RESET}", housing_df.head())
+    print(f"{colorama.Fore.GREEN}Original Housing dataset:\n{colorama.Fore.RESET}", str(housing_df))
 
     #Drop City Council/Shire Council
     housing_df["CouncilArea"] = housing_df["CouncilArea"].str.replace(r" City Council| Shire Council", "", regex=True)
@@ -38,7 +38,7 @@ def prep_classify_data():
     df = df.dropna(axis=0).reset_index(drop=True)
 
     # Displaying cleaned data
-    print(f"{colorama.Fore.GREEN}Dataset after cleaning for Classification models:\n{colorama.Fore.RESET}", df.head())
+    print(f"{colorama.Fore.GREEN}Dataset after cleaning for Classification models:\n{colorama.Fore.RESET}", str(df))
 
     # Select features for classification
     features = ["Rooms", "Car", "Propertycount", "Bedroom2", "Landsize"]
@@ -56,7 +56,7 @@ def clean_crime_data(local_gov_areas):
     crime_df = pd.read_csv("./datasets/Data_Tables_LGA_Criminal_Incidents_Year_Ending_March_2024.csv")
 
     # Displaying original data
-    print(f"{colorama.Fore.GREEN}Original Crime dataset:\n{colorama.Fore.RESET}", crime_df.head())
+    print(f"{colorama.Fore.GREEN}Original Crime dataset:\n{colorama.Fore.RESET}", str(crime_df))
 
     # Remove Police Region, Not applicable for model
     crime_df.drop(columns="Police Region", axis=1, inplace=True)
@@ -100,7 +100,7 @@ def clean_population_data(local_gov_areas):
     popu_df = pd.read_csv("./datasets/population_2017-18.csv")
 
     # Displaying original data
-    print(f"{colorama.Fore.GREEN}Original Population dataset:\n{colorama.Fore.RESET}", popu_df.head())
+    print(f"{colorama.Fore.GREEN}Original Population dataset:\n{colorama.Fore.RESET}", str(popu_df))
 
     # Remove leading spaces in column names
     popu_df.columns = popu_df.columns.str.strip()
@@ -147,7 +147,7 @@ def prep_final_data():
     merged_df = pd.merge(popu_df, inter_df, how="inner", left_on=["CouncilArea"], right_on=["CouncilArea"])
 
     # Displaying cleaned data
-    print(f"{colorama.Fore.GREEN}Dataset after cleaning for Regression models:\n{colorama.Fore.RESET}", merged_df.head())
+    print(f"{colorama.Fore.GREEN}Dataset after cleaning for Regression models:\n{colorama.Fore.RESET}", str(merged_df))
 
     # Encode the categorical features
     df_encoded = pd.get_dummies(merged_df[["CouncilArea", "Type", "Car", "Rooms"]])
