@@ -8,6 +8,7 @@ The required libraries are as follows:
 - numpy
 - sklearn
 - xgboost
+- imblearn
 - matplotlib
 
 To install any of these run the below command to install the ones you are missing:
