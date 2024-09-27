@@ -7,11 +7,13 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.model_selection import train_test_split
+import colorama
 import clean_data
 
 
 def main():
-    print("Polynomial Regression to predict housing price")
+    colorama.init()
+    print(f"{colorama.Fore.GREEN}Polynomial Regression to predict housing price{colorama.Fore.RESET}")
     run_poly()
 
 
@@ -33,15 +35,17 @@ def use_polynomial_regression_to_predict_house_price():
     y_pred = model.predict(X_test)
 
     # Print performance metrics
+    print(f"{colorama.Fore.GREEN}Performance metrics for Polynomial Regression{colorama.Fore.RESET}")
     print("Mean Squared Error: %.2f" % mean_squared_error(y_test, y_pred))
     print("Mean Absolute Error: %.2f" % mean_absolute_error(y_test, y_pred))
     print("R^2 Score: %.2f" % r2_score(y_test, y_pred))
+
     return y_test, y_pred
 
 
-#Plot Predicted Vs Actual based on crime
+# Plot Predicted Vs Actual based on crime
 def plot_predicted_prices(y_test, y_pred):
-    #Line for best fit, Scatter for actual vs predicted
+    # Line for best fit, Scatter for actual vs predicted
     plt.figure(figsize=(10, 6))
     plt.scatter(y_test, y_pred, color="blue", label="Predicted vs Actual")
     plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], color="red", linestyle="--", label="Ideal Fit")
@@ -52,7 +56,7 @@ def plot_predicted_prices(y_test, y_pred):
     plt.show()
 
 
-#Runs everything
+# Runs everything
 def run_poly():
     y_test, y_pred = use_polynomial_regression_to_predict_house_price()
     plot_predicted_prices(y_test, y_pred)

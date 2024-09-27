@@ -1,16 +1,19 @@
 # Random Forest Classification Model to predict house types, made by Dan Ngo
 
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils import resample
+import colorama
 import clean_data
 
 
 def main():
-    print("Random Forest Classification to predict house types")
+    colorama.init()
+    print(f"{colorama.Fore.GREEN}Random Forest Classification to predict house types{colorama.Fore.RESET}")
     rf_classification()
 
 
@@ -21,11 +24,14 @@ def rf_classification():
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
 
-    # Handle class imbalance
+    # Handle class imbalance    
     X_resampled, y_resampled = resample_imbalance(X_scaled, y_encoded)
 
     # Split the dataset
     X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2, random_state=123)
+
+    print(f"{colorama.Fore.GREEN}Original training set size:{colorama.Fore.RESET}", X_train.shape, ":", np.bincount(y_train))
+    print(f"{colorama.Fore.GREEN}Resampled training set size:{colorama.Fore.RESET}", X_resampled.shape, ":", np.bincount(y_resampled))
 
     # Train the classifier
     clf = RandomForestClassifier(n_estimators=100, random_state=123)
@@ -34,7 +40,8 @@ def rf_classification():
     # Make predictions
     y_pred = clf.predict(X_test)
 
-    # Evaluate the model
+    # Print performance metrics
+    print(f"{colorama.Fore.GREEN}Performance metrics for Random Forest Classification{colorama.Fore.RESET}")
     print("Accuracy: %.2f" % accuracy_score(y_test, y_pred))
     print(classification_report(y_test, y_pred, target_names=le.classes_))
     print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))

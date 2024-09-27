@@ -3,12 +3,14 @@
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_absolute_error, r2_score
+import colorama
 import clean_data
 
 
 def main():
-    print("Random Forest Regresssion to predict housing price")
+    colorama.init()
+    print(f"{colorama.Fore.GREEN}Random Forest Regresssion to predict housing price{colorama.Fore.RESET}")
     rf_regression()
 
 
@@ -25,7 +27,9 @@ def rf_regression():
     # Predictions
     y_pred = model.predict(x_test)
 
-    # Evaluate the model
+    # Print performance metrics
+    print(f"{colorama.Fore.GREEN}Performance metrics for Random Forest Regression{colorama.Fore.RESET}")
+    print("Mean Absolute Error: %.2f" % mean_absolute_error(y_test, y_pred))
     print("R^2 Score: %.2f" % r2_score(y_test, y_pred))
 
     # Plot actual vs predicted prices
