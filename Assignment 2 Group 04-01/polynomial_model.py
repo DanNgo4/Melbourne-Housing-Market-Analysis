@@ -5,7 +5,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+from sklearn.metrics import r2_score, mean_absolute_error
 from sklearn.model_selection import train_test_split
 import colorama
 import clean_data
@@ -36,7 +36,6 @@ def use_polynomial_regression_to_predict_house_price():
 
     # Print performance metrics
     print(f"{colorama.Fore.GREEN}Performance metrics for Polynomial Regression{colorama.Fore.RESET}")
-    print("Mean Squared Error: %.2f" % mean_squared_error(y_test, y_pred))
     print("Mean Absolute Error: %.2f" % mean_absolute_error(y_test, y_pred))
     print("R^2 Score: %.2f" % r2_score(y_test, y_pred))
 

@@ -41,7 +41,7 @@ def prep_classify_data():
     print(f"{colorama.Fore.GREEN}Dataset after cleaning for Classification models:\n{colorama.Fore.RESET}", str(df))
 
     # Select features for classification
-    features = ["Rooms", "Car", "Propertycount", "Bedroom2", "Landsize"]
+    features = ["Rooms", "Car", "Propertycount", "Bedroom2", "Landsize", "Distance"]
     X = df[features]  # Independent variables
     y = df["Type"]    # Dependent variable (house type)
 
@@ -140,6 +140,9 @@ def prep_final_data():
     # To create intermediate DataFrame
     inter_df = pd.merge(housing_df, crime_df, left_on=["CouncilArea", "Year"], right_on=["CouncilArea", "Year"], how="left")
 
+    # Drop Year column since it's not needed anymore
+    inter_df.drop(columns=["Year"], inplace=True)
+
     # Preparing Population Dataset
     popu_df = clean_population_data(greater_melbourne)
     popu_df.rename(columns={"Local Government Area": "CouncilArea"}, inplace=True)
@@ -151,7 +154,9 @@ def prep_final_data():
 
     # Encode the categorical features
     df_encoded = pd.get_dummies(merged_df[["CouncilArea", "Type", "Car", "Rooms"]])
-    X = pd.concat([merged_df[["Distance", "Propertycount", "Yearly Incidents Recorded", "Population Density", "Landsize"]], df_encoded], axis=1)
+    X = pd.concat([merged_df[["Propertycount", "Distance", "Yearly Incidents Recorded", "Population Density", "Landsize"]], df_encoded], axis=1)
     Y = merged_df["Price"]
+
+    print(merged_df["Price"].mean())
 
     return X, Y
