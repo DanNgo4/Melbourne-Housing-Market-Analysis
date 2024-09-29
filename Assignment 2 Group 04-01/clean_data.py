@@ -49,6 +49,9 @@ def prep_classify_data():
     le = LabelEncoder()
     y_encoded = le.fit_transform(y)
 
+    # Cleaned data for Classification models
+    df.to_csv("./cleaned_dataset/classification.csv")
+
     return X, y_encoded, le
 
 #Cleans the crime data
@@ -157,6 +160,7 @@ def prep_final_data():
     X = pd.concat([merged_df[["Propertycount", "Distance", "Yearly Incidents Recorded", "Population Density", "Landsize"]], df_encoded], axis=1)
     Y = merged_df["Price"]
 
-    print(merged_df["Price"].mean())
+    # Cleaned data for Regression models
+    merged_df.to_csv("./cleaned_dataset/regression.csv")
 
     return X, Y
