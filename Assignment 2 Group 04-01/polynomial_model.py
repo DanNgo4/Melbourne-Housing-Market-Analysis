@@ -10,13 +10,13 @@ from sklearn.model_selection import train_test_split
 import colorama
 import clean_data
 
-
+#Run polynomial regression
 def main():
     colorama.init()
     print(f"{colorama.Fore.GREEN}Polynomial Regression to predict housing price{colorama.Fore.RESET}")
     run_poly()
 
-
+#Trains polynomial regression model and returns the test prices and the predicted prices
 def use_polynomial_regression_to_predict_house_price():
     X, Y = clean_data.prep_final_data()
 

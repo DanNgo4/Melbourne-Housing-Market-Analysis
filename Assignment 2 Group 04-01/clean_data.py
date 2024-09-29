@@ -5,7 +5,7 @@ import colorama
 
 colorama.init()
 
-
+#Returns cleaned housing data
 def clean_housing_data():
     housing_df = pd.read_csv("./datasets/Melbourne_housing_FULL.csv")
 
@@ -27,7 +27,7 @@ def clean_housing_data():
 
     return housing_df
 
-
+#Returns the merged datasets for classification models
 def prep_classify_data():
     df = clean_housing_data()
 
@@ -51,7 +51,7 @@ def prep_classify_data():
 
     return X, y_encoded, le
 
-
+#Cleans the crime data
 def clean_crime_data(local_gov_areas):
     crime_df = pd.read_csv("./datasets/Data_Tables_LGA_Criminal_Incidents_Year_Ending_March_2024.csv")
 
@@ -95,7 +95,7 @@ def clean_crime_data(local_gov_areas):
         })
     return pd.DataFrame(yearly_crime_df)
 
-
+#Cleans the population data
 def clean_population_data(local_gov_areas):
     popu_df = pd.read_csv("./datasets/population_2017-18.csv")
 
@@ -122,7 +122,7 @@ def clean_population_data(local_gov_areas):
 
     return popu_df
 
-
+#Returns the merged dataframe for regression models
 def prep_final_data():
     # Fetching Housing Dataset
     housing_df = clean_housing_data()

@@ -8,13 +8,14 @@ from sklearn.tree import plot_tree
 import colorama
 import clean_data
 
-
+#Run RF regression
 def main():
     colorama.init()
     print(f"{colorama.Fore.GREEN}Random Forest Regresssion to predict housing price{colorama.Fore.RESET}")
-    rf_regression()
+    y_test, y_pred = rf_regression()
+    plot_rf_regression(y_test, y_pred)
 
-
+#Create, train and return the RF regression models y_test and y_prediction of prices
 def rf_regression():
     x, y = clean_data.prep_final_data()
 
@@ -32,7 +33,10 @@ def rf_regression():
     print(f"{colorama.Fore.GREEN}Performance metrics for Random Forest Regression{colorama.Fore.RESET}")
     print("Mean Absolute Error: %.2f" % mean_absolute_error(y_test, y_pred))
     print("R^2 Score: %.2f" % r2_score(y_test, y_pred))
+    return y_test, y_pred
 
+#plot RF regression
+def plot_rf_regression(y_test, y_pred):
     # Plot actual vs predicted prices
     plt.figure(figsize=(10, 6))
     plt.scatter(y_test, y_pred, color="blue")
