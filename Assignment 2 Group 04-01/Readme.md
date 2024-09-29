@@ -1,5 +1,10 @@
 # Installation
-Libraries Required:
+
+### Install Python
+
+Visit Python downloads and preferrably install the latest version: https://www.python.org/downloads/
+
+### Libraries Required:
 
 The required libraries are as follows: 
 
