@@ -8,11 +8,13 @@ from imblearn.over_sampling import SMOTE
 import colorama
 import clean_data
 
+
 #Run XGBoost
 def main():
     colorama.init()
     print(f"{colorama.Fore.GREEN}XGBoost Classification to predict house types{colorama.Fore.RESET}")
     xgboost()
+
 
 #Create XGBoost and print out to terminal
 def xgboost():

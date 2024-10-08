@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@babel/core": "^7.25.2",
-    "@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression": "^7.25.0",
     "@babel/preset-env": "^7.25.4",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
@@ -42,5 +41,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression": "^7.25.7",
+    "tailwindcss": "^3.4.13"
   }
 }

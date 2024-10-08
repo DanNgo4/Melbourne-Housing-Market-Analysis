@@ -9,11 +9,13 @@ from sklearn.utils import resample
 import colorama
 import clean_data
 
+
 #Run RF classification
 def main():
     colorama.init()
     print(f"{colorama.Fore.GREEN}Random Forest Classification to predict house types{colorama.Fore.RESET}")
     rf_classification()
+
 
 #Create RF clasification and print results to terminal
 def rf_classification():

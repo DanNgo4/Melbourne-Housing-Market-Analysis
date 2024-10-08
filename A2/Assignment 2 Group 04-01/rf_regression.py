@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, r2_score
-from sklearn.tree import plot_tree 
 import colorama
 import clean_data
+
 
 #Run RF regression
 def main():
@@ -34,6 +34,7 @@ def rf_regression():
     print("Mean Absolute Error: %.2f" % mean_absolute_error(y_test, y_pred))
     print("R^2 Score: %.2f" % r2_score(y_test, y_pred))
     return y_test, y_pred
+
 
 #plot RF regression
 def plot_rf_regression(y_test, y_pred):
