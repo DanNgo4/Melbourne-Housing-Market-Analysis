@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import logo from './logo.svg';
 import './App.css';
 
-import Route from "./Route";
+import MainRoute from "./MainRoute";
 
 function App() {
   return (

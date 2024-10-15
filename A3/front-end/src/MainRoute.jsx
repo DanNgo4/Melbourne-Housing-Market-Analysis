@@ -8,7 +8,7 @@ import RFClassification from "./routes/RFClassification";
 
 import ScrollToTop from "./components/ScrollToTop";
 
-const Route = () => {
+const MainRoute = () => {
     return (
         <>
             <ScrollToTop />
@@ -23,4 +23,4 @@ const Route = () => {
     );
 };
 
-export default Route;
+export default MainRoute;
