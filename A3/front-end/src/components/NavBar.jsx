@@ -24,14 +24,15 @@ const NavBar = () => {
     const drawerContent = (
         <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
             <List>
-            <ListItem button component={Link} to="/">
-                <ListItemIcon><Home /></ListItemIcon>
-                <ListItemText primary="Home" />
-            </ListItem>
-            <ListItem button component={Link} to="/model">
-                <ListItemIcon><Info /></ListItemIcon>
-                <ListItemText primary="Model" />
-            </ListItem>
+                <ListItem button component={Link} to="/">
+                    <ListItemIcon><Home /></ListItemIcon>
+                    <ListItemText primary="Home" />
+                </ListItem>
+
+                <ListItem button component={Link} to="/model">
+                    <ListItemIcon><Info /></ListItemIcon>
+                    <ListItemText primary="Model" />
+                </ListItem>
             </List>
             <Divider />
             <List>
@@ -57,6 +58,9 @@ const NavBar = () => {
 
                     <Button color="inherit" component={NavLink} to="/">Home</Button>
                     <Button color="inherit" component={NavLink} to="/model">Model</Button>
+                    <Button color="inherit" component={NavLink} to="/line">Line</Button>
+                    <Button color="inherit" component={NavLink} to="/heat">Heat</Button>
+                    <Button color="inherit" component={NavLink} to="/donut">Donut</Button>
                 </Toolbar>
             </AppBar>
 
