@@ -68,9 +68,6 @@ const NavBar = () => {
                 {drawerContent}
             </Drawer>
         </div>
-        
-
-        
     );
 };
 
