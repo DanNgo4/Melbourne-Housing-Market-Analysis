@@ -45,13 +45,11 @@ const LineChartComponent = () => {
     // For useStates
     const [squareMetres, setSquareMetres] = useState("");
     const [distance, setDistance] = useState("");
-    const [numOfCars, setCars] = useState("");
     const [propertyCount, setPropertyCount] = useState("");
 
     // Form Errors
     const [squareMetresError, setSquareMetresError] = useState(false);
     const [distanceError, setDistanceError] = useState(false);
-    const [numOfCarsError, setCarsError] = useState(false);
     const [propertyCountError, setPropertyCountError] = useState(false);
 
     useEffect(() => {
@@ -76,7 +74,9 @@ const LineChartComponent = () => {
                 predictedValuesData.map(dataRow => {
                     predictedSquareMetres.push(dataRow["Landsize"]);
 
-                    return axios.get(`http://localhost:8000/predict/${dataRow["Landsize"]}/${dataRow["Car"]}/${dataRow["Distance"]}/${dataRow["Propertycount"]}/`)
+                    const url = `http://localhost:8000/predict/${dataRow["Landsize"]}/${dataRow["Distance"]}/${dataRow["Propertycount"]}/`;
+
+                    return axios.get(url)
                         .then(res => res.data.predicted_price);
                 })
             ).then(predictedPrices => {
@@ -92,7 +92,6 @@ const LineChartComponent = () => {
     const validateForm = () => {
         handleSquareMetresChanged({ target: { value: squareMetres } });
         handleDistanceChanged({ target: { value: distance } });
-        handleNumOfCarsChanged({ target: { value: numOfCars } });
         handlePropertyCountChanged({ target: { value: propertyCount } });
     };
 
@@ -101,12 +100,10 @@ const LineChartComponent = () => {
         e.preventDefault();
         validateForm();
         if (e.target.checkValidity()) {
-            axios.get(`http://localhost:8000/predict/${squareMetres}/${numOfCars}/${distance}/${propertyCount}/`)
+            axios.get(`http://localhost:8000/predict/${squareMetres}/${distance}/${propertyCount}/`)
                 .then(res => {
                     setYourPredictedPrice([{ x: squareMetres, y: res.data.predicted_price }])
                     addNewPrediction(res.data.predicted_price)});
-               
-
         }
     };
 
@@ -116,7 +113,7 @@ const LineChartComponent = () => {
             predictedSquareMetres.splice(yourPredictedPriceIndex, 1)
             predictedPrices.splice(yourPredictedPriceIndex, 1)
         }
-        predictedValuesData.push({Landsize: squareMetres, Car: numOfCars, Distance: distance, Propertycount: propertyCount })
+        predictedValuesData.push({Landsize: squareMetres, Distance: distance, Propertycount: propertyCount })
         const sortedData = Object.values(predictedValuesData).sort((a, b) => a.Landsize - b.Landsize);
         setPredictedValuesData(sortedData)
         const newPredictedSquareMetres = []
@@ -148,17 +145,6 @@ const LineChartComponent = () => {
             setDistanceError("Please enter a positive numerical value for distance from CBD!");
         } else {
             setDistanceError(false);
-        }
-    };
-
-    const handleNumOfCarsChanged = e => {
-        setCars(e.target.value);
-        if (e.target.value === '') {
-            setCarsError("Please enter number of car spaces!");
-        } else if (!/^[0-9]+$/.test(e.target.value)) {
-            setCarsError("Please enter a positive full number value for number of cars!");
-        } else {
-            setCarsError(false);
         }
     };
 
@@ -289,18 +275,6 @@ const LineChartComponent = () => {
                             </Grid>
                         </Grid>
                         <Grid container spacing={2} mb={2.5}>
-                            <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row' }}>
-                                <TextField
-                                    required
-                                    id="numOfCars"
-                                    label="Number of Cars"
-                                    value={numOfCars}
-                                    onChange={handleNumOfCarsChanged}
-                                    error={numOfCarsError}
-                                    helperText={numOfCarsError ? numOfCarsError : ""}
-                                    sx={{ flexGrow: 1 }}
-                                />
-                            </Grid>
                             <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row' }}>
                                 <TextField
                                     required

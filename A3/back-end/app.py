@@ -10,7 +10,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"], 
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,10 +35,12 @@ async def predicted_values():
     return JSONResponse(content=json_data, media_type="application/json")
 
 
-@app.get("/predict/{square_metres}/{car}/{distance}/{propertycount}/")
-async def predict_price(square_metres: float, car: int, distance: float, propertycount: int):
-    price = model.predict(square_metres, car, distance, propertycount)[0]
-    return {"predicted_price": round(price, 2)}
+@app.get("/predict/{square_metres}/{distance}/{propertycount}/")
+async def predict_price(square_metres: float, distance: float, propertycount: int):
+    print(f"Received request with square_metres={square_metres}, distance={distance}, propertycount={propertycount}")
+    price = model.predict(square_metres, distance, propertycount)[0]
+    return {"predicted_price": price}
+
 
 
 @app.get("/donut-data")
@@ -59,3 +61,5 @@ async def get_donut_data():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+    print(model.predict(440, 12, 4000))
