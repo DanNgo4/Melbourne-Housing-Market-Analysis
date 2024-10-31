@@ -25,9 +25,6 @@ const boxStyles = {
 // yourPrice[3] = dummyPrice;
 
 const LineChartComponent = () => {
-
-
-
     const [predictedSquareMetres, setPredictedSquareMetres] = useState([]);
     const [predictedPrices, setPredictedPrices] = useState([]);
     const [predictedValuesData, setPredictedValuesData] = useState([]);

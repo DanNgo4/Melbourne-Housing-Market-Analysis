@@ -5,10 +5,21 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-const MultiLayerDoughnutChart = () => {
+const Donut = () => {
   const [layerInput, setLayerInput] = useState('');
   const [labelInput, setLabelInput] = useState('');
   const [highlightedData, setHighlightedData] = useState(null);
+
+  const priceRanges = [
+    { label: '$500,000 - $1,000,000', min: 5000000, max: 1000000 },
+    { label: '$1,000,000 - $2,000,000', min: 1000000, max: 2000000 },
+    { label: '$3,000,000 - $3,000,000', min: 2000000, max: 3000000 },
+    { label: '> $3,000,000', min: 3000000, max: Infinity },
+  ];
+
+  const red = "#FF6384"
+  const blue = '#36A2EB'
+  const yellow = '#FFCE56'
 
   const [data, setData] = useState({
     labels: ["House", "Townhouse", "Unit"],
@@ -16,11 +27,16 @@ const MultiLayerDoughnutChart = () => {
       {
         label: 'Layer 1',
         data: Array.from({ length: 3 }, () => Math.floor(Math.random() * 100)),
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+        backgroundColor: [red, blue, yellow],
         borderColor: ['#FF6384', '#36A2EB', '#FFCE56'],
         borderWidth: 1,
         cutout: '60%',
+
+
         radius: '85%',
+        datalabels: {
+            anchor: 'end', // Position labels at the end of each segment
+        },
       },
       {
         label: 'Layer 2',
@@ -30,6 +46,11 @@ const MultiLayerDoughnutChart = () => {
         borderWidth: 1,
         cutout: '50%',
         radius: '70%',
+        datalabels: {
+            anchor: 'center', // Center labels within each segment
+            backgroundColor: null,
+            borderWidth: 0,
+        },
       },
       {
         label: 'Layer 3',
@@ -39,6 +60,11 @@ const MultiLayerDoughnutChart = () => {
         borderWidth: 1,
         cutout: '30%',
         radius: '55%',
+        datalabels: {
+            anchor: 'center', // Start labels at the beginning of each segment
+            backgroundColor: null,
+            borderWidth: 0,
+        },
       },
       {
         label: 'Layer 4',
@@ -48,6 +74,9 @@ const MultiLayerDoughnutChart = () => {
         borderWidth: 1,
         cutout: '20%',
         radius: '40%',
+        datalabels: {
+            anchor: 'start', // Center labels for final layer
+        },
       },
     ],
   });
@@ -159,4 +188,4 @@ const MultiLayerDoughnutChart = () => {
   );
 };
 
-export default MultiLayerDoughnutChart;
+export default Donut;
