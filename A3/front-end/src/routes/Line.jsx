@@ -33,8 +33,14 @@ const LineChartComponent = () => {
     });
 
     
-    const [predictedValuesData, setPredictedValuesData] = useState([]);
+    const [predictedValuesData, setPredictedValuesData] = useState(() => {
+        const storedData = sessionStorage.getItem('predictedValuesData');
+        return storedData ? JSON.parse(storedData) : [];
+    });
+
+    //Predicted price
     const [yourPredictedPrice, setYourPredictedPrice] = useState([]);
+    const [yourPredictedPriceIndex, setYourPredictedPriceIndex] = useState();
 
     // For useStates
     const [squareMetres, setSquareMetres] = useState("");
@@ -49,34 +55,34 @@ const LineChartComponent = () => {
     const [propertyCountError, setPropertyCountError] = useState(false);
 
     useEffect(() => {
+        if (predictedValuesData.length == 0){
         // Fetch predicted values data from the API
         axios.get('http://localhost:8000/predicted_values/')
             .then(response => {
-                setPredictedValuesData(Object.values(response.data));
+                const sortedData = Object.values(response.data).sort((a, b) => a.Landsize - b.Landsize);
+                setPredictedValuesData(sortedData);
+                sessionStorage.setItem('predictedValuesData', JSON.stringify(sortedData));
             })
             .catch(error => {
                 console.error(error);
             });
+        }
     }, []);
 
     useEffect(() => {
         // Only fetch predictions if not already in session storage
-        if (predictedValuesData.length > 0) {
-            const newSquareMetres = [];
+        if (predictedValuesData.length > 0 && predictedPrices.length == 0) {
             Promise.all(
                 predictedValuesData.map(dataRow => {
-                    newSquareMetres.push(dataRow["Landsize"]);
+                    predictedSquareMetres.push(dataRow["Landsize"]);
 
                     return axios.get(`http://localhost:8000/predict/${dataRow["Landsize"]}/${dataRow["Car"]}/${dataRow["Distance"]}/${dataRow["Propertycount"]}/`)
                         .then(res => res.data.predicted_price);
                 })
             ).then(predictedPrices => {
-                const sortedSquareMetres = Array.from(newSquareMetres).sort((a, b) => b - a);
                 setPredictedPrices(predictedPrices);
-                setPredictedSquareMetres(sortedSquareMetres);
-
                 // Save to session storage
-                sessionStorage.setItem('predictedSquareMetres', JSON.stringify(sortedSquareMetres));
+                sessionStorage.setItem('predictedSquareMetres', JSON.stringify(predictedSquareMetres));
                 sessionStorage.setItem('predictedPrices', JSON.stringify(predictedPrices));
             }).catch(error => console.error(error));
         }
@@ -96,8 +102,30 @@ const LineChartComponent = () => {
         validateForm();
         if (e.target.checkValidity()) {
             axios.get(`http://localhost:8000/predict/${squareMetres}/${numOfCars}/${distance}/${propertyCount}/`)
-                .then(res => setYourPredictedPrice([{ x: squareMetres, y: res.data.predicted_price }]));
+                .then(res => {
+                    setYourPredictedPrice([{ x: squareMetres, y: res.data.predicted_price }])
+                    addNewPrediction(res.data.predicted_price)});
+               
+
         }
+    };
+
+    const addNewPrediction = (price) => {
+        if(yourPredictedPriceIndex != undefined){
+            predictedValuesData.splice(yourPredictedPriceIndex, 1)
+            predictedSquareMetres.splice(yourPredictedPriceIndex, 1)
+            predictedPrices.splice(yourPredictedPriceIndex, 1)
+        }
+        predictedValuesData.push({Landsize: squareMetres, Car: numOfCars, Distance: distance, Propertycount: propertyCount })
+        const sortedData = Object.values(predictedValuesData).sort((a, b) => a.Landsize - b.Landsize);
+        setPredictedValuesData(sortedData)
+        const newPredictedSquareMetres = []
+        sortedData.map(dataRow => {
+            newPredictedSquareMetres.push(dataRow["Landsize"]);
+        })
+        setPredictedSquareMetres(newPredictedSquareMetres)
+        predictedPrices.splice(newPredictedSquareMetres.indexOf(squareMetres), 0, price);
+        setYourPredictedPriceIndex(newPredictedSquareMetres.indexOf(squareMetres))
     };
 
     // Handles input changes
@@ -155,6 +183,7 @@ const LineChartComponent = () => {
                 backgroundColor: 'rgba(80, 194, 194, 0.2)',
                 borderColor: 'rgba(80, 194, 194, 1)',
                 borderWidth: 2,
+                pointRadius: predictedPrices.map((_, index) => (index === yourPredictedPriceIndex ? 0 : 5))
             },
             ...(yourPredictedPrice.length > 0 ? [{
                 label: 'Your Prediction',
@@ -269,11 +298,6 @@ const LineChartComponent = () => {
                                     onChange={handleNumOfCarsChanged}
                                     error={numOfCarsError}
                                     helperText={numOfCarsError ? numOfCarsError : ""}
-                                    slotProps={{
-                                        input: {
-                                            endAdornment: <InputAdornment position="end">spaces</InputAdornment>,
-                                        },
-                                    }}
                                     sx={{ flexGrow: 1 }}
                                 />
                             </Grid>
@@ -286,11 +310,6 @@ const LineChartComponent = () => {
                                     onChange={handlePropertyCountChanged}
                                     error={propertyCountError}
                                     helperText={propertyCountError ? propertyCountError : ""}
-                                    slotProps={{
-                                        input: {
-                                            endAdornment: <InputAdornment position="end">properties</InputAdornment>,
-                                        },
-                                    }}
                                     sx={{ flexGrow: 1 }}
                                 />
                             </Grid>
@@ -304,7 +323,7 @@ const LineChartComponent = () => {
                     <Typography variant="h6" component="h2">
                         Line Chart
                     </Typography>
-                    <Box sx={{ position: 'relative', width: '100%', height: '50vh' }}>
+                    <Box sx={{ position: 'relative', width: '100%', height: {xs: '35vh', md: '50vh'} }}>
                         <Line data={data} options={options} />
                     </Box>
                 </Box>
