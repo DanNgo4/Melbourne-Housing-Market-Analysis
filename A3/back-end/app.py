@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from model import RFHousePriceModel
 import pandas as pd
 
+
 app = FastAPI()
 
 
@@ -18,9 +19,11 @@ app.add_middleware(
 
 model = RFHousePriceModel()
 
+
 @app.get("/")
 async def root():
     return {"message": "Welcome to the House Price Prediction API"}
+
 
 @app.get("/predicted_values/")
 async def predicted_values():
@@ -36,6 +39,22 @@ async def predicted_values():
 async def predict_price(square_metres: float, car: int, distance: float, propertycount: int):
     price = model.predict(square_metres, car, distance, propertycount)[0]
     return {"predicted_price": round(price, 2)}
+
+
+@app.get("/donut-data")
+async def get_donut_data():
+    df = pd.read_csv("Melbourne_housing_FULL.csv")
+
+    columns = ["Type", "Price"]
+
+    df = df[columns]
+
+    df = df.dropna(axis=0).reset_index(drop=True)
+
+    data = df.to_json(orient="records")
+
+    return JSONResponse(content=data, media_type="application/json")
+
 
 if __name__ == "__main__":
     import uvicorn

@@ -10,6 +10,40 @@ const Donut = () => {
   const [labelInput, setLabelInput] = useState('');
   const [highlightedData, setHighlightedData] = useState(null);
 
+  const dataset = [
+    { Type: "House", Price: 750000 },
+    { Type: "House", Price: 1250000 },
+    { Type: "House", Price: 2200000 },
+    { Type: "House", Price: 3200000 },
+    { Type: "House", Price: 890000 },
+    { Type: "House", Price: 1780000 },
+    { Type: "House", Price: 2600000 },
+    { Type: "House", Price: 4000000 },
+    { Type: "Townhouse", Price: 850000 },
+    { Type: "Townhouse", Price: 1500000 },
+    { Type: "Townhouse", Price: 2700000 },
+    { Type: "Townhouse", Price: 3300000 },
+    { Type: "Townhouse", Price: 930000 },
+    { Type: "Townhouse", Price: 1450000 },
+    { Type: "Townhouse", Price: 2100000 },
+    { Type: "Townhouse", Price: 3050000 },
+    { Type: "Townhouse", Price: 1250000 },
+    { Type: "Unit", Price: 600000 },
+    { Type: "Unit", Price: 1400000 },
+    { Type: "Unit", Price: 2300000 },
+    { Type: "Unit", Price: 3500000 },
+    { Type: "Unit", Price: 710000 },
+    { Type: "Unit", Price: 950000 },
+    { Type: "Unit", Price: 1100000 },
+    { Type: "Unit", Price: 1900000 },
+    { Type: "Unit", Price: 2550000 },
+    { Type: "Unit", Price: 4100000 },
+    { Type: "House", Price: 510000 },
+    { Type: "Townhouse", Price: 780000 },
+    { Type: "Unit", Price: 680000 },
+  ];
+  
+
   const priceRanges = [
     { label: '$500,000 - $1,000,000', min: 5000000, max: 1000000 },
     { label: '$1,000,000 - $2,000,000', min: 1000000, max: 2000000 },
@@ -17,68 +51,53 @@ const Donut = () => {
     { label: '> $3,000,000', min: 3000000, max: Infinity },
   ];
 
+  const houseTypes = ["House", "Townhouse", "Unit"];
+
   const red = "#FF6384"
   const blue = '#36A2EB'
   const yellow = '#FFCE56'
 
+  const colours = [
+    [red, blue, yellow],
+    [red, blue, yellow],
+    [red, blue, yellow],
+    [red, blue, yellow]
+  ]
+
+   // Dynamically calculate counts for each type within each price range
+   const datasets = priceRanges.map((range, i) => {
+    // Get total count within the price range
+    const totalInRange = dataset.filter(
+      (item) => item.Price >= range.min && item.Price < range.max
+    ).length;
+  
+    // Calculate percentage of each type within the range
+    const percentages = houseTypes.map((type) => {
+      const countOfTypeInRange = dataset.filter(
+        (item) => item.Type === type && item.Price >= range.min && item.Price < range.max
+      ).length;
+  
+      // Calculate percentage
+      return totalInRange > 0 ? (countOfTypeInRange / totalInRange) * 100 : 0;
+    });
+
+    return {
+      label: range.label,
+      data: percentages.map((percentage) => parseFloat(percentage.toFixed(2))),
+      backgroundColor: colours[i],
+      borderColor: colours[i],
+      borderWidth: 1,
+      cutout: `${70 - i * 20}%`,
+      radius: `${85 - i * 20}%`,
+      datalabels: {
+        anchor: 'center',
+      },
+    };
+  });
+
   const [data, setData] = useState({
-    labels: ["House", "Townhouse", "Unit"],
-    datasets: [
-      {
-        label: 'Layer 1',
-        data: Array.from({ length: 3 }, () => Math.floor(Math.random() * 100)),
-        backgroundColor: [red, blue, yellow],
-        borderColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-        borderWidth: 1,
-        cutout: '60%',
-
-
-        radius: '85%',
-        datalabels: {
-            anchor: 'end', // Position labels at the end of each segment
-        },
-      },
-      {
-        label: 'Layer 2',
-        data: Array.from({ length: 3 }, () => Math.floor(Math.random() * 100)),
-        backgroundColor: ['#FF9F40', '#4BC0C0', '#9966FF'],
-        borderColor: ['#FF9F40', '#4BC0C0', '#9966FF'],
-        borderWidth: 1,
-        cutout: '50%',
-        radius: '70%',
-        datalabels: {
-            anchor: 'center', // Center labels within each segment
-            backgroundColor: null,
-            borderWidth: 0,
-        },
-      },
-      {
-        label: 'Layer 3',
-        data: Array.from({ length: 3 }, () => Math.floor(Math.random() * 100)),
-        backgroundColor: ['#66FF66', '#99CCFF', '#FF6666'],
-        borderColor: ['#66FF66', '#99CCFF', '#FF6666'],
-        borderWidth: 1,
-        cutout: '30%',
-        radius: '55%',
-        datalabels: {
-            anchor: 'center', // Start labels at the beginning of each segment
-            backgroundColor: null,
-            borderWidth: 0,
-        },
-      },
-      {
-        label: 'Layer 4',
-        data: Array.from({ length: 3 }, () => Math.floor(Math.random() * 100)),
-        backgroundColor: ['#CCCCFF', '#FF99FF', '#66B2FF'],
-        borderColor: ['#CCCCFF', '#FF99FF', '#66B2FF'],
-        borderWidth: 1,
-        cutout: '20%',
-        radius: '40%',
-        datalabels: {
-            anchor: 'start', // Center labels for final layer
-        },
-      },
-    ],
+    labels: houseTypes,
+    datasets: datasets,
   });
 
   // Highlight function
