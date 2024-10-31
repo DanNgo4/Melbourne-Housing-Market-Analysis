@@ -1,4 +1,4 @@
-import {React, useState, useEffect  } from "react";
+import { React, useState, useEffect } from "react";
 import { Box, TextField, Button, Typography, InputAdornment, Grid } from '@mui/material';
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
@@ -6,7 +6,7 @@ import axios from 'axios';
 
 Chart.register(...registerables);
 
-//Styles to apply to the two main boxes on this component
+// Styles to apply to the two main boxes on this component
 const boxStyles = {
     width: {
         xs: '90vw',
@@ -20,98 +20,134 @@ const boxStyles = {
     boxShadow: 3,
 };
 
-// let yourPrice = new Array(predictedPrices.length).fill(null);
-// const dummyPrice = 1200000;
-// yourPrice[3] = dummyPrice;
-
 const LineChartComponent = () => {
-    const [predictedSquareMetres, setPredictedSquareMetres] = useState([]);
-    const [predictedPrices, setPredictedPrices] = useState([]);
+    //Retrieving from session storage if already there, saves time on reloads
+    const [predictedSquareMetres, setPredictedSquareMetres] = useState(() => {
+        const storedData = sessionStorage.getItem('predictedSquareMetres');
+        return storedData ? JSON.parse(storedData) : [];
+    });
+
+    const [predictedPrices, setPredictedPrices] = useState(() => {
+        const storedData = sessionStorage.getItem('predictedPrices');
+        return storedData ? JSON.parse(storedData) : [];
+    });
+
+    
     const [predictedValuesData, setPredictedValuesData] = useState([]);
-    const [squareMetres, setSquareMetres] = useState("")
-    const [numOfBedrooms, setNumOfBedrooms] = useState("")
-    const [squareMetresError, setSquareMetresError] = useState(false)
-    const [numOfBedroomsError, setNumOfbedroomsError] = useState(false)
+    const [yourPredictedPrice, setYourPredictedPrice] = useState([]);
+
+    // For useStates
+    const [squareMetres, setSquareMetres] = useState("");
+    const [distance, setDistance] = useState("");
+    const [numOfCars, setCars] = useState("");
+    const [propertyCount, setPropertyCount] = useState("");
+
+    // Form Errors
+    const [squareMetresError, setSquareMetresError] = useState(false);
+    const [distanceError, setDistanceError] = useState(false);
+    const [numOfCarsError, setCarsError] = useState(false);
+    const [propertyCountError, setPropertyCountError] = useState(false);
 
     useEffect(() => {
+        // Fetch predicted values data from the API
         axios.get('http://localhost:8000/predicted_values/')
-          .then(response => {
-            setPredictedValuesData(Object.values(response.data));
-          })
-          .catch(error => {
-            console.error(error);
-          });
+            .then(response => {
+                setPredictedValuesData(Object.values(response.data));
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }, []);
-    
+
     useEffect(() => {
+        // Only fetch predictions if not already in session storage
         if (predictedValuesData.length > 0) {
+            const newSquareMetres = [];
             Promise.all(
                 predictedValuesData.map(dataRow => {
+                    newSquareMetres.push(dataRow["Landsize"]);
 
-                    predictedSquareMetres.push(dataRow["Landsize"]);
-    
                     return axios.get(`http://localhost:8000/predict/${dataRow["Landsize"]}/${dataRow["Car"]}/${dataRow["Distance"]}/${dataRow["Propertycount"]}/`)
                         .then(res => res.data.predicted_price);
                 })
             ).then(predictedPrices => {
-                const sortedSquareMetres = predictedSquareMetres.sort((a, b) => b - a);
-                setPredictedPrices(predictedPrices); 
-                setSquareMetres(sortedSquareMetres)
+                const sortedSquareMetres = Array.from(newSquareMetres).sort((a, b) => b - a);
+                setPredictedPrices(predictedPrices);
+                setPredictedSquareMetres(sortedSquareMetres);
+
+                // Save to session storage
+                sessionStorage.setItem('predictedSquareMetres', JSON.stringify(sortedSquareMetres));
+                sessionStorage.setItem('predictedPrices', JSON.stringify(predictedPrices));
             }).catch(error => console.error(error));
         }
     }, [predictedValuesData]);
-        
-    //Sends in the present value to display any errors after user has clicked submit
-    //this is useful in the context that the user has not interacted with a required field it will display an error
+
+    // Function to validate the form
     const validateForm = () => {
         handleSquareMetresChanged({ target: { value: squareMetres } });
-        handleNumOfBedroomsChanged({ target: { value: numOfBedrooms } });
-    }
+        handleDistanceChanged({ target: { value: distance } });
+        handleNumOfCarsChanged({ target: { value: numOfCars } });
+        handlePropertyCountChanged({ target: { value: propertyCount } });
+    };
 
-    //Handle the form submit.
+    // Handle the form submit
     const handleSubmit = e => {
         e.preventDefault();
         validateForm();
         if (e.target.checkValidity()) {
-
+            axios.get(`http://localhost:8000/predict/${squareMetres}/${numOfCars}/${distance}/${propertyCount}/`)
+                .then(res => setYourPredictedPrice([{ x: squareMetres, y: res.data.predicted_price }]));
         }
     };
 
-    //Handles when square footage input text has been changed
+    // Handles input changes
     const handleSquareMetresChanged = e => {
         setSquareMetres(e.target.value);
-        //Ensure square foot is not empty
         if (e.target.value === '') {
             setSquareMetresError("Please enter square footage of property!");
-        }
-        //Ensure only positive floats/integers have been inputted
-        else if (!/^[0-9]+(\.[0-9]+)?$/.test(e.target.value)) {
+        } else if (!/^[0-9]+(\.[0-9]+)?$/.test(e.target.value)) {
             setSquareMetresError("Please enter a positive numerical value for square footage!");
-        }
-        else {
+        } else {
             setSquareMetresError(false);
         }
-    }
+    };
 
-    //Handles when number of bedrooms input text has been changed
-    const handleNumOfBedroomsChanged = e => {
-        setNumOfBedrooms(e.target.value);
-        //Ensure that number of bedrooms is not empty
+    const handleDistanceChanged = e => {
+        setDistance(e.target.value);
         if (e.target.value === '') {
-            setNumOfbedroomsError("Please enter number of bedrooms!");
+            setDistanceError("Please enter distance from CBD!");
+        } else if (!/^[0-9]+(\.[0-9]+)?$/.test(e.target.value)) {
+            setDistanceError("Please enter a positive numerical value for distance from CBD!");
+        } else {
+            setDistanceError(false);
         }
-        //Ensure that only positive integers have been inputted
-        else if (!/^[0-9]+$/.test(e.target.value)) {
-            setNumOfbedroomsError("Please enter a positive full number value for number of bedrooms!");
-        }
-        else {
-            setNumOfbedroomsError(false);
-        }
-    }
+    };
 
-    //Line Chart Data and Options
+    const handleNumOfCarsChanged = e => {
+        setCars(e.target.value);
+        if (e.target.value === '') {
+            setCarsError("Please enter number of car spaces!");
+        } else if (!/^[0-9]+$/.test(e.target.value)) {
+            setCarsError("Please enter a positive full number value for number of cars!");
+        } else {
+            setCarsError(false);
+        }
+    };
+
+    const handlePropertyCountChanged = e => {
+        setPropertyCount(e.target.value);
+        if (e.target.value === '') {
+            setPropertyCountError("Please enter distance from CBD!");
+        } else if (!/^[0-9]+$/.test(e.target.value)) {
+            setPropertyCountError("Please enter a positive full number value for property count!");
+        } else {
+            setPropertyCountError(false);
+        }
+    };
+
+    // Line Chart Data and Options
     const data = {
-        labels: predictedSquareMetres,
+        labels: predictedSquareMetres, // Y Axis
         datasets: [
             {
                 label: 'Predicted Prices',
@@ -119,17 +155,16 @@ const LineChartComponent = () => {
                 backgroundColor: 'rgba(80, 194, 194, 0.2)',
                 borderColor: 'rgba(80, 194, 194, 1)',
                 borderWidth: 2,
-               // pointRadius: predictedPrices.map((_, index) => (index === 3 ? 0 : 5))
             },
-            // {
-            //     label: 'Your Prediction',
-            //     data: yourPrice,
-            //     backgroundColor: 'rgba(255, 176, 193, 0.6)',
-            //     borderColor: 'rgba(255, 176, 193, 1)',
-            //     borderWidth: 2,
-            //     pointRadius: 10,
-            //     pointHoverRadius: 8,
-            // },
+            ...(yourPredictedPrice.length > 0 ? [{
+                label: 'Your Prediction',
+                data: yourPredictedPrice,
+                backgroundColor: 'rgba(255, 176, 193, 0.6)',
+                borderColor: 'rgba(255, 176, 193, 1)',
+                borderWidth: 2,
+                pointRadius: 10,
+                pointHoverRadius: 8,
+            }] : []),
         ],
     };
 
@@ -140,7 +175,7 @@ const LineChartComponent = () => {
                 display: true,
             },
             datalabels: {
-                display: false,  // Disable data labels on points
+                display: false,
             },
         },
         scales: {
@@ -209,39 +244,67 @@ const LineChartComponent = () => {
                             <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row' }}>
                                 <TextField
                                     required
-                                    id="numOfBedrooms"
-                                    label="Number of Bedrooms"
-                                    value={numOfBedrooms}
-                                    onChange={handleNumOfBedroomsChanged}
-                                    error={numOfBedroomsError}
-                                    helperText={numOfBedroomsError ? numOfBedroomsError : ""}
+                                    id="distance"
+                                    label="Distance from CBD"
+                                    value={distance}
+                                    onChange={handleDistanceChanged}
+                                    error={distanceError}
+                                    helperText={distanceError ? distanceError : ""}
+                                    slotProps={{
+                                        input: {
+                                            endAdornment: <InputAdornment position="end">km</InputAdornment>,
+                                        },
+                                    }}
                                     sx={{ flexGrow: 1 }}
                                 />
                             </Grid>
                         </Grid>
-                        <Button type="submit" sx={{ width: '100%', }} variant="contained">PREDICT PRICE</Button>
+                        <Grid container spacing={2} mb={2.5}>
+                            <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row' }}>
+                                <TextField
+                                    required
+                                    id="numOfCars"
+                                    label="Number of Cars"
+                                    value={numOfCars}
+                                    onChange={handleNumOfCarsChanged}
+                                    error={numOfCarsError}
+                                    helperText={numOfCarsError ? numOfCarsError : ""}
+                                    slotProps={{
+                                        input: {
+                                            endAdornment: <InputAdornment position="end">spaces</InputAdornment>,
+                                        },
+                                    }}
+                                    sx={{ flexGrow: 1 }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row' }}>
+                                <TextField
+                                    required
+                                    id="propertyCount"
+                                    label="Property Count"
+                                    value={propertyCount}
+                                    onChange={handlePropertyCountChanged}
+                                    error={propertyCountError}
+                                    helperText={propertyCountError ? propertyCountError : ""}
+                                    slotProps={{
+                                        input: {
+                                            endAdornment: <InputAdornment position="end">properties</InputAdornment>,
+                                        },
+                                    }}
+                                    sx={{ flexGrow: 1 }}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Button variant="contained" type="submit" onClick={validateForm} sx={{ width: '100%', mt: 3 }}>
+                            Submit
+                        </Button>
                     </Box>
                 </Box>
-                <Box sx={{ ...boxStyles }}>
-                    <Typography variant="h4" sx={{
-                        fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem', lg: '1.75rem' },
-                        mb: { sm: 1 },
-                    }}>
-                    {/* Predicted Price: ${dummyPrice} */}
+                <Box sx={boxStyles} mt={2}>
+                    <Typography variant="h6" component="h2">
+                        Line Chart
                     </Typography>
-                    <Typography variant="body1" sx={{
-                        fontSize: '0.75rem',
-                        fontWeight: 'bold',
-                        textAlign: 'center',
-                        color: 'grey',
-                        mb: { sm: 2, lg: 5 },
-                    }}>
-                        Price Predictions by Square Footage
-                    </Typography>
-                    <Box sx={{
-                        width: '100%',
-                        height: { xs: '30vh', md: '40vh' },
-                    }}>
+                    <Box sx={{ position: 'relative', width: '100%', height: '50vh' }}>
                         <Line data={data} options={options} />
                     </Box>
                 </Box>

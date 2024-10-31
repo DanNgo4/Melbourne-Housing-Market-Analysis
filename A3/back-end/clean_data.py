@@ -16,9 +16,10 @@ def clean_housing_data():
     # Drop unnecessary columns for all models
     housing_df.drop(columns=["Rooms","Bedroom2","Type","Suburb", "Address", "Method", "SellerG", "CouncilArea", "Date", "Postcode", "Bathroom", "BuildingArea", "YearBuilt", "Longtitude", "Lattitude", "Regionname"], inplace=True)
 
-    #Leaving Price, Distance, Car, Landsize, Propertycount
+    housing_df = housing_df[housing_df["Landsize"] > 0]
 
-    housing_df[["Landsize", "Car", "Distance", "Propertycount"]].to_csv("values_to_predict",index=False)
+    #Leaving Price, Distance, Car, Landsize, Propertycount
+    housing_df[["Landsize", "Car", "Distance", "Propertycount"]].to_csv("predicted_values.csv",index=False)
 
     return housing_df[["Landsize", "Car", "Distance", "Propertycount"]], housing_df["Price"]
 
