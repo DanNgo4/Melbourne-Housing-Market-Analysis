@@ -3,6 +3,7 @@ import { Box, TextField, Button, Typography, InputAdornment, Grid } from '@mui/m
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import axios from 'axios';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 Chart.register(...registerables);
 
@@ -20,6 +21,20 @@ const boxStyles = {
     boxShadow: 3,
 };
 
+//Removes height and margins on the input errors
+const noErrorHeightTheme = createTheme({
+    components: {
+        MuiFormHelperText: {
+            styleOverrides: {
+                root: {
+                    marginTop: 0,
+                    height: 0,
+                },
+            },
+        },
+    },
+});
+
 const LineChartComponent = () => {
     //Retrieving from session storage if already there, saves time on reloads
     const [predictedSquareMetres, setPredictedSquareMetres] = useState(() => {
@@ -32,7 +47,7 @@ const LineChartComponent = () => {
         return storedData ? JSON.parse(storedData) : [];
     });
 
-    
+
     const [predictedValuesData, setPredictedValuesData] = useState(() => {
         const storedData = sessionStorage.getItem('predictedValuesData');
         return storedData ? JSON.parse(storedData) : [];
@@ -55,17 +70,17 @@ const LineChartComponent = () => {
     const [propertyCountError, setPropertyCountError] = useState(false);
 
     useEffect(() => {
-        if (predictedValuesData.length == 0){
-        // Fetch predicted values data from the API
-        axios.get('http://localhost:8000/predicted_values/')
-            .then(response => {
-                const sortedData = Object.values(response.data).sort((a, b) => a.Landsize - b.Landsize);
-                setPredictedValuesData(sortedData);
-                sessionStorage.setItem('predictedValuesData', JSON.stringify(sortedData));
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        if (predictedValuesData.length == 0) {
+            // Fetch predicted values data from the API
+            axios.get('http://localhost:8000/predicted_values/')
+                .then(response => {
+                    const sortedData = Object.values(response.data).sort((a, b) => a.Landsize - b.Landsize);
+                    setPredictedValuesData(sortedData);
+                    sessionStorage.setItem('predictedValuesData', JSON.stringify(sortedData));
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         }
     }, []);
 
@@ -104,19 +119,21 @@ const LineChartComponent = () => {
             axios.get(`http://localhost:8000/predict/${squareMetres}/${numOfCars}/${distance}/${propertyCount}/`)
                 .then(res => {
                     setYourPredictedPrice([{ x: squareMetres, y: res.data.predicted_price }])
-                    addNewPrediction(res.data.predicted_price)});
-               
+                    addNewPrediction(res.data.predicted_price)
+                });
+
 
         }
     };
 
+    //Add the next prediction
     const addNewPrediction = (price) => {
-        if(yourPredictedPriceIndex != undefined){
+        if (yourPredictedPriceIndex != undefined) {
             predictedValuesData.splice(yourPredictedPriceIndex, 1)
             predictedSquareMetres.splice(yourPredictedPriceIndex, 1)
             predictedPrices.splice(yourPredictedPriceIndex, 1)
         }
-        predictedValuesData.push({Landsize: squareMetres, Car: numOfCars, Distance: distance, Propertycount: propertyCount })
+        predictedValuesData.push({ Landsize: squareMetres, Car: numOfCars, Distance: distance, Propertycount: propertyCount })
         const sortedData = Object.values(predictedValuesData).sort((a, b) => a.Landsize - b.Landsize);
         setPredictedValuesData(sortedData)
         const newPredictedSquareMetres = []
@@ -173,6 +190,9 @@ const LineChartComponent = () => {
         }
     };
 
+    const pointRadius = window.innerWidth < 600 ? 3 : 5;
+    const yourPredictedPointRadius = window.innerWidth < 600 ? 5 : 8;
+
     // Line Chart Data and Options
     const data = {
         labels: predictedSquareMetres, // Y Axis
@@ -183,7 +203,7 @@ const LineChartComponent = () => {
                 backgroundColor: 'rgba(80, 194, 194, 0.2)',
                 borderColor: 'rgba(80, 194, 194, 1)',
                 borderWidth: 2,
-                pointRadius: predictedPrices.map((_, index) => (index === yourPredictedPriceIndex ? 0 : 5))
+                pointRadius: predictedPrices.map((_, index) => (index === yourPredictedPriceIndex ? 0 : pointRadius))
             },
             ...(yourPredictedPrice.length > 0 ? [{
                 label: 'Your Prediction',
@@ -191,8 +211,8 @@ const LineChartComponent = () => {
                 backgroundColor: 'rgba(255, 176, 193, 0.6)',
                 borderColor: 'rgba(255, 176, 193, 1)',
                 borderWidth: 2,
-                pointRadius: 10,
-                pointHoverRadius: 8,
+                pointRadius: yourPredictedPointRadius,
+                pointHoverRadius: yourPredictedPointRadius * 0.8,
             }] : []),
         ],
     };
@@ -230,11 +250,13 @@ const LineChartComponent = () => {
             alignItems="center"
         >
             <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-                minHeight="90vh"
+                sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", lg: "row" },
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minHeight: "90vh"
+                }}
                 mt={2}
                 mb={2}
             >
@@ -252,68 +274,68 @@ const LineChartComponent = () => {
                         sx={{
                             width: '100%',
                         }}>
-                        <Grid container spacing={2} mb={2.5}>
-                            <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row' }}>
-                                <TextField
-                                    required
-                                    id="squareMetres"
-                                    label="Square Metres"
-                                    value={squareMetres}
-                                    onChange={handleSquareMetresChanged}
-                                    error={squareMetresError}
-                                    helperText={squareMetresError ? squareMetresError : ""}
-                                    slotProps={{
-                                        input: {
-                                            endAdornment: <InputAdornment position="end">metres</InputAdornment>,
-                                        },
-                                    }}
-                                    sx={{ flexGrow: 1 }}
-                                />
+                        <ThemeProvider theme={noErrorHeightTheme}>
+                            <Grid container spacing={5} mb={2.5}>
+                                <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row' }}>
+                                    <TextField
+                                        required
+                                        id="squareMetres"
+                                        label="Square Metres"
+                                        value={squareMetres}
+                                        onChange={handleSquareMetresChanged}
+                                        error={squareMetresError}
+                                        helperText={!!squareMetresError ? squareMetresError : ""}
+                                        slotProps={{
+                                            input: {
+                                                endAdornment: <InputAdornment position="end">metres</InputAdornment>,
+                                            },
+                                        }}
+                                        sx={{ flexGrow: 1 }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row' }}>
+                                    <TextField
+                                        required
+                                        id="distance"
+                                        label="Distance from CBD"
+                                        value={distance}
+                                        onChange={handleDistanceChanged}
+                                        error={distanceError}
+                                        helperText={!!distanceError ? distanceError : ""}
+                                        slotProps={{
+                                            input: {
+                                                endAdornment: <InputAdornment position="end">km</InputAdornment>,
+                                            },
+                                        }}
+                                        sx={{ flexGrow: 1 }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row' }}>
+                                    <TextField
+                                        required
+                                        id="numOfCars"
+                                        label="Number of Cars"
+                                        value={numOfCars}
+                                        onChange={handleNumOfCarsChanged}
+                                        error={numOfCarsError}
+                                        helperText={!!numOfCarsError ? numOfCarsError : ""}
+                                        sx={{ flexGrow: 1 }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row' }}>
+                                    <TextField
+                                        required
+                                        id="propertyCount"
+                                        label="Property Count"
+                                        value={propertyCount}
+                                        onChange={handlePropertyCountChanged}
+                                        error={propertyCountError}
+                                        helperText={!!propertyCountError ? propertyCountError : ""}
+                                        sx={{ flexGrow: 1 }}
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row' }}>
-                                <TextField
-                                    required
-                                    id="distance"
-                                    label="Distance from CBD"
-                                    value={distance}
-                                    onChange={handleDistanceChanged}
-                                    error={distanceError}
-                                    helperText={distanceError ? distanceError : ""}
-                                    slotProps={{
-                                        input: {
-                                            endAdornment: <InputAdornment position="end">km</InputAdornment>,
-                                        },
-                                    }}
-                                    sx={{ flexGrow: 1 }}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid container spacing={2} mb={2.5}>
-                            <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row' }}>
-                                <TextField
-                                    required
-                                    id="numOfCars"
-                                    label="Number of Cars"
-                                    value={numOfCars}
-                                    onChange={handleNumOfCarsChanged}
-                                    error={numOfCarsError}
-                                    helperText={numOfCarsError ? numOfCarsError : ""}
-                                    sx={{ flexGrow: 1 }}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row' }}>
-                                <TextField
-                                    required
-                                    id="propertyCount"
-                                    label="Property Count"
-                                    value={propertyCount}
-                                    onChange={handlePropertyCountChanged}
-                                    error={propertyCountError}
-                                    helperText={propertyCountError ? propertyCountError : ""}
-                                    sx={{ flexGrow: 1 }}
-                                />
-                            </Grid>
-                        </Grid>
+                        </ThemeProvider>
                         <Button variant="contained" type="submit" onClick={validateForm} sx={{ width: '100%', mt: 3 }}>
                             Submit
                         </Button>
@@ -323,7 +345,7 @@ const LineChartComponent = () => {
                     <Typography variant="h6" component="h2">
                         Line Chart
                     </Typography>
-                    <Box sx={{ position: 'relative', width: '100%', height: {xs: '35vh', md: '50vh'} }}>
+                    <Box sx={{ position: 'relative', width: '100%', height: { xs: '35vh', md: '50vh' } }}>
                         <Line data={data} options={options} />
                     </Box>
                 </Box>
