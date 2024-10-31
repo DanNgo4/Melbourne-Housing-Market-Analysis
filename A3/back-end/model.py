@@ -19,14 +19,14 @@ class RFHousePriceModel:
         self.model.fit(x_train, y_train)
 
          # Save the model
-        joblib.dump(self.model, 'simple_model.pkl')
+        joblib.dump(self.model, 'rf_house_price_model.pkl')
 
-def predict(square_metres, car, distance, property_count):
-        # Load the model
-        model = joblib.load('rf_house_price_model.pkl')
-        
-        # Make a prediction based on input
-        return model.predict([[square_metres, car, distance, property_count]])
+    def predict(self, square_metres, car, distance, property_count):
+            # Load the model
+            self.model = joblib.load('rf_house_price_model.pkl')
+            
+            # Make a prediction based on input
+            return self.model.predict([[square_metres, car, distance, property_count]])
 
 if __name__ == "__main__":
     model = RFHousePriceModel()

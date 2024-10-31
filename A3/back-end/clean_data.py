@@ -18,6 +18,8 @@ def clean_housing_data():
 
     #Leaving Price, Distance, Car, Landsize, Propertycount
 
+    housing_df[["Landsize", "Car", "Distance", "Propertycount"]].to_csv("values_to_predict",index=False)
+
     return housing_df[["Landsize", "Car", "Distance", "Propertycount"]], housing_df["Price"]
 
 if __name__ == "__main__":

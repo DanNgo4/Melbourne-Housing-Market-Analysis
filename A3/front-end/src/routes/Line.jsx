@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import {React, useState, useEffect  } from "react";
 import { Box, TextField, Button, Typography, InputAdornment, Grid } from '@mui/material';
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
+import axios from 'axios';
 
 Chart.register(...registerables);
 
@@ -19,21 +20,50 @@ const boxStyles = {
     boxShadow: 3,
 };
 
-const predictedPrices = [300000, 600000, 900000, 1200000, 1350000, 1500000];
-const squareMetresValues = [1000, 1500, 2000, 2500, 3000, 3500];
-
-let yourPrice = new Array(predictedPrices.length).fill(null);
-const dummyPrice = 1200000;
-yourPrice[3] = dummyPrice;
+// let yourPrice = new Array(predictedPrices.length).fill(null);
+// const dummyPrice = 1200000;
+// yourPrice[3] = dummyPrice;
 
 const LineChartComponent = () => {
 
 
+
+    const [predictedSquareMetres, setPredictedSquareMetres] = useState([]);
+    const [predictedPrices, setPredictedPrices] = useState([]);
+    const [predictedValuesData, setPredictedValuesData] = useState([]);
     const [squareMetres, setSquareMetres] = useState("")
     const [numOfBedrooms, setNumOfBedrooms] = useState("")
     const [squareMetresError, setSquareMetresError] = useState(false)
     const [numOfBedroomsError, setNumOfbedroomsError] = useState(false)
 
+    useEffect(() => {
+        axios.get('http://localhost:8000/predicted_values/')
+          .then(response => {
+            setPredictedValuesData(Object.values(response.data));
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    }, []);
+    
+    useEffect(() => {
+        if (predictedValuesData.length > 0) {
+            Promise.all(
+                predictedValuesData.map(dataRow => {
+
+                    predictedSquareMetres.push(dataRow["Landsize"]);
+    
+                    return axios.get(`http://localhost:8000/predict/${dataRow["Landsize"]}/${dataRow["Car"]}/${dataRow["Distance"]}/${dataRow["Propertycount"]}/`)
+                        .then(res => res.data.predicted_price);
+                })
+            ).then(predictedPrices => {
+                const sortedSquareMetres = predictedSquareMetres.sort((a, b) => b - a);
+                setPredictedPrices(predictedPrices); 
+                setSquareMetres(sortedSquareMetres)
+            }).catch(error => console.error(error));
+        }
+    }, [predictedValuesData]);
+        
     //Sends in the present value to display any errors after user has clicked submit
     //this is useful in the context that the user has not interacted with a required field it will display an error
     const validateForm = () => {
@@ -54,7 +84,7 @@ const LineChartComponent = () => {
     const handleSquareMetresChanged = e => {
         setSquareMetres(e.target.value);
         //Ensure square foot is not empty
-        if (e.target.value == '') {
+        if (e.target.value === '') {
             setSquareMetresError("Please enter square footage of property!");
         }
         //Ensure only positive floats/integers have been inputted
@@ -70,7 +100,7 @@ const LineChartComponent = () => {
     const handleNumOfBedroomsChanged = e => {
         setNumOfBedrooms(e.target.value);
         //Ensure that number of bedrooms is not empty
-        if (e.target.value == '') {
+        if (e.target.value === '') {
             setNumOfbedroomsError("Please enter number of bedrooms!");
         }
         //Ensure that only positive integers have been inputted
@@ -84,7 +114,7 @@ const LineChartComponent = () => {
 
     //Line Chart Data and Options
     const data = {
-        labels: squareMetresValues,
+        labels: predictedSquareMetres,
         datasets: [
             {
                 label: 'Predicted Prices',
@@ -92,17 +122,17 @@ const LineChartComponent = () => {
                 backgroundColor: 'rgba(80, 194, 194, 0.2)',
                 borderColor: 'rgba(80, 194, 194, 1)',
                 borderWidth: 2,
-                pointRadius: predictedPrices.map((_, index) => (index === 3 ? 0 : 5))
+               // pointRadius: predictedPrices.map((_, index) => (index === 3 ? 0 : 5))
             },
-            {
-                label: 'Your Prediction',
-                data: yourPrice,
-                backgroundColor: 'rgba(255, 176, 193, 0.6)',
-                borderColor: 'rgba(255, 176, 193, 1)',
-                borderWidth: 2,
-                pointRadius: 10,
-                pointHoverRadius: 8,
-            },
+            // {
+            //     label: 'Your Prediction',
+            //     data: yourPrice,
+            //     backgroundColor: 'rgba(255, 176, 193, 0.6)',
+            //     borderColor: 'rgba(255, 176, 193, 1)',
+            //     borderWidth: 2,
+            //     pointRadius: 10,
+            //     pointHoverRadius: 8,
+            // },
         ],
     };
 
@@ -112,12 +142,15 @@ const LineChartComponent = () => {
             legend: {
                 display: true,
             },
+            datalabels: {
+                display: false,  // Disable data labels on points
+            },
         },
         scales: {
             y: {
                 type: 'linear',
                 ticks: {
-                    callback: (value) => `$${value}`,
+                    callback: (value) => `$${value}`
                 },
             },
             x: {
@@ -197,7 +230,7 @@ const LineChartComponent = () => {
                         fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem', lg: '1.75rem' },
                         mb: { sm: 1 },
                     }}>
-                        Predicted Price: ${dummyPrice}
+                    {/* Predicted Price: ${dummyPrice} */}
                     </Typography>
                     <Typography variant="body1" sx={{
                         fontSize: '0.75rem',
