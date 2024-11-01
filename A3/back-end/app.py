@@ -1,19 +1,26 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from model import RFHousePriceModel
 from pydantic import BaseModel
 import uvicorn
 import pandas as pd
+<<<<<<< Updated upstream
 import os
+=======
+import json
+from pathlib import Path
+from pydantic import BaseModel
+>>>>>>> Stashed changes
 
 
 app = FastAPI()
+history_file = Path("query_history.json")
 
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=["http://localhost:3000"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -81,6 +88,35 @@ async def get_donut_data():
     data = df.to_json(orient="records")
 
     return JSONResponse(content=data, media_type="application/json")
+
+
+class QueryDetails(BaseModel):
+    priceRange: str
+    houseType: str
+    highlighted: list
+
+@app.post("/save-query")
+async def save_query(query: QueryDetails):
+    try:
+        with open("query_history.json", "r+") as file:
+            history = json.load(file)
+            history.append(query.dict())  # Append new query to the history
+            file.seek(0)
+            json.dump(history, file, indent=4)
+        return {"status": "success"}
+    except Exception as e:
+        """ raise HTTPException(status_code=500, detail=str(e)) """
+    
+
+@app.get("/query-history")
+async def get_query_history():
+    try:
+        if history_file.exists():
+            with open(history_file, "r") as f:
+                return json.load(f)
+        return []
+    except Exception as e:
+        return {"error": str(e)}
 
 
 if __name__ == "__main__":
