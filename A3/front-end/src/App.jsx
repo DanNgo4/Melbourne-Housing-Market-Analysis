@@ -4,17 +4,19 @@ import MainRoute from "./MainRoute";
 
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="">
-        <NavBar />
-        <MainRoute />
-        <Footer />
-      </div>
-    </BrowserRouter>
-    
+    <ErrorBoundary>
+      <BrowserRouter>
+        <div>
+          <NavBar />
+          <MainRoute />
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 
