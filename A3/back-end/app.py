@@ -35,12 +35,11 @@ async def predicted_values():
     return JSONResponse(content=json_data, media_type="application/json")
 
 
-@app.get("/predict/{square_metres}/{distance}/{propertycount}/")
-async def predict_price(square_metres: float, distance: float, propertycount: int):
-    print(f"Received request with square_metres={square_metres}, distance={distance}, propertycount={propertycount}")
-    price = model.predict(square_metres, distance, propertycount)[0]
+@app.get("/predict/{square_metres}/{distance}/{rooms}/{cars}")
+async def predict_price(square_metres: float, distance: float, rooms: int, cars: int):
+    print(f"Received request with square_metres={square_metres}, distance={distance}, rooms={rooms}, cars={cars}")
+    price = model.predict(square_metres, distance, rooms, cars)[0]
     return {"predicted_price": price}
-
 
 
 @app.get("/donut-data")

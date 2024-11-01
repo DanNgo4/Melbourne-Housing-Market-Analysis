@@ -133,11 +133,8 @@ def prep_final_data():
     #print(f"{colorama.Fore.GREEN}Dataset after cleaning for Regression models:\n{colorama.Fore.RESET}", str(merged_df))
 
     # Encode the categorical features
-    df_encoded = pd.get_dummies(merged_df[["CouncilArea", "Type", "Car", "Rooms"]])
-    X = pd.concat([merged_df[["Propertycount", "Distance", "Yearly Incidents Recorded", "Population Density", "Landsize"]], df_encoded], axis=1)
+    df_encoded = pd.get_dummies(merged_df[["CouncilArea", "Type"]])
+    X = pd.concat([merged_df[["Propertycount", "Distance", "Yearly Incidents Recorded", "Population Density", "Landsize", "Rooms", "Car"]], df_encoded], axis=1)
     Y = merged_df["Price"]
-
-    # Cleaned data for Regression models
-    #merged_df.to_csv("./cleaned_dataset/regression.csv")
 
     return X, Y
