@@ -48,7 +48,7 @@ This installs the required react packages
 Firstly to run the backend API, navigate to the backend directory than you can run the following once those python packages have been installed
 
 ```bash
-python app.py
+uvicorn app:app --reload
 ```
 
 Once you have run the above the backend will be on
