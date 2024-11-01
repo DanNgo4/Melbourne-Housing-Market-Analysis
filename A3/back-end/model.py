@@ -33,14 +33,15 @@ class RFHousePriceModel:
         print(f"Mean Absolute Error: {mean_absolute_error(y_test, y_pred):.2f}")
         print(f"R^2 Score: {r2_score(y_test, y_pred):.2f}")
 
-    def predict(self, square_metres, distance, propertycount):
+    def predict(self, square_metres, distance, rooms, cars):
         # Ensure input_data is a copy of the default values with all features
         input_data = self.default_values.copy()
 
         # Update with user-provided inputs
         input_data["Landsize"] = square_metres
         input_data["Distance"] = distance
-        input_data["Propertycount"] = propertycount
+        input_data["Room"] = rooms
+        input_data["Car"] = cars
         
         # Convert input_data to a DataFrame with the correct columns
         input_data_df = pd.DataFrame([input_data], columns=self.default_values.index)
@@ -48,9 +49,6 @@ class RFHousePriceModel:
         # Debugging: Check the structure of the DataFrame
         print("Input DataFrame for prediction:")
         print(input_data_df)
-
-        # Impute any missing values in the input data
-        input_data_imputed = pd.DataFrame(self.imputer.transform(input_data_df), columns=input_data_df.columns)
 
         # Predict with the imputed input data
         return self.model.predict(input_data_df)
