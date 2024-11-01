@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from model import RFHousePriceModel
 from pydantic import BaseModel
+import uvicorn
 import pandas as pd
 import os
 
@@ -83,5 +84,4 @@ async def get_donut_data():
 
 
 if __name__ == "__main__":
-    import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
