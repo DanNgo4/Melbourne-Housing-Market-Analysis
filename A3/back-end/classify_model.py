@@ -8,12 +8,19 @@ import clean_data
 
 class RFHouseTypeModel:
     def __init__(self):
-        self.model = None  
-        self.encoder = None 
+        self.clf = None
+        self.le = None
+        self.propertycount_mean = None
+        self.bedroom2_mean = None
+        self.train_model()
 
 
-    def rf_classification(self):
-        X, y_encoded, self.encoder = clean_data.prep_classify_data()
+    def train_model(self):
+        X, y_encoded, self.encoder, propertycount_mean, bedroom2_mean = clean_data.prep_classify_data()
+        
+        # Set the mean values for defaults
+        self.propertycount_mean = propertycount_mean
+        self.bedroom2_mean = bedroom2_mean
 
         X_resampled, y_resampled = self.resample_imbalance(X, y_encoded)
 
@@ -42,11 +49,9 @@ class RFHouseTypeModel:
         return X_resampled, y_resampled
 
 
-    def classify(self, square_metres, distance, rooms, cars):
-        feature1_default = 0 
-        feature2_default = 0 
-
-        input_features = np.array([[square_metres, distance, rooms, cars, feature1_default, feature2_default]])
+    def classify(self, rooms, cars, square_metres, distance):
+        # Use mean values as defaults for missing features
+        input_features = np.array([[rooms, cars, self.propertycount_mean, self.bedroom2_mean, square_metres, distance]])
         predicted_label = self.model.predict(input_features)
         predicted_type = self.encoder.inverse_transform(predicted_label)  
 

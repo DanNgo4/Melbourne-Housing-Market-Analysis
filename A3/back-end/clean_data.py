@@ -21,17 +21,19 @@ def prep_classify_data():
     df = clean_housing_data()
 
     df.drop(columns=["Year", "CouncilArea", "Price"], inplace=True)
-
     df = df.dropna(axis=0).reset_index(drop=True)
 
     features = ["Rooms", "Car", "Propertycount", "Bedroom2", "Landsize", "Distance"]
-    X = df[features]  
-    y = df["Type"]    
+    X = df[features]
+    y = df["Type"]
+
+    propertycount_mean = X["Propertycount"].mean()
+    bedroom2_mean = X["Bedroom2"].mean()
 
     le = LabelEncoder()
     y_encoded = le.fit_transform(y)
 
-    return X, y_encoded, le
+    return X, y_encoded, le, propertycount_mean, bedroom2_mean
 
 
 def clean_crime_data(local_gov_areas):

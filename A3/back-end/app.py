@@ -1,20 +1,17 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from model import RFHousePriceModel
+from regression_model import RFHousePriceModel
 from classify_model import RFHouseTypeModel
 from pydantic import BaseModel
 import uvicorn
-import pandas as pd
 import os
-from pydantic import BaseModel
 import pandas as pd
 from utils import logger
-import os
 from base_models import NewPredictedValues
 
-app = FastAPI()
 
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
@@ -25,11 +22,10 @@ app.add_middleware(
 )
 
 
-#Random Forest Model
+# Regression Model
 model = RFHousePriceModel()
-
+# Classification Model
 model_classify = RFHouseTypeModel()
-model_classify.rf_classification()
 
 class NewPredictedValues(BaseModel):
     Landsize: float
@@ -116,7 +112,6 @@ async def get_donut_data():
 
 @app.get("/classify/{square_metres}/{distance}/{rooms}/{cars}")
 async def predict_house_type(square_metres: float, distance: float, rooms: int, cars: int):
-    print(f"Received request with square_metres={square_metres}, distance={distance}, rooms={rooms}, cars={cars}")
     try:
         predicted_type = model_classify.classify(square_metres, distance, rooms, cars)
         return {"predicted_type": predicted_type}
