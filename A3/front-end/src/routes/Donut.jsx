@@ -6,7 +6,7 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
-import { Button, Typography, Box, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import { Button, Typography, Box, Select, MenuItem, InputLabel, FormControl, TextField } from "@mui/material";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
@@ -15,7 +15,11 @@ const Donut = () => {
   const [houseTypeInput, setHouseTypeInput] = useState("");
   const [highlightedData, setHighlightedData] = useState(null);
   const [dataset, setDataset] = useState([]); 
-  const [queryHistory, setQueryHistory] = useState([]);
+  const [squareMetres, setSquareMetres] = useState("");
+  const [distance, setDistance] = useState("");
+  const [rooms, setRooms] = useState("");
+  const [cars, setCars] = useState("");
+  const [predictedType, setPredictedType] = useState("");
 
   const typeMapping = {
     h: "House",
@@ -51,16 +55,6 @@ const Donut = () => {
       }
     };
     fetchData(); 
-
-    const fetchHistory = async () => {
-      try {
-        const res = await axios.get("http://localhost:8000/query-history");
-        setQueryHistory(res.data || []);  // Set initial history as an array if undefined
-      } catch (e) {
-        console.error("Error fetching query history:", e);
-      }
-    };
-    fetchHistory();
   }, []); 
 
   useEffect(() => {
@@ -159,26 +153,16 @@ const Donut = () => {
   
     setHighlightedData(highlighted);
     setData(newData);
-  
-    const queryDetails = {
-      priceRange: priceRangeInput || "All",
-      houseType: houseTypeInput || "All",
-      highlighted
-    };
-  
-    try {
-      await axios.post("http://localhost:8000/save-query", queryDetails);
-      console.log("Query saved successfully:", queryDetails);  // Add this line for debugging
-
-      setQueryHistory((prev) => [...(prev || []), queryDetails]);  // Ensure prev is an array
-    } catch (e) {
-      console.error("Error saving query:", e);
-    }
   };
 
-  useEffect(() => {
-    console.log("Current query history:", queryHistory);
-  }, [queryHistory]);
+  const handlePredict = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8000/classify/${squareMetres}/${distance}/${rooms}/${cars}`);
+      setPredictedType(res.data.predicted_type);
+    } catch (error) {
+      console.error("Error predicting house type:", error);
+    }
+  };
   
   return (
     <div className="grid grid-cols-3 gap-5 p-5">
@@ -258,19 +242,47 @@ const Donut = () => {
       </Box>
 
       <Box className="col-span-1 p-4 bg-gray-100 rounded shadow">
-        <Typography variant="h5" className="font-bold">Query History</Typography>
-        <div className="mt-3 space-y-2">
-          {queryHistory.length > 0 ? (
-            queryHistory.map((query, index) => (
-              <Typography key={index} className="text-sm">
-                Price Range: {query.priceRange}, House Type: {query.houseType}, 
-                Highlighted: {query.highlighted.map((item) => `${item.label} (${item.value}%)`).join(", ")}
-              </Typography>
-            ))
-          ) : (
-            <Typography className="text-sm text-center">No query history available.</Typography>
-          )}
-        </div>
+        <Typography variant="h5" className="font-bold">Predict House Type</Typography>
+        <form onSubmit={(e) => { e.preventDefault(); handlePredict(); }}>
+          <TextField
+            label="Square Metres"
+            value={squareMetres}
+            onChange={(e) => setSquareMetres(e.target.value)}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            label="Distance"
+            value={distance}
+            onChange={(e) => setDistance(e.target.value)}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            label="Rooms"
+            value={rooms}
+            onChange={(e) => setRooms(e.target.value)}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            label="Cars"
+            value={cars}
+            onChange={(e) => setCars(e.target.value)}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <Button variant="contained" color="primary" type="submit" fullWidth>
+            Predict Type
+          </Button>
+        </form>
+        {predictedType && (
+          <Typography className="mt-4">Predicted House Type: {predictedType}</Typography>
+        )}
       </Box>
     </div>
   );

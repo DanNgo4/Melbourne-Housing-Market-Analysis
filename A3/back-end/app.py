@@ -2,25 +2,20 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from model import RFHousePriceModel
+from classify_model import RFHouseTypeModel
 from pydantic import BaseModel
 import uvicorn
 import pandas as pd
-<<<<<<< Updated upstream
 import os
-=======
-import json
-from pathlib import Path
 from pydantic import BaseModel
->>>>>>> Stashed changes
 
 
 app = FastAPI()
-history_file = Path("query_history.json")
 
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"], 
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,6 +23,9 @@ app.add_middleware(
 
 
 model = RFHousePriceModel()
+
+model_classify = RFHouseTypeModel()
+model_classify.rf_classification()
 
 class NewPredictedValues(BaseModel):
     Landsize: float
@@ -75,6 +73,7 @@ async def add_row(new_values: NewPredictedValues):
 
     return {"message": "values added successfully"}
 
+
 @app.get("/donut-data")
 async def get_donut_data():
     df = pd.read_csv("Melbourne_housing_FULL.csv")
@@ -90,33 +89,14 @@ async def get_donut_data():
     return JSONResponse(content=data, media_type="application/json")
 
 
-class QueryDetails(BaseModel):
-    priceRange: str
-    houseType: str
-    highlighted: list
-
-@app.post("/save-query")
-async def save_query(query: QueryDetails):
+@app.get("/classify/{square_metres}/{distance}/{rooms}/{cars}")
+async def predict_house_type(square_metres: float, distance: float, rooms: int, cars: int):
+    print(f"Received request with square_metres={square_metres}, distance={distance}, rooms={rooms}, cars={cars}")
     try:
-        with open("query_history.json", "r+") as file:
-            history = json.load(file)
-            history.append(query.dict())  # Append new query to the history
-            file.seek(0)
-            json.dump(history, file, indent=4)
-        return {"status": "success"}
+        predicted_type = model_classify.classify(square_metres, distance, rooms, cars)
+        return {"predicted_type": predicted_type}
     except Exception as e:
-        """ raise HTTPException(status_code=500, detail=str(e)) """
-    
-
-@app.get("/query-history")
-async def get_query_history():
-    try:
-        if history_file.exists():
-            with open(history_file, "r") as f:
-                return json.load(f)
-        return []
-    except Exception as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 if __name__ == "__main__":

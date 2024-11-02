@@ -10,7 +10,6 @@ class RFHousePriceModel:
     def __init__(self):
         self.model = None
         self.default_values = None
-        self.imputer = None
         self._train_model()
 
     def _train_model(self):
