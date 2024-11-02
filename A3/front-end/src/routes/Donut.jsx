@@ -183,8 +183,8 @@ const Donut = () => {
   };
   
   return (
-    <div className="grid grid-cols-3 gap-5 p-5">
-      <Box className="col-span-1 p-4 bg-gray-100 rounded shadow">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
+      <Box className="col-span-1 p-4 bg-gray-100 rounded shadow max-w-md mx-auto">
         <Typography variant="h5" className="font-bold">About This Chart</Typography>
 
         <Typography className="mt-3">
@@ -193,12 +193,13 @@ const Donut = () => {
         </Typography>
 
         <Typography className="mt-4 font-bold">Training Data Info:</Typography>
-        
+
         <Box className="mt-2">
           <Typography variant="subtitle1" className="font-semibold">Before Resampling:</Typography>
           <Typography className="ml-4">Original training set size: (27723, 6)</Typography>
           <Typography className="ml-4">Class distribution: [House (h): 13943, Townhouse (t): 4242, Unit (u): 9538]</Typography>
         </Box>
+
         <Box className="mt-2">
           <Typography variant="subtitle1" className="font-semibold">After Resampling (Upsampling):</Typography>
           <Typography className="ml-4">Resampled training set size: (34654, 6)</Typography>
@@ -256,9 +257,10 @@ const Donut = () => {
         <Typography className="ml-4">Unit (u): [27, 22, 2481]</Typography>
       </Box>
 
-
-      <Box className="flex flex-col items-center w-full max-w-lg space-y-4">
-        <Typography variant="h5" className="font-bold">Analyse House Types Distribution</Typography>
+      <Box className="flex flex-col items-center w-full max-w-lg space-y-4 mx-auto">
+        <Typography variant="h5" className="font-bold">
+          Analyse House Types Distribution
+        </Typography>
 
         <FormControl fullWidth variant="outlined" className="bg-white rounded">
           <InputLabel>Choose Price Range</InputLabel>
@@ -314,7 +316,7 @@ const Donut = () => {
           Clear
         </Button>
 
-        <div className="w-full max-w-xl mt-5">
+        <div className="w-full max-w-xs md:max-w-lg lg:max-w-xl mt-5">
           <Doughnut data={data} options={options} width={800} height={800} />
         </div>
 
@@ -334,7 +336,7 @@ const Donut = () => {
         )}
       </Box>
 
-      <Box className="col-span-1 p-4 bg-gray-100 rounded shadow">
+      <Box className="col-span-1 p-4 bg-gray-100 rounded shadow max-w-md mx-auto">
         <Typography variant="h5" className="font-bold">Predict House Type</Typography>
 
         <form onSubmit={(e) => { e.preventDefault(); handlePredict(); }}>

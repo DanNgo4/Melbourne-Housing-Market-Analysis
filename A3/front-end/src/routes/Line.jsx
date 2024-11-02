@@ -34,7 +34,6 @@ const noErrorHeightTheme = createTheme({
     },
 });
 
-
 const LineChartComponent = () => {
     const [predictedSquareMetres, setPredictedSquareMetres] = useState([]);
 
