@@ -8,7 +8,10 @@ import uvicorn
 import pandas as pd
 import os
 from pydantic import BaseModel
-
+import pandas as pd
+from utils import logger
+import os
+from base_models import NewPredictedValues
 
 app = FastAPI()
 
@@ -22,6 +25,7 @@ app.add_middleware(
 )
 
 
+#Random Forest Model
 model = RFHousePriceModel()
 
 model_classify = RFHouseTypeModel()
@@ -35,43 +39,64 @@ class NewPredictedValues(BaseModel):
 
 @app.get("/predicted_values/")
 async def predicted_values():
-    csv_data = pd.read_csv('predicted_values.csv')
+    try:
+        csv_data = pd.read_csv('predicted_values.csv')
 
-    # Convert CSV data to JSON
-    json_data = csv_data.to_dict(orient='records')
+        # Convert CSV data to JSON
+        json_data = csv_data.to_dict(orient='records')
+        
+        logger.info(f"Returning: {len(json_data)} predicted values")
 
-    return JSONResponse(content=json_data, media_type="application/json")
+        return JSONResponse(content=json_data, media_type="application/json")
+    except Exception as e:
+            logger.error(f"Error retrieving predicted values: {str(e)}")
+            
+            raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @app.get("/predict/{square_metres}/{distance}/{rooms}/{cars}")
 async def predict_price(square_metres: float, distance: float, rooms: int, cars: int):
-    print(f"Received request with square_metres={square_metres}, distance={distance}, rooms={rooms}, cars={cars}")
-    price = model.predict(square_metres, distance, rooms, cars)[0]
-    return {"predicted_price": price}
+    try:
+        logger.info(f"Received request with square_metres={square_metres}, distance={distance}, rooms={rooms}, cars={cars}")
+        
+        price = model.predict(square_metres, distance, rooms, cars)[0]
+        logger.info(f'Predicted price: {price}')
+
+        return {"predicted_price": price}
+    except Exception as e:
+            logger.error(f"Error predicting price: {str(e)}")
+            
+            raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @app.post("/add-predicted-values/")
 async def add_row(new_values: NewPredictedValues):
-    file_path = "predicted_values.csv"
+    try:
+        file_path = "predicted_values.csv"
 
-    #Creates CSV files if it doesn't exist
-    if not os.path.exists(file_path):
-        pd.DataFrame(columns=["Landsize", "Distance", "Room", "Car"]).to_csv(file_path, index=False)
+        #Creates CSV files if it doesn't exist
+        if not os.path.exists(file_path):
+            pd.DataFrame(columns=["Landsize", "Distance", "Room", "Car"]).to_csv(file_path, index=False)
 
-    df = pd.read_csv(file_path)
+        df = pd.read_csv(file_path)
 
-    new_data = {
-        "Landsize": new_values.Landsize,
-        "Distance": new_values.Distance,
-        "Room": new_values.Room,
-        "Car": new_values.Car
-    }
+        new_data = {
+            "Landsize": new_values.Landsize,
+            "Distance": new_values.Distance,
+            "Room": new_values.Room,
+            "Car": new_values.Car
+        }
 
-    df = pd.concat([df, pd.DataFrame([new_data])], ignore_index=True)
+        df = pd.concat([df, pd.DataFrame([new_data])], ignore_index=True)
 
-    df.to_csv(file_path, index=False)
+        df.to_csv(file_path, index=False)
+        logger.info("Saved new values to CSV!")
 
-    return {"message": "values added successfully"}
+        return {"message": "values added successfully"} 
+    except Exception as e:
+            logger.error(f"Error saving values!: {str(e)}")
+            
+            raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @app.get("/donut-data")

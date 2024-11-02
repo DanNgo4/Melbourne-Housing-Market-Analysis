@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { Box, TextField, Button, Typography, InputAdornment, Grid } from '@mui/material';
+import { Box, TextField, Button, Typography, InputAdornment, Grid, CircularProgress } from '@mui/material';
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import axios from 'axios';
@@ -36,23 +36,16 @@ const noErrorHeightTheme = createTheme({
 
 
 const LineChartComponent = () => {
-    const [predictedSquareMetres, setPredictedSquareMetres] = useState(() => {
-        const storedData = sessionStorage.getItem('predictedSquareMetres');
-        return storedData ? JSON.parse(storedData) : [];
-    });
+    const [predictedSquareMetres, setPredictedSquareMetres] = useState([]);
 
-    const [predictedPrices, setPredictedPrices] = useState(() => {
-        const storedData = sessionStorage.getItem('predictedPrices');
-        return storedData ? JSON.parse(storedData) : [];
-    });
+    const [predictedPrices, setPredictedPrices] = useState([]);
 
-    const [predictedValuesData, setPredictedValuesData] = useState(() => {
-        const storedData = sessionStorage.getItem('predictedValuesData');
-        return storedData ? JSON.parse(storedData) : [];
-    });
+    const [predictedValuesData, setPredictedValuesData] = useState([]);
 
     const [yourPredictedPrice, setYourPredictedPrice] = useState(false);
     const [yourPredictedPriceIndex, setYourPredictedPriceIndex] = useState(false);
+
+    const [loading, setLoading] = useState(true);
 
     const [squareMetres, setSquareMetres] = useState("");
     const [distance, setDistance] = useState("");
@@ -70,7 +63,6 @@ const LineChartComponent = () => {
                 .then(response => {
                     const sortedData = Object.values(response.data).sort((a, b) => a.Landsize - b.Landsize);
                     setPredictedValuesData(sortedData);
-                    sessionStorage.setItem('predictedValuesData', JSON.stringify(sortedData));
                 })
                 .catch(error => console.error(error));
         }
@@ -86,8 +78,7 @@ const LineChartComponent = () => {
                 })
             ).then(predictedPrices => {
                 setPredictedPrices(predictedPrices);
-                sessionStorage.setItem('predictedSquareMetres', JSON.stringify(predictedSquareMetres));
-                sessionStorage.setItem('predictedPrices', JSON.stringify(predictedPrices));
+                setLoading(false)
             }).catch(error => console.error(error));
         }
     }, [predictedValuesData]);
@@ -109,10 +100,10 @@ const LineChartComponent = () => {
             //Gets the new prediction
             axios.get(`http://localhost:8000/predict/${squareMetres}/${distance}/${rooms}/${cars}/`)
                 .then(res => {
-                    //If everything is 
+                    //Sets the prediction
                     setYourPredictedPrice([{ x: squareMetres, y: res.data.predicted_price }]);
                     addNewPrediction(res.data.predicted_price);
-                });
+                }).catch(error => console.error(error));
         }
     };
 
@@ -122,13 +113,8 @@ const LineChartComponent = () => {
         setYourPredictedPriceIndex(false)
         setYourPredictedPrice(false)
 
-        //Saves to session storage
-        sessionStorage.setItem('predictedSquareMetres', JSON.stringify(predictedSquareMetres));
-        sessionStorage.setItem('predictedPrices', JSON.stringify(predictedPrices));
-
         //Posts new row
-        let new_values = { Landsize: squareMetres, Distance: distance, Room: rooms, Car: cars }
-
+        let new_values = { Landsize: parseFloat(squareMetres), Distance: parseFloat(distance), Room: parseInt(rooms), Car: parseInt(cars) }
         axios.post('http://localhost:8000/add-predicted-values/', new_values)
             .then(response => {
                 console.log("new values added successfully:", response.data);
@@ -168,8 +154,8 @@ const LineChartComponent = () => {
         setSquareMetres(e.target.value);
         if (e.target.value === '') {
             setSquareMetresError("Please enter square footage of property!");
-        } else if (!/^[0-9]+(\.[0-9]+)?$/.test(e.target.value)) {
-            setSquareMetresError("Please enter a positive numerical value for square footage!");
+        } else if (!/^[1-9][0-9]*(\.[0-9]+)?$/.test(e.target.value)) {
+            setSquareMetresError("Please enter a numerical value greater than 0 for square footage!");
         } else {
             setSquareMetresError(false);
         }
@@ -181,7 +167,7 @@ const LineChartComponent = () => {
         if (e.target.value === '') {
             setDistanceError("Please enter distance from CBD!");
         } else if (!/^[0-9]+(\.[0-9]+)?$/.test(e.target.value)) {
-            setDistanceError("Please enter a positive numerical value for distance from CBD!");
+            setDistanceError("Please enter a numerical value 0 or greater for distance from CBD!");
         } else {
             setDistanceError(false);
         }
@@ -192,8 +178,8 @@ const LineChartComponent = () => {
         setRooms(e.target.value);
         if (e.target.value === '') {
             setRoomsError("Please enter rooms!");
-        } else if (!/^[0-9]+$/.test(e.target.value)) {
-            setRoomsError("Please enter a positive full number value for rooms!");
+        } else if (!/^[1-9][0-9]*(\.[0-9]+)?$/.test(e.target.value)) {
+            setRoomsError("Please enter a full number greater than 0 for rooms!");
         } else {
             setRoomsError(false);
         }
@@ -205,7 +191,7 @@ const LineChartComponent = () => {
         if (e.target.value === '') {
             setCarsError("Please enter rooms!");
         } else if (!/^[0-9]+$/.test(e.target.value)) {
-            setCarsError("Please enter a positive full number value for cars!");
+            setCarsError("Please enter a full number value for cars 0 or greater!");
         } else {
             setCarsError(false);
         }
@@ -214,6 +200,9 @@ const LineChartComponent = () => {
     //Dynamic point radius's for the line graph dependent on screen size
     const pointRadius = window.innerWidth < 600 ? 3 : 5;
     const yourPredictedPointRadius = window.innerWidth < 600 ? 5 : 8;
+
+    //Dynamic size for circular progress
+    const progressSize = window.innerWidth < 600 ? 150 : 300;
 
     // Line Chart Data and Options
     const data = {
@@ -370,7 +359,11 @@ const LineChartComponent = () => {
                         Line Chart
                     </Typography>
                     <Box sx={{ position: 'relative', width: '100%', height: { xs: '35vh', md: '50vh' } }}>
-                        <Line data={data} options={options} />
+                        {loading ? (
+                            <CircularProgress size={progressSize} sx={{ position: 'absolute', top: '25%', left: '25%', transform: 'translate(-50%, -50%)' }} ></CircularProgress>
+                        ) : (
+                            <Line data={data} options={options} />
+                        )}
                     </Box>
                 </Box>
             </Box>
