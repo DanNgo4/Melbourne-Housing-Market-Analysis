@@ -6,7 +6,7 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
-import { Button, Typography, Box, Select, MenuItem, InputLabel, FormControl, TextField } from "@mui/material";
+import { Button, Typography, Box, Select, MenuItem, InputLabel, FormControl, TextField, Table, TableHead, TableCell, TableRow, TableBody } from "@mui/material";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
@@ -30,6 +30,11 @@ const Donut = () => {
   // Convert labels from ["h", "t", "u"] to ["House", "Townhouse", "Unit"]
   const mappedLabels = ["h", "t", "u"].map(label => typeMapping[label]);
 
+  const [data, setData] = useState({
+    labels: mappedLabels,
+    datasets: [],
+  });
+
   const priceRanges = [
     { label: "$500,000 - $1,000,000", min: 500000, max: 1000000 },
     { label: "$1,000,000 - $2,000,000", min: 1000000, max: 2000000 },
@@ -38,11 +43,6 @@ const Donut = () => {
   ];
 
   const colours = ["#FF6384", "#36A2EB", "#FFCE56"];
-
-  const [data, setData] = useState({
-      labels: mappedLabels,
-      datasets: [],
-  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,8 +59,8 @@ const Donut = () => {
 
   useEffect(() => {
     const datasets = priceRanges.map((range, i) => {
-        const totalInRange = dataset.filter(
-            (item) => item.Price >= range.min && item.Price < range.max
+        const totalInRange = dataset.filter((item) => 
+          (item.Price >= range.min) && (item.Price < range.max)
         ).length;
 
         const percentages = ["h", "t", "u"].map((type) => {
@@ -79,8 +79,8 @@ const Donut = () => {
             backgroundColor: colours,
             borderColor: colours,
             borderWidth: 1,
-            cutout: `${50 - i * 12}%`, 
-            radius: `${70 - i * 10}%`, 
+            cutout: `${60 - i * 5}%`, 
+            radius: `${100 - i * 10}%`, 
             datalabels: {
                 anchor: "center",
             },
@@ -155,6 +155,24 @@ const Donut = () => {
     setData(newData);
   };
 
+  const clearHighlights = () => {
+    setPriceRangeInput("");
+    setHouseTypeInput("");
+    setHighlightedData([]);
+    
+    // Reset the data to remove any highlights
+    const resetData = {
+      ...data,
+      datasets: data.datasets.map((dataset) => ({
+        ...dataset,
+        borderColor: dataset.backgroundColor,
+        borderWidth: dataset.data.map(() => 1),
+      }))
+    };
+    
+    setData(resetData);
+  };
+
   const handlePredict = async () => {
     try {
       const res = await axios.get(`http://localhost:8000/classify/${squareMetres}/${distance}/${rooms}/${cars}`);
@@ -166,16 +184,82 @@ const Donut = () => {
   
   return (
     <div className="grid grid-cols-3 gap-5 p-5">
-      {/* Left: Description */}
       <Box className="col-span-1 p-4 bg-gray-100 rounded shadow">
         <Typography variant="h5" className="font-bold">About This Chart</Typography>
+
         <Typography className="mt-3">
           This chart displays the percentage distribution of house types across price ranges.
-          Use the controls to filter and highlight specific segments based on your selections.
+          Use the "House Types Distribution" form to filter and highlight specific segments based on your selections. Use the "Predict House Type" form to test out our Random Forest Classification model, which has achieved a 95% accuracy score.
         </Typography>
+
+        <Typography className="mt-4 font-bold">Training Data Info:</Typography>
+        
+        <Box className="mt-2">
+          <Typography variant="subtitle1" className="font-semibold">Before Resampling:</Typography>
+          <Typography className="ml-4">Original training set size: (27723, 6)</Typography>
+          <Typography className="ml-4">Class distribution: [House (h): 13943, Townhouse (t): 4242, Unit (u): 9538]</Typography>
+        </Box>
+        <Box className="mt-2">
+          <Typography variant="subtitle1" className="font-semibold">After Resampling (Upsampling):</Typography>
+          <Typography className="ml-4">Resampled training set size: (34654, 6)</Typography>
+          <Typography className="ml-4">Class distribution: [House (h): 17327, Townhouse (t): 5259, Unit (u): 12068]</Typography>
+        </Box>
+
+        <Typography className="mt-4 font-bold">Model Performance Metrics:</Typography>
+
+        <Table className="mt-3">
+          <TableHead>
+            <TableRow>
+              <TableCell className="font-semibold text-lg">Class</TableCell>
+              <TableCell align="right" className="font-semibold text-lg">Precision</TableCell>
+              <TableCell align="right" className="font-semibold text-lg">Recall</TableCell>
+              <TableCell align="right" className="font-semibold text-lg">F1-Score</TableCell>
+              <TableCell align="right" className="font-semibold text-lg">Support</TableCell>
+            </TableRow>
+          </TableHead>
+          
+          <TableBody>
+            <TableRow>
+              <TableCell>House (h)</TableCell>
+              <TableCell align="right">0.98</TableCell>
+              <TableCell align="right">0.94</TableCell>
+              <TableCell align="right">0.96</TableCell>
+              <TableCell align="right">3384</TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell>Townhouse (t)</TableCell>
+              <TableCell align="right">0.85</TableCell>
+              <TableCell align="right">0.90</TableCell>
+              <TableCell align="right">0.87</TableCell>
+              <TableCell align="right">1017</TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell>Unit (u)</TableCell>
+              <TableCell align="right">0.94</TableCell>
+              <TableCell align="right">0.98</TableCell>
+              <TableCell align="right">0.96</TableCell>
+              <TableCell align="right">2530</TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell className="font-semibold">Overall Accuracy</TableCell>
+              <TableCell align="right" colSpan={4} className="font-bold text-center">0.95</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+
+        <Typography className="mt-4 font-bold">Confusion Matrix:</Typography>
+        <Typography className="ml-4">House (h): [3168, 134, 82]</Typography>
+        <Typography className="ml-4">Townhouse (t): [41, 911, 65]</Typography>
+        <Typography className="ml-4">Unit (u): [27, 22, 2481]</Typography>
       </Box>
 
+
       <Box className="flex flex-col items-center w-full max-w-lg space-y-4">
+        <Typography variant="h5" className="font-bold">Analyse House Types Distribution</Typography>
+
         <FormControl fullWidth variant="outlined" className="bg-white rounded">
           <InputLabel>Choose Price Range</InputLabel>
 
@@ -221,28 +305,38 @@ const Donut = () => {
           Highlight
         </Button>
 
-      <div className="w-full max-w-xl mt-5">
-        <Doughnut data={data} options={options} width={800} height={800} />
-      </div>
+        <Button 
+          variant="contained" 
+          color="secondary" 
+          onClick={clearHighlights} 
+          className="w-full mt-2"
+        >
+          Clear
+        </Button>
 
-      {highlightedData && (
-        <Box className="mt-5 w-auto p-4 bg-gray-100 rounded shadow">
-          <Typography variant="h6" className="font-bold text-center mb-2">Highlighted Information</Typography>
-          {highlightedData.length > 0 ? (
-            highlightedData.map((item, index) => (
-              <Typography key={index} className="text-sm">
-                Price Range: {item.layer}, House Type: {item.label}, Ratio: {item.value}%
-              </Typography>
-            ))
-          ) : (
-            <Typography className="text-sm text-center">No matches found</Typography>
-          )}
-        </Box>
-      )}
+        <div className="w-full max-w-xl mt-5">
+          <Doughnut data={data} options={options} width={800} height={800} />
+        </div>
+
+        {highlightedData && (
+          <Box className="mt-5 w-auto p-4 bg-gray-100 rounded shadow">
+            <Typography variant="h6" className="font-bold text-center mb-2">Highlighted Information</Typography>
+            {highlightedData.length > 0 ? (
+              highlightedData.map((item, index) => (
+                <Typography key={index} className="text-sm">
+                  Price Range: {item.layer}, House Type: {item.label}, Ratio: {item.value}%
+                </Typography>
+              ))
+            ) : (
+              <Typography className="text-sm text-center">No matches found</Typography>
+            )}
+          </Box>
+        )}
       </Box>
 
       <Box className="col-span-1 p-4 bg-gray-100 rounded shadow">
         <Typography variant="h5" className="font-bold">Predict House Type</Typography>
+
         <form onSubmit={(e) => { e.preventDefault(); handlePredict(); }}>
           <TextField
             label="Square Metres"
@@ -252,6 +346,7 @@ const Donut = () => {
             margin="normal"
             required
           />
+
           <TextField
             label="Distance"
             value={distance}
@@ -260,6 +355,7 @@ const Donut = () => {
             margin="normal"
             required
           />
+
           <TextField
             label="Rooms"
             value={rooms}
@@ -268,6 +364,7 @@ const Donut = () => {
             margin="normal"
             required
           />
+
           <TextField
             label="Cars"
             value={cars}
@@ -276,10 +373,12 @@ const Donut = () => {
             margin="normal"
             required
           />
+
           <Button variant="contained" color="primary" type="submit" fullWidth>
             Predict Type
           </Button>
         </form>
+
         {predictedType && (
           <Typography className="mt-4">Predicted House Type: {predictedType}</Typography>
         )}
