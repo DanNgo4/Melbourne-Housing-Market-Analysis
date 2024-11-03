@@ -1,17 +1,16 @@
 import { React, useState, useEffect } from "react";
-import { Box, TextField, Button, Typography, InputAdornment, Grid, CircularProgress } from '@mui/material';
+import { Box, TextField, Typography, InputAdornment, Grid, CircularProgress } from '@mui/material';
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import axios from 'axios';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-
 import CustomButton from "../components/CustomButton";
-
 import useErrorLog from "../hooks/useErrorLog";
 import useFormInput from "../hooks/useFormInput";
 
 Chart.register(...registerables);
 
+//The standard styles for the two main boxes on this component
 const boxStyles = {
     width: {
         xs: '90vw',
@@ -40,20 +39,27 @@ const noErrorHeightTheme = createTheme({
 });
 
 const LineChartComponent = () => {
+    //Predicted Square metres
     const [predictedSquareMetres, setPredictedSquareMetres] = useState([]);
 
+    //All predicted prices
     const [predictedPrices, setPredictedPrices] = useState([]);
 
+    //All predicted values
     const [predictedValuesData, setPredictedValuesData] = useState([]);
 
+    //The price predicted from user input
     const [yourPredictedPrice, setYourPredictedPrice] = useState(false);
     const [yourPredictedPriceIndex, setYourPredictedPriceIndex] = useState(false);
 
+    //Loading for the chart
     const [loading, setLoading] = useState(true);
 
+    //use states for the form
     const { values, handleChange, _ } = useFormInput(); 
     const { squareMetres, distance, rooms, cars } = values;
 
+    //use state errors for the form
     const [squareMetresError, setSquareMetresError] = useState(false);
     const [distanceError, setDistanceError] = useState(false);
     const [roomsError, setRoomsError] = useState(false);
@@ -183,8 +189,8 @@ const LineChartComponent = () => {
         handleChange("rooms")(e);
         if (e.target.value === '') {
             setRoomsError("Please enter rooms!");
-        } else if (!/^[1-9][0-9]*(\.[0-9]+)?$/.test(e.target.value)) {
-            setRoomsError("Please enter a full number greater than 0 for rooms!");
+        } else if (!/^(10|[1-9])$/.test(e.target.value)) {
+            setRoomsError("Please enter 1 - 10 for rooms!");
         } else {
             setRoomsError(false);
         }
@@ -195,8 +201,8 @@ const LineChartComponent = () => {
         handleChange("cars")(e);
         if (e.target.value === '') {
             setCarsError("Please enter rooms!");
-        } else if (!/^[0-9]+$/.test(e.target.value)) {
-            setCarsError("Please enter a full number value for cars 0 or greater!");
+        } else if (!/^[1-5]$/.test(e.target.value)) {
+            setCarsError("Please enter 1 - 5 for cars!");
         } else {
             setCarsError(false);
         }
@@ -233,6 +239,7 @@ const LineChartComponent = () => {
         ],
     };
 
+    //options for the line chart
     const options = {
         responsive: true,
         plugins: {
@@ -289,7 +296,7 @@ const LineChartComponent = () => {
                     <Box sx={{ width: '100%' }}>
                         <ThemeProvider theme={noErrorHeightTheme}>
                             <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6} mb={3.5} sx={{ display: 'flex', flexDirection: 'row' }}>
+                                <Grid item xs={12} sm={6} mb={4} sx={{ display: 'flex', flexDirection: 'row' }}>
                                     <TextField
                                         required
                                         id="squareMetres"
@@ -307,7 +314,7 @@ const LineChartComponent = () => {
                                     />
                                 </Grid>
                                 
-                                <Grid item xs={12} sm={6} mb={3.5} sx={{ display: 'flex', flexDirection: 'row' }}>
+                                <Grid item xs={12} sm={6} mb={4} sx={{ display: 'flex', flexDirection: 'row' }}>
                                     <TextField
                                         required
                                         id="distance"
@@ -327,7 +334,7 @@ const LineChartComponent = () => {
                             </Grid>
 
                             <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6} mb={3.5} sx={{ display: 'flex', flexDirection: 'row' }}>
+                                <Grid item xs={12} sm={6} mb={4} sx={{ display: 'flex', flexDirection: 'row' }}>
                                     <TextField
                                         required
                                         id="rooms"
@@ -339,7 +346,7 @@ const LineChartComponent = () => {
                                         sx={{ flexGrow: 1 }}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6} mb={3.5} sx={{ display: 'flex', flexDirection: 'row' }}>
+                                <Grid item xs={12} sm={6} mb={4} sx={{ display: 'flex', flexDirection: 'row' }}>
                                     <TextField
                                         required
                                         id="cars"

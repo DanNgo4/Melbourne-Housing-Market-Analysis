@@ -2,12 +2,14 @@ import { useState } from "react";
 
 import { NavLink, Link } from "react-router-dom";
 import { AppBar, Toolbar, IconButton, Typography, Button, Drawer, Box, ListItem, ListItemText, ListItemIcon, List, Divider, Switch } from "@mui/material";
-import { Menu, Home, Info, Mail } from "@mui/icons-material";
+import { Menu, Home, Info } from "@mui/icons-material";
 
 const NavBar = () => {
+    //Use states for drawer and darkmode
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
 
+    //Toggle drawer function
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -16,9 +18,9 @@ const NavBar = () => {
         setDrawerOpen(open);
     };
 
+    //Dark mode on off toggler
     const handleDarkModeToggle = () => {
         setDarkMode(!darkMode);
-        /* setSnackbarOpen(true); */
     };
 
     const drawerContent = (

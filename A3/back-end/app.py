@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from regression_model import RFHousePriceModel
 from classify_model import RFHouseTypeModel
-from pydantic import BaseModel, Field
 import uvicorn
 import os
 import pandas as pd
@@ -13,6 +12,7 @@ from base_models import NewPredictedValues
 
 app = FastAPI()
 
+#Added CORS middle ware to allow cross orgins
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], 
@@ -27,12 +27,8 @@ model = RFHousePriceModel()
 # Classification Model
 model_classify = RFHouseTypeModel()
 
-class NewPredictedValues(BaseModel):
-    Landsize: float
-    Distance: float
-    Room: int
-    Car: int
-
+# This a a GET route that retrieves all the values from
+# predicted_values.csv to serve the frontend
 @app.get("/predicted_values/")
 async def predicted_values():
     try:
@@ -49,7 +45,7 @@ async def predicted_values():
             
             raise HTTPException(status_code=500, detail="Internal server error")
 
-
+#This is a GET Route where with 4 inputs the model can be queried to return the price prediction
 @app.get("/predict_price/{square_metres}/{distance}/{rooms}/{cars}")
 async def predict_price(
     square_metres: float,
@@ -57,6 +53,7 @@ async def predict_price(
     rooms: int,
     cars: int
 ):
+      #Additional validations of input
     if square_metres <= 0:
         raise HTTPException(status_code=400, detail="Square meters must be greater than 0")
     if distance < 0:
@@ -69,6 +66,7 @@ async def predict_price(
     try:
         logger.info(f"Received request with square_metres={square_metres}, distance={distance}, rooms={rooms}, cars={cars}")
         
+        #Calling model to predict price
         price = model.predict(square_metres, distance, rooms, cars)[0]
         logger.info(f'Predicted price: {price}')
 
@@ -77,7 +75,7 @@ async def predict_price(
         logger.error(f"Error predicting price: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
-
+#This is a POST route so values can be saved to the CSV file
 @app.post("/add-predicted-values/")
 async def add_row(new_values: NewPredictedValues):
     try:
@@ -89,6 +87,7 @@ async def add_row(new_values: NewPredictedValues):
 
         df = pd.read_csv(file_path)
 
+        #Create the JSON object to send into the Dataframe which is modelling the CSV
         new_data = {
             "Landsize": new_values.Landsize,
             "Distance": new_values.Distance,
@@ -96,8 +95,10 @@ async def add_row(new_values: NewPredictedValues):
             "Car": new_values.Car
         }
 
+        #Add the new row to the dataframe
         df = pd.concat([df, pd.DataFrame([new_data])], ignore_index=True)
 
+        #Set the CSV to the new Dataframe
         df.to_csv(file_path, index=False)
         logger.info("Saved new values to CSV!")
 
@@ -107,7 +108,8 @@ async def add_row(new_values: NewPredictedValues):
             
             raise HTTPException(status_code=500, detail="Internal server error")
 
-
+#This is a GET route so Donut component can get all the records from the melbourne housing dataset
+#where type and price are no missing
 @app.get("/donut-data")
 async def get_donut_data():
     df = pd.read_csv("Melbourne_housing_FULL.csv")
@@ -116,7 +118,7 @@ async def get_donut_data():
 
     return JSONResponse(content=data, media_type="application/json")
 
-
+#This is a GET route that predicts the type of a house based on the passed in parameters
 @app.get("/predict_type/{square_metres}/{distance}/{rooms}/{cars}")
 async def predict_house_type(
     square_metres: float,
@@ -124,6 +126,7 @@ async def predict_house_type(
     rooms: int,
     cars: int
 ):
+    #Additional validation
     if square_metres <= 0:
         raise HTTPException(status_code=400, detail="Square meters must be greater than 0")
     if distance < 0:
@@ -134,6 +137,7 @@ async def predict_house_type(
         raise HTTPException(status_code=400, detail="Car spaces must be between 0 and 5")
     
     try:
+        #Using classificaiton to predict the house type
         predicted_type = model_classify.classify(square_metres, distance, rooms, cars)
         return {"predicted_type": predicted_type}
     except Exception as e:
@@ -142,4 +146,5 @@ async def predict_house_type(
 
 
 if __name__ == "__main__":
+    #Uvircorn will run the API on http://localhost:8000
     uvicorn.run(app, host="0.0.0.0", port=8000)
