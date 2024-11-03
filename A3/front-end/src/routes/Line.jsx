@@ -6,6 +6,7 @@ import axios from 'axios';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import useErrorLog from "../hooks/useErrorLog";
+import useFormInput from "../hooks/useFormInput";
 
 Chart.register(...registerables);
 
@@ -48,10 +49,8 @@ const LineChartComponent = () => {
 
     const [loading, setLoading] = useState(true);
 
-    const [squareMetres, setSquareMetres] = useState("");
-    const [distance, setDistance] = useState("");
-    const [rooms, setRooms] = useState("");
-    const [cars, setCars] = useState("");
+    const { values, handleChange, _ } = useFormInput(); 
+    const { squareMetres, distance, rooms, cars } = values;
 
     const [squareMetresError, setSquareMetresError] = useState(false);
     const [distanceError, setDistanceError] = useState(false);
@@ -155,7 +154,7 @@ const LineChartComponent = () => {
 
     //Validates Square metres
     const handleSquareMetresChanged = e => {
-        setSquareMetres(e.target.value);
+        handleChange("squareMetres")(e);
         if (e.target.value === '') {
             setSquareMetresError("Please enter square footage of property!");
         } else if (!/^[1-9][0-9]*(\.[0-9]+)?$/.test(e.target.value)) {
@@ -167,7 +166,7 @@ const LineChartComponent = () => {
 
     //Validates distance
     const handleDistanceChanged = e => {
-        setDistance(e.target.value);
+        handleChange("distance")(e);
         if (e.target.value === '') {
             setDistanceError("Please enter distance from CBD!");
         } else if (!/^[0-9]+(\.[0-9]+)?$/.test(e.target.value)) {
@@ -179,7 +178,7 @@ const LineChartComponent = () => {
 
     //Validates rooms changed
     const handleRoomsChanged = e => {
-        setRooms(e.target.value);
+        handleChange("rooms")(e);
         if (e.target.value === '') {
             setRoomsError("Please enter rooms!");
         } else if (!/^[1-9][0-9]*(\.[0-9]+)?$/.test(e.target.value)) {
@@ -191,7 +190,7 @@ const LineChartComponent = () => {
 
     //Validates cars changed
     const handleCarsChanged = e => {
-        setCars(e.target.value);
+        handleChange("cars")(e);
         if (e.target.value === '') {
             setCarsError("Please enter rooms!");
         } else if (!/^[0-9]+$/.test(e.target.value)) {

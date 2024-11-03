@@ -11,19 +11,24 @@ import { Button, Typography, Box, Select, MenuItem, InputLabel, FormControl, Tex
 import InfoSection from "../components/DonutPage/InfoSection";
 
 import useErrorLog from "../hooks/useErrorLog";
+import useFormInput from "../hooks/useFormInput";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 const Donut = () => {
-  const [priceRangeInput, setPriceRangeInput] = useState("");
-  const [houseTypeInput, setHouseTypeInput] = useState("");
   const [highlightedData, setHighlightedData] = useState(null);
   const [dataset, setDataset] = useState([]); 
-  const [squareMetres, setSquareMetres] = useState("");
-  const [distance, setDistance] = useState("");
-  const [rooms, setRooms] = useState("");
-  const [cars, setCars] = useState("");
   const [predictedType, setPredictedType] = useState("");
+
+  const { values, handleChange, resetForm } = useFormInput();
+  const {
+    priceRangeInput,
+    houseTypeInput,
+    squareMetres,
+    distance,
+    rooms,
+    cars,
+  } = values;
 
   const errorLog = useErrorLog();
 
@@ -32,10 +37,8 @@ const Donut = () => {
     t: "Townhouse",
     u: "Unit"
   };
-  
   // Convert labels from ["h", "t", "u"] to ["House", "Townhouse", "Unit"]
   const mappedLabels = ["h", "t", "u"].map(label => typeMapping[label]);
-
   const [data, setData] = useState({
     labels: mappedLabels,
     datasets: [],
@@ -150,8 +153,13 @@ const Donut = () => {
       dataset.data
         .map((value, labelIndex) => {
           if (newData.datasets[layerIndex].borderWidth[labelIndex] === 3) {
-            return { layer: dataset.label, label: data.labels[labelIndex], value };
+            return { 
+              layer: dataset.label, 
+              label: data.labels[labelIndex], 
+              value 
+            };
           }
+          
           return null;
         })
         .filter(Boolean)
@@ -162,8 +170,7 @@ const Donut = () => {
   };
 
   const clearHighlights = () => {
-    setPriceRangeInput("");
-    setHouseTypeInput("");
+    resetForm(["priceRangeInput", "houseTypeInput"]);
     setHighlightedData([]);
     
     const resetData = {
@@ -201,7 +208,7 @@ const Donut = () => {
 
           <Select
             value={priceRangeInput}
-            onChange={(e) => setPriceRangeInput(e.target.value)}
+            onChange={handleChange("priceRangeInput")}
             label="Choose Price Range"
           >
             <MenuItem value="">All</MenuItem>
@@ -219,7 +226,7 @@ const Donut = () => {
 
           <Select
             value={houseTypeInput}
-            onChange={(e) => setHouseTypeInput(e.target.value)}
+            onChange={handleChange("houseTypeInput")}
             label="Choose House Type"
           >
             <MenuItem value="">All</MenuItem>
@@ -273,11 +280,14 @@ const Donut = () => {
       <Box className="col-span-1 p-4 bg-gray-100 rounded shadow max-w-md mx-auto">
         <Typography variant="h5" className="font-bold">Predict House Type</Typography>
 
-        <form onSubmit={(e) => { e.preventDefault(); handlePredict(); }}>
+        <form onSubmit={(e) => { 
+          e.preventDefault(); 
+          handlePredict(); 
+        }}>
           <TextField
             label="Square Metres"
             value={squareMetres}
-            onChange={(e) => setSquareMetres(e.target.value)}
+            onChange={handleChange("squareMetres")}
             fullWidth
             margin="normal"
             required
@@ -286,7 +296,7 @@ const Donut = () => {
           <TextField
             label="Distance"
             value={distance}
-            onChange={(e) => setDistance(e.target.value)}
+            onChange={handleChange("distance")}
             fullWidth
             margin="normal"
             required
@@ -295,7 +305,7 @@ const Donut = () => {
           <TextField
             label="Rooms"
             value={rooms}
-            onChange={(e) => setRooms(e.target.value)}
+            onChange={handleChange("rooms")}
             fullWidth
             margin="normal"
             required
@@ -304,7 +314,7 @@ const Donut = () => {
           <TextField
             label="Cars"
             value={cars}
-            onChange={(e) => setCars(e.target.value)}
+            onChange={handleChange("cars")}
             fullWidth
             margin="normal"
             required
