@@ -61,9 +61,9 @@ async def predict_price(
         raise HTTPException(status_code=400, detail="Square meters must be greater than 0")
     if distance < 0:
         raise HTTPException(status_code=400, detail="Distance must be non-negative")
-    if not (1 <= rooms <= 10):
+    if not (1 <= rooms <= 100):
         raise HTTPException(status_code=400, detail="Rooms must be between 1 and 10")
-    if not (0 <= cars <= 5):
+    if not (0 <= cars <= 50):
         raise HTTPException(status_code=400, detail="Car spaces must be between 0 and 5")
     
     try:
@@ -132,6 +132,7 @@ async def predict_house_type(
         raise HTTPException(status_code=400, detail="Rooms must be between 1 and 10")
     if not (0 <= cars <= 5):
         raise HTTPException(status_code=400, detail="Car spaces must be between 0 and 5")
+    
     try:
         predicted_type = model_classify.classify(square_metres, distance, rooms, cars)
         return {"predicted_type": predicted_type}

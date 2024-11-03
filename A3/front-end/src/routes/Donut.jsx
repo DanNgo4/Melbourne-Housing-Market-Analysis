@@ -176,7 +176,7 @@ const Donut = () => {
 
   const handlePredict = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/classify/${squareMetres}/${distance}/${rooms}/${cars}`);
+      const res = await axios.get(`http://localhost:8000/predict_type/${squareMetres}/${distance}/${rooms}/${cars}`);
       setPredictedType(res.data.predicted_type);
     } catch (error) {
       console.error("Error predicting house type:", error);

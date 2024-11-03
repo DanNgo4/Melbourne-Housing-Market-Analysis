@@ -72,7 +72,7 @@ const LineChartComponent = () => {
             Promise.all(
                 predictedValuesData.map(dataRow => {
                     predictedSquareMetres.push(dataRow["Landsize"]);
-                    const url = `http://localhost:8000/predict/${dataRow["Landsize"]}/${dataRow["Distance"]}/${dataRow["Room"]}/${dataRow["Car"]}/`;
+                    const url = `http://localhost:8000/predict_price/${dataRow["Landsize"]}/${dataRow["Distance"]}/${dataRow["Room"]}/${dataRow["Car"]}/`;
                     return axios.get(url).then(res => res.data.predicted_price);
                 })
             ).then(predictedPrices => {
@@ -97,7 +97,7 @@ const LineChartComponent = () => {
         validateForm();
         if (!squareMetresError && !distanceError && !roomsError && !carsError) {
             //Gets the new prediction
-            axios.get(`http://localhost:8000/predict/${squareMetres}/${distance}/${rooms}/${cars}/`)
+            axios.get(`http://localhost:8000/predict_price/${squareMetres}/${distance}/${rooms}/${cars}/`)
                 .then(res => {
                     //Sets the prediction
                     setYourPredictedPrice([{ x: squareMetres, y: res.data.predicted_price }]);
