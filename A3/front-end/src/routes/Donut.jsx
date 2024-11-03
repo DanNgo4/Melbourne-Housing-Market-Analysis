@@ -10,6 +10,8 @@ import { Button, Typography, Box, Select, MenuItem, InputLabel, FormControl, Tex
 
 import InfoSection from "../components/DonutPage/InfoSection";
 
+import useErrorLog from "../hooks/useErrorLog";
+
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 const Donut = () => {
@@ -22,6 +24,8 @@ const Donut = () => {
   const [rooms, setRooms] = useState("");
   const [cars, setCars] = useState("");
   const [predictedType, setPredictedType] = useState("");
+
+  const errorLog = useErrorLog();
 
   const typeMapping = {
     h: "House",
@@ -53,7 +57,7 @@ const Donut = () => {
         const parsedData = JSON.parse(res.data); 
         setDataset(parsedData); 
       } catch (e) {
-        console.error("Error fetching data for donut:", e);
+        errorLog(e, "Fetching data for donut chart");
       }
     };
     fetchData(); 
@@ -178,8 +182,8 @@ const Donut = () => {
     try {
       const res = await axios.get(`http://localhost:8000/predict_type/${squareMetres}/${distance}/${rooms}/${cars}`);
       setPredictedType(res.data.predicted_type);
-    } catch (error) {
-      console.error("Error predicting house type:", error);
+    } catch (e) {
+      errorLog(e, "Predicting House Type");
     }
   };
   

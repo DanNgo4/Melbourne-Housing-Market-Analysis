@@ -5,6 +5,8 @@ import { Chart, registerables } from 'chart.js';
 import axios from 'axios';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+import useErrorLog from "../hooks/useErrorLog";
+
 Chart.register(...registerables);
 
 const boxStyles = {
@@ -56,6 +58,9 @@ const LineChartComponent = () => {
     const [roomsError, setRoomsError] = useState(false);
     const [carsError, setCarsError] = useState(false);
 
+    // Custom hook for logging errors
+    const errorLog = useErrorLog();
+
     useEffect(() => {
         if (predictedValuesData.length === 0) {
             axios.get('http://localhost:8000/predicted_values/')
@@ -63,7 +68,7 @@ const LineChartComponent = () => {
                     const sortedData = Object.values(response.data).sort((a, b) => a.Landsize - b.Landsize);
                     setPredictedValuesData(sortedData);
                 })
-                .catch(error => console.error(error));
+                .catch(error => errorLog(error, "Getting prediceted_values"));
         }
     }, []);
 
@@ -78,7 +83,7 @@ const LineChartComponent = () => {
             ).then(predictedPrices => {
                 setPredictedPrices(predictedPrices);
                 setLoading(false)
-            }).catch(error => console.error(error));
+            }).catch(error => errorLog(error, "Predicting House Price"));
         }
     }, [predictedValuesData]);
 
@@ -102,7 +107,7 @@ const LineChartComponent = () => {
                     //Sets the prediction
                     setYourPredictedPrice([{ x: squareMetres, y: res.data.predicted_price }]);
                     addNewPrediction(res.data.predicted_price);
-                }).catch(error => console.error(error));
+                }).catch(error => errorLog(error, "Submitting entry for new house price prediction"));
         }
     };
 
@@ -118,7 +123,7 @@ const LineChartComponent = () => {
             .then(response => {
                 console.log("new values added successfully:", response.data);
             })
-            .catch(error => console.error("Error adding new values:", error));
+            .catch(error => errorLog(error, "Adding new values"));
     }
 
     //Adds a temporary prediction to the line graph
