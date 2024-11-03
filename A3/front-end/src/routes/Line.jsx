@@ -200,7 +200,7 @@ const LineChartComponent = () => {
     const handleCarsChanged = e => {
         handleChange("cars")(e);
         if (e.target.value === '') {
-            setCarsError("Please enter rooms!");
+            setCarsError("Please enter cars!");
         } else if (!/^[1-5]$/.test(e.target.value)) {
             setCarsError("Please enter 1 - 5 for cars!");
         } else {
