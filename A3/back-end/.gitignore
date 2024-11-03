@@ -1,1 +1,3 @@
 __pycache__/
+rf_house_price_model.pkl
+rf_house_type_model.pkl

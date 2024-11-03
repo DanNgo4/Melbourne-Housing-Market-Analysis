@@ -4,12 +4,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.utils import resample
 import clean_data
+import joblib
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+import colorama
 
 
 class RFHouseTypeModel:
     def __init__(self):
-        self.clf = None
-        self.le = None
+        colorama.init()
+        self.model = RandomForestClassifier(n_estimators=100, random_state=123)
+        self.encoder = None
         self.propertycount_mean = None
         self.bedroom2_mean = None
         self.train_model()
@@ -24,10 +28,18 @@ class RFHouseTypeModel:
 
         X_resampled, y_resampled = self.resample_imbalance(X, y_encoded)
 
-        X_train, _, y_train, _ = train_test_split(X_resampled, y_resampled, test_size=0.2, random_state=123)
+        X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2, random_state=123)
 
-        self.model = RandomForestClassifier(n_estimators=100, random_state=123)
         self.model.fit(X_train, y_train)
+
+        joblib.dump(self.model, "rf_house_type_model.pkl")
+
+        y_pred = self.model.predict(X_test)
+
+        print(f"{colorama.Fore.GREEN}Performance metrics for Random Forest Classification{colorama.Fore.RESET}")
+        print("Accuracy: %.2f" % accuracy_score(y_test, y_pred))
+        print(classification_report(y_test, y_pred, target_names=self.encoder.classes_))
+        print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
 
 
     def resample_imbalance(self, X, y):
@@ -50,9 +62,11 @@ class RFHouseTypeModel:
 
 
     def classify(self, rooms, cars, square_metres, distance):
+        model = joblib.load("rf_house_type_model.pkl")
+
         # Use mean values as defaults for missing features
         input_features = np.array([[rooms, cars, self.propertycount_mean, self.bedroom2_mean, square_metres, distance]])
-        predicted_label = self.model.predict(input_features)
+        predicted_label = model.predict(input_features)
         predicted_type = self.encoder.inverse_transform(predicted_label)  
 
         return predicted_type[0]

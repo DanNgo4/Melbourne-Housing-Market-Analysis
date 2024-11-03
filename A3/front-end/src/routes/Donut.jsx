@@ -6,7 +6,7 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
-import { Button, Typography, Box, Select, MenuItem, InputLabel, FormControl, TextField, InputAdornment } from "@mui/material";
+import { Typography, Box, TextField, InputAdornment } from "@mui/material";
 
 import CustomButton from "../components/CustomButton";
 import InfoSection from "../components/DonutPage/InfoSection";
