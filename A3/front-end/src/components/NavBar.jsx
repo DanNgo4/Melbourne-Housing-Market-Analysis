@@ -36,11 +36,6 @@ const NavBar = () => {
                     <ListItemText primary="Line" />
                 </ListItem>
 
-                <ListItem button component={Link} to="/heat">
-                    <ListItemIcon><Info /></ListItemIcon>
-                    <ListItemText primary="Heat" />
-                </ListItem>
-
                 <ListItem button component={Link} to="/donut">
                     <ListItemIcon><Info /></ListItemIcon>
                     <ListItemText primary="Donut" />
@@ -72,7 +67,6 @@ const NavBar = () => {
                     }}>
                     <Button color="inherit" component={NavLink} to="/">Home</Button>
                     <Button color="inherit" component={NavLink} to="/line">Line</Button>
-                    <Button color="inherit" component={NavLink} to="/heat">Heat</Button>
                     <Button color="inherit" component={NavLink} to="/donut">Donut</Button>
                     </Box>
                 </Toolbar>
