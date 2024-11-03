@@ -54,6 +54,7 @@ const NavBar = () => {
                     }}>
                         <Button color="inherit" component={NavLink} to="/">Home</Button>
                         <Button color="inherit" component={NavLink} to="/line">Line</Button>
+                        <Button color="inherit" component={NavLink} to="/heat">Heat</Button>
                         <Button color="inherit" component={NavLink} to="/donut">Donut</Button>
                     </Box>
                 </Toolbar>
