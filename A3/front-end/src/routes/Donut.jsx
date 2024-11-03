@@ -6,7 +6,7 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
-import { Button, Typography, Box, Select, MenuItem, InputLabel, FormControl, TextField } from "@mui/material";
+import { Button, Typography, Box, Select, MenuItem, InputLabel, FormControl, TextField, InputAdornment } from "@mui/material";
 
 import CustomButton from "../components/CustomButton";
 import InfoSection from "../components/DonutPage/InfoSection";
@@ -31,6 +31,11 @@ const Donut = () => {
     rooms,
     cars,
   } = values;
+
+  const [squareMetresError, setSquareMetresError] = useState("");
+  const [distanceError, setDistanceError] = useState("");
+  const [roomsError, setRoomsError] = useState("");
+  const [carsError, setCarsError] = useState("");
 
   const errorLog = useErrorLog();
 
@@ -187,7 +192,47 @@ const Donut = () => {
     setData(resetData);
   };
 
+  const validateInputs = () => {
+    let isValid = true;
+
+    // Validate square metres (e.g., must be a positive number)
+    if (!squareMetres || isNaN(squareMetres) || squareMetres <= 0 || !Number.isInteger(parseFloat(squareMetres))) {
+      setSquareMetresError("Enter a valid number for square metres.");
+      isValid = false;
+    } else {
+      setSquareMetresError("");
+    }
+
+    // Validate distance (must be positive)
+    if (!distance || isNaN(distance) || distance <= 0 || !Number.isInteger(parseFloat(distance))) {
+      setDistanceError("Enter a valid number for distance.");
+      isValid = false;
+    } else {
+      setDistanceError("");
+    }
+
+    // Validate rooms (e.g., must be a positive integer)
+    if (!rooms || isNaN(rooms) || rooms <= 0 || !Number.isInteger(parseFloat(rooms))) {
+      setRoomsError("Enter a valid integer for rooms.");
+      isValid = false;
+    } else {
+      setRoomsError("");
+    }
+
+    // Validate cars (must be a non-negative integer)
+    if (cars === "" || isNaN(cars) || cars < 0 || !Number.isInteger(parseFloat(cars))) {
+      setCarsError("Enter a valid integer for cars.");
+      isValid = false;
+    } else {
+      setCarsError("");
+    }
+
+    return isValid;
+  };
+
   const handlePredict = async () => {
+    if (!validateInputs()) return;
+
     try {
       const res = await axios.get(`http://localhost:8000/predict_type/${squareMetres}/${distance}/${rooms}/${cars}`);
       setPredictedType(res.data.predicted_type);
@@ -261,36 +306,50 @@ const Donut = () => {
             label="Square Metres"
             value={squareMetres}
             onChange={handleChange("squareMetres")}
+            error={!!squareMetresError}
+            helperText={squareMetresError ? squareMetresError : ""}
             fullWidth
             margin="normal"
-            required
+            slotProps={{
+              input: {
+                  endAdornment: <InputAdornment position="end">metres</InputAdornment>,
+              },
+            }}
           />
 
           <TextField
             label="Distance"
             value={distance}
             onChange={handleChange("distance")}
+            error={!!distanceError}
+            helperText={distanceError ? distanceError : ""}
             fullWidth
             margin="normal"
-            required
+            slotProps={{
+              input: {
+                  endAdornment: <InputAdornment position="end">km</InputAdornment>,
+              },
+            }}
           />
 
           <TextField
             label="Rooms"
             value={rooms}
             onChange={handleChange("rooms")}
+            error={!!roomsError}
+            helperText={roomsError ? roomsError : ""}
             fullWidth
             margin="normal"
-            required
           />
 
           <TextField
             label="Cars"
             value={cars}
             onChange={handleChange("cars")}
+            error={!!carsError}
+            helperText={carsError ? carsError : ""}
             fullWidth
             margin="normal"
-            required
           />
 
           <CustomButton color="primary" type="submit">
