@@ -80,7 +80,7 @@ async def predict_price(
 
 # This is a POST route so values can be saved to the CSV file
 @app.post("/add-predicted-values/")
-async def add_row(new_values: NewPredictedValues):
+async def save_to_csv(new_values: NewPredictedValues):
     try:
         file_path = "predicted_values.csv"
 
