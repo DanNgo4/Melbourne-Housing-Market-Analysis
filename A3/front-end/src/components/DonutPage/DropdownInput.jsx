@@ -1,3 +1,5 @@
+// Custom component to re-use for dropdowns in Donut page
+
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 const DropdownInput = ({ label, value, onChange, options }) => {

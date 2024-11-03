@@ -1,20 +1,23 @@
-import { Typography, Grid, Box } from '@mui/material';
+import { Typography, Grid, Box, Button, Card, CardContent } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Home = () => {
     return (
-        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-            <Box sx={{ width: '90vw', boxShadow: 3, padding: '2%', margin: '2.5%' }}>
+        <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+            <Box sx={{ width: "90vw", boxShadow: 3, padding: "2%", margin: "2.5%" }}>
                 <Grid container spacing={5} mb={2.5}>
                     <Grid item xs={12}>
                         <Typography variant="h4" component="h4">
                             Project Introduction:
                         </Typography>
-                        <Typography variant="p" component="p">
-                            For this project we had to choose between four different topics which were civil aviation, weather analysis, air quality and health and housing market. After discussions, we have chosen the housing market because our team lives in Melbourne, Australia where the price of houses have been very high and continue to rise so we consider this an important and timely topic for ourselves and users of our project.
-
-                            This project will be conducted over twelve weeks and require the collection of Melbourne housing prices data along with their attributes such as their location and type of housing (Unit, House etc) which will then be trained by an Artificial Intelligence (AI) model in Python. FastAPI will be used in Python to create a backend connection to our frontend web application created in ReactJS to visualise the data so users can interact with an AI in a fun and effective way to keep them engaged.
+                        <Typography variant="body1" component="p">
+                            For this project, we had to choose between four different topics: civil aviation, weather analysis, air quality and health, and the housing market. After discussions, we chose the housing market as our focus since we live in Melbourne, Australia, where house prices have been high and continue to rise. This is an important and timely topic for us and users of our project.
+                        </Typography>
+                        <Typography variant="body1" component="p" mt={2}>
+                            This project will be conducted over twelve weeks and requires the collection of Melbourne housing prices data along with attributes like location and type (e.g., Unit, House). The data will be used to train an Artificial Intelligence (AI) model in Python. We’ll connect the backend, built with FastAPI, to our React-based frontend web application to visualize data in a fun and engaging way.
                         </Typography>
                     </Grid>
+
                     <Grid item xs={12}>
                         <Typography variant="h4" component="h4">
                             Team Members:
@@ -24,25 +27,75 @@ const Home = () => {
                         <Typography variant="h5" component="h5">
                             Mitchell Henry
                         </Typography>
-                        <Typography variant="p" component="p">
-                        I am a 23 year old second year student doing a Bachelor of Computer Science majoring in Software Development at Swinburne University hawthorn campus and I am the Team lead in this project. I have a passion for software development and have strong knowledge of backend and frontend development in various programming languages. I have experience building full stack applications with a database, API and a frontend single page application. I am keen to lead this project to success in meeting all the criteria.
+                        <Typography variant="body2">
+                            I am a 23-year-old second-year student in Bachelor of Computer Science majoring in Software Development. I am the Team Lead for this project and have a passion for full-stack development. I look forward to guiding this project to success.
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <Typography variant="h5" component="h5">
                             Dan Ngo
                         </Typography>
-                        <Typography variant="p" component="p">
-                        19-year-old Vietnamese second year, second semester doing Bachelor of Computer Science (Software Development & Data Science Majors). Currently most skilled in Web Development using React and Node.js.
+                        <Typography variant="body2">
+                            19-year-old Vietnamese second-year student majoring in Software Development & Data Science. Skilled in Web Development using React and Node.js, excited to work on the data analysis aspects of this project.
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <Typography variant="h5" component="h5">
                             Indu Seth
                         </Typography>
-                        <Typography variant="p" component="p">
-                        I am Indu Seth, a student pursuing a Bachelor of Computer Science. In this assignment for our team, I am responsible for the scope management and closure plan. With my background in computer science, I will apply my skills in problem solving, machine learning and web design to contribute to the team’s final project. I am enthusiastic about leveraging my technical skills to advance this project and collaborate effectively with my team.
+                        <Typography variant="body2">
+                            Bachelor of Computer Science student focused on scope management and closure plan for the team. Passionate about machine learning and web design, eager to contribute technical skills to our project.
                         </Typography>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <Typography variant="h4" component="h4" mt={4} mb={2}>
+                            Explore Our Features
+                        </Typography>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                        <Card sx={{ boxShadow: 2, padding: 2 }}>
+                            <CardContent>
+                                <Typography variant="h5" component="div">
+                                    Line Chart Analysis
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary" mt={1}>
+                                    Dive into our Line Chart to view housing price trends over time. This visualization offers insights into how different factors affect the market.
+                                </Typography>
+                                <Button 
+                                    variant="contained" 
+                                    color="primary" 
+                                    component={Link} 
+                                    to="/line" 
+                                    sx={{ mt: 2 }}
+                                >
+                                    Go to Line Page
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                        <Card sx={{ boxShadow: 2, padding: 2 }}>
+                            <CardContent>
+                                <Typography variant="h5" component="div">
+                                    Donut Chart Distribution
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary" mt={1}>
+                                    Our Donut Chart shows the distribution of house types across price ranges, helping you visualize how different categories compare in the housing market.
+                                </Typography>
+                                <Button 
+                                    variant="contained" 
+                                    color="secondary" 
+                                    component={Link} 
+                                    to="/donut" 
+                                    sx={{ mt: 2 }}
+                                >
+                                    Go to Donut Page
+                                </Button>
+                            </CardContent>
+                        </Card>
                     </Grid>
                 </Grid>
             </Box>

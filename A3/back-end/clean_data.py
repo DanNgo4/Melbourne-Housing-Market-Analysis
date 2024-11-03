@@ -65,6 +65,7 @@ def clean_crime_data(local_gov_areas):
             "CouncilArea": row["Local Government Area"],
             "Yearly Incidents Recorded": total_crimes_for_year
         })
+        
     return pd.DataFrame(yearly_crime_df)
 
 

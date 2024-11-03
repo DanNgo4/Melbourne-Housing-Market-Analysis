@@ -19,8 +19,10 @@ ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 const Donut = () => {
   const [highlightedData, setHighlightedData] = useState(null);
-  const [dataset, setDataset] = useState([]); 
   const [predictedType, setPredictedType] = useState("");
+
+  // Hook to manage data fetched from server
+  const [dataset, setDataset] = useState([]); 
 
   const { values, handleChange, resetForm } = useFormInput();
   const {
@@ -46,14 +48,15 @@ const Donut = () => {
   };
   // Convert labels from ["h", "t", "u"] to ["House", "Townhouse", "Unit"]
   const mappedLabels = ["h", "t", "u"].map(label => typeMapping[label]);
+  // Hook to manage processed data to the donut chart
   const [data, setData] = useState({
     labels: mappedLabels,
     datasets: [],
   });
 
   const priceRanges = [
-    { label: "$500,000 - $1,000,000", min: 500000, max: 1000000 },
-    { label: "$1,000,000 - $2,000,000", min: 1000000, max: 2000000 },
+    { label: "$500,000 - $1,000,000", min: 500000, max: 800000 },
+    { label: "$1,000,000 - $2,000,000", min: 800000, max: 2000000 },
     { label: "$2,000,000 - $3,000,000", min: 2000000, max: 3000000 },
     { label: "> $3,000,000", min: 3000000, max: Infinity },
   ];
@@ -86,7 +89,9 @@ const Donut = () => {
                 item.Price < range.max
             ).length;
 
-            return totalInRange > 0 ? (countOfTypeInRange / totalInRange) * 100 : 0;
+            return (totalInRange > 0) 
+              ? ((countOfTypeInRange / totalInRange) * 100) 
+              : 0;
         });
 
         return {
@@ -134,20 +139,27 @@ const Donut = () => {
   // Highlight function
   const handleHighlight = async () => {
     const selectedLayerIndex = parseInt(priceRangeInput, 10) - 1;
+
     const matchingLabels = houseTypeInput 
       ? [typeMapping[houseTypeInput]] 
       : data.labels;
   
+    // Generate new data to overwrite the old, un-highlighted one
     const newData = { 
       ...data, 
+
       datasets: data.datasets.map((dataset, layerIndex) => ({
         ...dataset,
+
         backgroundColor: dataset.backgroundColor,
+
+        // Set border colour and width for matched layers/segments
         borderColor: dataset.backgroundColor.map((color, labelIndex) => {
           const labelMatches = matchingLabels.includes(data.labels[labelIndex]);
           const isLayerMatch = selectedLayerIndex === layerIndex || priceRangeInput === "";
           return labelMatches && isLayerMatch ? "rgba(0, 0, 0, 1)" : color;
         }),
+
         borderWidth: dataset.data.map((_, labelIndex) => {
           const labelMatches = matchingLabels.includes(data.labels[labelIndex]);
           const isLayerMatch = selectedLayerIndex === layerIndex || priceRangeInput === "";
@@ -156,6 +168,7 @@ const Donut = () => {
       })) 
     };
   
+    // Generate an array of highlighted data points for displaying in-text underneath
     const highlighted = newData.datasets.flatMap((dataset, layerIndex) =>
       dataset.data
         .map((value, labelIndex) => {
@@ -176,6 +189,7 @@ const Donut = () => {
     setData(newData);
   };
 
+  // Reset the chart to normal with no highlights
   const clearHighlights = () => {
     resetForm(["priceRangeInput", "houseTypeInput"]);
     setHighlightedData([]);
@@ -192,10 +206,10 @@ const Donut = () => {
     setData(resetData);
   };
 
+  // Validate form inputs for client-side validation
   const validateInputs = () => {
     let isValid = true;
 
-    // Validate square metres (e.g., must be a positive number)
     if (!squareMetres || isNaN(squareMetres) || squareMetres <= 0 || !Number.isInteger(parseFloat(squareMetres))) {
       setSquareMetresError("Enter a valid number for square metres.");
       isValid = false;
@@ -203,7 +217,6 @@ const Donut = () => {
       setSquareMetresError("");
     }
 
-    // Validate distance (must be positive)
     if (!distance || isNaN(distance) || distance <= 0 || !Number.isInteger(parseFloat(distance))) {
       setDistanceError("Enter a valid number for distance.");
       isValid = false;
@@ -211,7 +224,6 @@ const Donut = () => {
       setDistanceError("");
     }
 
-    // Validate rooms (e.g., must be a positive integer)
     if (!rooms || isNaN(rooms) || rooms <= 0 || !Number.isInteger(parseFloat(rooms))) {
       setRoomsError("Enter a valid integer for rooms.");
       isValid = false;
@@ -219,7 +231,6 @@ const Donut = () => {
       setRoomsError("");
     }
 
-    // Validate cars (must be a non-negative integer)
     if (cars === "" || isNaN(cars) || cars < 0 || !Number.isInteger(parseFloat(cars))) {
       setCarsError("Enter a valid integer for cars.");
       isValid = false;
@@ -264,7 +275,10 @@ const Donut = () => {
           label="Choose House Type"
           value={houseTypeInput}
           onChange={handleChange("houseTypeInput")}
-          options={Object.entries(typeMapping).map(([key, value]) => ({ label: value, value: key }))}
+          options={Object.entries(typeMapping).map(([key, value]) => ({ 
+            label: value, 
+            value: key 
+          }))}
         />
 
         <CustomButton color="primary" onClick={handleHighlight}>
@@ -282,15 +296,18 @@ const Donut = () => {
         {highlightedData && (
           <Box className="mt-5 w-auto p-4 bg-gray-100 rounded shadow">
             <Typography variant="h6" className="font-bold text-center mb-2">Highlighted Information</Typography>
-            {highlightedData.length > 0 ? (
-              highlightedData.map((item, index) => (
-                <Typography key={index} className="text-sm">
-                  Price Range: {item.layer}, House Type: {item.label}, Ratio: {item.value}%
-                </Typography>
-              ))
-            ) : (
-              <Typography className="text-sm text-center">No matches found</Typography>
-            )}
+            {highlightedData.length > 0 
+              ? (
+                highlightedData.map((item, index) => (
+                  <Typography key={index} className="text-sm">
+                    Price Range: {item.layer}, House Type: {item.label}, Ratio: {item.value}%
+                  </Typography>
+                ))
+              ) 
+              : (
+                <Typography className="text-sm text-center">No matches found</Typography>
+              )
+            }
           </Box>
         )}
       </Box>
@@ -358,7 +375,9 @@ const Donut = () => {
         </form>
 
         {predictedType && (
-          <Typography className="mt-4">Predicted House Type: { `${predictedType} (${typeMapping[predictedType]})`}</Typography>
+          <Typography className="mt-4">
+            Predicted House Type: { `${predictedType} (${typeMapping[predictedType]})`}
+          </Typography>
         )}
       </Box>
     </div>

@@ -1,26 +1,18 @@
 import { useState } from "react";
 
 import { NavLink, Link } from "react-router-dom";
-import { AppBar, Toolbar, IconButton, Typography, Button, Drawer, Box, ListItem, ListItemText, ListItemIcon, List, Divider, Switch } from "@mui/material";
-import { Menu, Home, Info } from "@mui/icons-material";
+import { AppBar, Toolbar, IconButton, Typography, Button, Drawer, Box, ListItem, ListItemText, ListItemIcon, List, Divider } from "@mui/material";
+import { Menu, Home, ShowChart, DonutLarge } from "@mui/icons-material";
 
 const NavBar = () => {
-    //Use states for drawer and darkmode
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [darkMode, setDarkMode] = useState(false);
 
-    //Toggle drawer function
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
 
         setDrawerOpen(open);
-    };
-
-    //Dark mode on off toggler
-    const handleDarkModeToggle = () => {
-        setDarkMode(!darkMode);
     };
 
     const drawerContent = (
@@ -32,22 +24,16 @@ const NavBar = () => {
                 </ListItem>
 
                 <ListItem button component={Link} to="/line">
-                    <ListItemIcon><Info /></ListItemIcon>
+                    <ListItemIcon><ShowChart /></ListItemIcon>
                     <ListItemText primary="Line" />
                 </ListItem>
 
                 <ListItem button component={Link} to="/donut">
-                    <ListItemIcon><Info /></ListItemIcon>
+                    <ListItemIcon><DonutLarge /></ListItemIcon>
                     <ListItemText primary="Donut" />
                 </ListItem>
             </List>
             <Divider />
-            <List>
-            <ListItem>
-                <ListItemText primary="Dark Mode" />
-                <Switch checked={darkMode} onChange={handleDarkModeToggle} />
-            </ListItem>
-            </List>
         </Box>
     );
 
@@ -62,12 +48,13 @@ const NavBar = () => {
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
                         HD Hunters
                     </Typography>
+
                     <Box sx={{
-                    display: { xs: 'none', md: 'block'}
+                        display: { xs: 'none', md: 'block'}
                     }}>
-                    <Button color="inherit" component={NavLink} to="/">Home</Button>
-                    <Button color="inherit" component={NavLink} to="/line">Line</Button>
-                    <Button color="inherit" component={NavLink} to="/donut">Donut</Button>
+                        <Button color="inherit" component={NavLink} to="/">Home</Button>
+                        <Button color="inherit" component={NavLink} to="/line">Line</Button>
+                        <Button color="inherit" component={NavLink} to="/donut">Donut</Button>
                     </Box>
                 </Toolbar>
             </AppBar>

@@ -1,3 +1,5 @@
+// Custom component to re-use in Line and Donut pages
+
 import { Button } from "@mui/material";
 
 const CustomButton = ({ variant = "contained", color = "primary", onClick, type = "button", children, disabled = false, className = "" }) => (

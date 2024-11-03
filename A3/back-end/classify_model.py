@@ -36,6 +36,7 @@ class RFHouseTypeModel:
 
         y_pred = self.model.predict(X_test)
 
+        # Printing metrics to confirm model has been trained successfully
         print(f"{colorama.Fore.GREEN}Performance metrics for Random Forest Classification{colorama.Fore.RESET}")
         print("Accuracy: %.2f" % accuracy_score(y_test, y_pred))
         print(classification_report(y_test, y_pred, target_names=self.encoder.classes_))
@@ -66,6 +67,7 @@ class RFHouseTypeModel:
 
         # Use mean values as defaults for missing features
         input_features = np.array([[rooms, cars, self.propertycount_mean, self.bedroom2_mean, square_metres, distance]])
+        
         predicted_label = model.predict(input_features)
         predicted_type = self.encoder.inverse_transform(predicted_label)  
 

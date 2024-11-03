@@ -27,6 +27,7 @@ model_regress = RFHousePriceModel()
 # Classification Model
 model_classify = RFHouseTypeModel()
 
+
 # This a a GET route that retrieves all the values from
 # predicted_values.csv to serve the frontend in the line chart
 @app.get("/predicted_values/")

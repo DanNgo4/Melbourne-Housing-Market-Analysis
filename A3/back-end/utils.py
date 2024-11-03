@@ -1,6 +1,6 @@
 import logging
 
-#Logger for the backend
+# Logger for the backend
 def setup_logger():
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 //This is the ErrorBoundary Class to catch errors in a react components lifecycle
 class ErrorBoundary extends React.Component {

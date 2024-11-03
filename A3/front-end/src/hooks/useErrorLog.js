@@ -1,3 +1,5 @@
+// Custom hook to log errors to the console on client side
+
 import { useCallback } from "react";
 
 const useErrorLog = () => {

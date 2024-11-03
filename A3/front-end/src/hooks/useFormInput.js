@@ -1,3 +1,5 @@
+// Custom hook to manipulate state for Dropdown + Text inputs 
+
 import { useState } from "react";
 
 const useFormInput = (initialValues = {}) => {
@@ -29,7 +31,7 @@ const useFormInput = (initialValues = {}) => {
         return updatedValues;
       }
       
-      // Reset all fields to default
+      // Reset all fields to default by default
       return {
         priceRangeInput: "",
         houseTypeInput: "",

@@ -9,10 +9,8 @@ function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
-        <div>
           <NavBar />
           <MainRoute />
-        </div>
       </BrowserRouter>
     </ErrorBoundary>
   );
