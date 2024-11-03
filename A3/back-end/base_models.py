@@ -11,8 +11,3 @@ class NewPredictedValues(BaseModel):
 #Add min and Max where necessary
 #min_length=2, 
 #max_length=50,
-
-class QueryDetails(BaseModel):
-    priceRange: str  = Field(..., gt=0, description="Price Range queried")
-    houseType: str  = Field(..., gt=0, description="Specific house type queried")
-    highlighted: list  = Field(..., gt=0, description="Highlighed list queried")

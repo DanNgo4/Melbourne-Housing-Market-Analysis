@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from regression_model import RFHousePriceModel
 from classify_model import RFHouseTypeModel
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 import uvicorn
 import os
 import pandas as pd
@@ -51,7 +51,12 @@ async def predicted_values():
 
 
 @app.get("/predict/{square_metres}/{distance}/{rooms}/{cars}")
-async def predict_price(square_metres: float, distance: float, rooms: int, cars: int):
+async def predict_price(
+    square_metres: float = Field(..., gt=0, description="Total area in square meters, must be greater than 0"),
+    distance: float = Field(..., ge=0, description="Distance from city center in kilometers, must be non-negative"),
+    rooms: int = Field(..., ge=1, le=10, description="Number of rooms, must be between 1 and 10"),
+    cars: int = Field(..., ge=0, le=5, description="Number of car spaces, must be between 0 and 5")
+):
     try:
         logger.info(f"Received request with square_metres={square_metres}, distance={distance}, rooms={rooms}, cars={cars}")
         
@@ -60,9 +65,8 @@ async def predict_price(square_metres: float, distance: float, rooms: int, cars:
 
         return {"predicted_price": price}
     except Exception as e:
-            logger.error(f"Error predicting price: {str(e)}")
-            
-            raise HTTPException(status_code=500, detail="Internal server error")
+        logger.error(f"Error predicting price: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @app.post("/add-predicted-values/")
@@ -98,24 +102,24 @@ async def add_row(new_values: NewPredictedValues):
 @app.get("/donut-data")
 async def get_donut_data():
     df = pd.read_csv("Melbourne_housing_FULL.csv")
-
-    columns = ["Type", "Price"]
-
-    df = df[columns]
-
-    df = df.dropna(axis=0).reset_index(drop=True)
-
+    df = df[["Type", "Price"]].dropna().reset_index(drop=True)
     data = df.to_json(orient="records")
 
     return JSONResponse(content=data, media_type="application/json")
 
 
 @app.get("/classify/{square_metres}/{distance}/{rooms}/{cars}")
-async def predict_house_type(square_metres: float, distance: float, rooms: int, cars: int):
+async def predict_house_type(
+    square_metres: float = Field(..., gt=0, description="Total area in square meters, must be greater than 0"),
+    distance: float = Field(..., ge=0, description="Distance from city center in kilometers, must be non-negative"),
+    rooms: int = Field(..., ge=1, le=10, description="Number of rooms, must be between 1 and 10"),
+    cars: int = Field(..., ge=0, le=5, description="Number of car spaces, must be between 0 and 5")
+):
     try:
         predicted_type = model_classify.classify(square_metres, distance, rooms, cars)
         return {"predicted_type": predicted_type}
     except Exception as e:
+        logger.error(f"Error classifying house type: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
 
 
