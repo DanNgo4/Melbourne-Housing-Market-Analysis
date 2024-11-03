@@ -8,7 +8,9 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 
 import { Button, Typography, Box, Select, MenuItem, InputLabel, FormControl, TextField } from "@mui/material";
 
+import CustomButton from "../components/CustomButton";
 import InfoSection from "../components/DonutPage/InfoSection";
+import DropdownInput from "../components/DonutPage/DropdownInput";
 
 import useErrorLog from "../hooks/useErrorLog";
 import useFormInput from "../hooks/useFormInput";
@@ -203,59 +205,30 @@ const Donut = () => {
           Analyse House Types Distribution
         </Typography>
 
-        <FormControl fullWidth variant="outlined" className="bg-white rounded">
-          <InputLabel>Choose Price Range</InputLabel>
+        <DropdownInput
+          label="Choose Price Range"
+          value={priceRangeInput}
+          onChange={handleChange("priceRangeInput")}
+          options={priceRanges.map((range, index) => ({ 
+            label: range.label, 
+            value: index + 1 
+          }))}
+        />
 
-          <Select
-            value={priceRangeInput}
-            onChange={handleChange("priceRangeInput")}
-            label="Choose Price Range"
-          >
-            <MenuItem value="">All</MenuItem>
+        <DropdownInput
+          label="Choose House Type"
+          value={houseTypeInput}
+          onChange={handleChange("houseTypeInput")}
+          options={Object.entries(typeMapping).map(([key, value]) => ({ label: value, value: key }))}
+        />
 
-            {priceRanges.map((range, index) => (
-              <MenuItem key={index} value={index + 1}>
-                {range.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl fullWidth variant="outlined" className="bg-white rounded">
-          <InputLabel>Choose House Type</InputLabel>
-
-          <Select
-            value={houseTypeInput}
-            onChange={handleChange("houseTypeInput")}
-            label="Choose House Type"
-          >
-            <MenuItem value="">All</MenuItem>
-
-            {Object.entries(typeMapping).map(([key, value]) => (
-              <MenuItem key={key} value={key}>
-                {value}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <Button 
-          variant="contained" 
-          color="primary"
-          onClick={() => handleHighlight()}
-          className="w-full mt-2"
-        >
+        <CustomButton color="primary" onClick={handleHighlight}>
           Highlight
-        </Button>
+        </CustomButton>
 
-        <Button 
-          variant="contained" 
-          color="secondary" 
-          onClick={clearHighlights} 
-          className="w-full mt-2"
-        >
+        <CustomButton color="secondary" onClick={clearHighlights}>
           Clear
-        </Button>
+        </CustomButton>
 
         <div className="w-full max-w-xs md:max-w-lg lg:max-w-xl mt-5">
           <Doughnut data={data} options={options} width={800} height={800} />
@@ -320,9 +293,9 @@ const Donut = () => {
             required
           />
 
-          <Button variant="contained" color="primary" type="submit" fullWidth>
+          <CustomButton color="primary" type="submit">
             Predict Type
-          </Button>
+          </CustomButton>
         </form>
 
         {predictedType && (

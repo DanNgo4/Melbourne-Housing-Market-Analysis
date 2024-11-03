@@ -5,6 +5,8 @@ import { Chart, registerables } from 'chart.js';
 import axios from 'axios';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+import CustomButton from "../components/CustomButton";
+
 import useErrorLog from "../hooks/useErrorLog";
 import useFormInput from "../hooks/useFormInput";
 
@@ -304,6 +306,7 @@ const LineChartComponent = () => {
                                         sx={{ flexGrow: 1 }}
                                     />
                                 </Grid>
+                                
                                 <Grid item xs={12} sm={6} mb={3.5} sx={{ display: 'flex', flexDirection: 'row' }}>
                                     <TextField
                                         required
@@ -322,6 +325,7 @@ const LineChartComponent = () => {
                                     />
                                 </Grid>
                             </Grid>
+
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6} mb={3.5} sx={{ display: 'flex', flexDirection: 'row' }}>
                                     <TextField
@@ -349,14 +353,21 @@ const LineChartComponent = () => {
                                 </Grid>
                             </Grid>
                         </ThemeProvider>
-                        <Button variant="contained" type="submit" onClick={validateForm} sx={{ width: '100%', mt: 3 }}>
-                            Predict Price
-                        </Button>
-                        <Button variant="contained" disabled={typeof yourPredictedPrice === 'boolean'} type="button" onClick={saveCurrentPrediction} sx={{ width: '100%', mt: 3 }}>
-                            Save predicted values
-                        </Button>
+
+                        <div className="mt-3">
+                            <CustomButton onClick={validateForm} type="submit">
+                                Predict Price
+                            </CustomButton>
+                        </div>
+
+                        <div className="mt-3">
+                            <CustomButton disabled={typeof yourPredictedPrice === "boolean"} onClick={saveCurrentPrediction}>
+                                Save predicted values
+                            </CustomButton>
+                        </div>
                     </Box>
                 </Box>
+
                 <Box sx={boxStyles} mt={2}>
                     <Typography variant="h6" component="h2">
                         Line Chart
