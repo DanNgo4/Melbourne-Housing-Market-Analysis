@@ -87,7 +87,7 @@ const Home = () => {
                                 </Typography>
                                 <Button 
                                     variant="contained" 
-                                    color="secondary" 
+                                    color="success" 
                                     component={Link} 
                                     to="/heat" 
                                     sx={{ mt: 2 }}
