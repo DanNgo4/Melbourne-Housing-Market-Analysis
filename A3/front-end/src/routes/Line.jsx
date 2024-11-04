@@ -77,7 +77,7 @@ const LineChartComponent = () => {
                 })
                 .catch(error => errorLog(error, "Getting prediceted_values"));
         }
-    }, []);
+    }, [errorLog, predictedValuesData]);
 
     useEffect(() => {
         if (predictedValuesData.length > 0 && predictedPrices.length === 0) {
@@ -92,7 +92,7 @@ const LineChartComponent = () => {
                 setLoading(false)
             }).catch(error => errorLog(error, "Predicting House Price"));
         }
-    }, [predictedValuesData]);
+    }, [predictedValuesData, errorLog, predictedPrices, predictedSquareMetres]);
 
     const validateForm = () => {
         handleSquareMetresChanged({ target: { value: squareMetres } });
@@ -136,7 +136,7 @@ const LineChartComponent = () => {
     //Adds a temporary prediction to the line graph
     const addNewPrediction = (price) => {
         //Removes old temp prediction
-        if (yourPredictedPriceIndex != undefined) {
+        if (yourPredictedPriceIndex !== undefined) {
             predictedValuesData.splice(yourPredictedPriceIndex, 1)
             predictedSquareMetres.splice(yourPredictedPriceIndex, 1)
             predictedPrices.splice(yourPredictedPriceIndex, 1)
@@ -151,13 +151,13 @@ const LineChartComponent = () => {
         sortedData.map(dataRow => {
             newPredictedSquareMetres.push(dataRow["Landsize"]);
         })
-        setPredictedSquareMetres(newPredictedSquareMetres)
+        setPredictedSquareMetres(newPredictedSquareMetres);
 
         //Inserts the temporary prediction in prices
         predictedPrices.splice(newPredictedSquareMetres.indexOf(squareMetres), 0, price);
 
         //Sets the relvant index to be removed next time
-        setYourPredictedPriceIndex(newPredictedSquareMetres.indexOf(squareMetres))
+        setYourPredictedPriceIndex(newPredictedSquareMetres.indexOf(squareMetres));
     };
 
     //Validates Square metres

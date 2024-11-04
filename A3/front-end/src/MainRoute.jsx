@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./routes/HomePage";
 import Line from "./routes/Line";
 import Donut from "./routes/Donut";
+import Heat from "./routes/Heat";
 
 import ScrollToTop from "./components/ScrollToTop";
 

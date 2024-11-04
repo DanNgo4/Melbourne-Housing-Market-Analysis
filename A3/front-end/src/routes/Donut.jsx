@@ -74,7 +74,7 @@ const Donut = () => {
       }
     };
     fetchData(); 
-  }, []); 
+  }, [errorLog]); 
 
   useEffect(() => {
     const datasets = priceRanges.map((range, i) => {
@@ -109,7 +109,7 @@ const Donut = () => {
     });
 
     setData({ labels: mappedLabels, datasets }); 
-  }, [dataset]);
+  }, [dataset, mappedLabels]);
 
   const options = {
     plugins: {
