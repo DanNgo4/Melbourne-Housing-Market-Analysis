@@ -8,7 +8,7 @@ import os
 import pandas as pd
 from utils import logger
 from base_models import NewPredictedValues
-
+import json
 
 app = FastAPI()
 
@@ -148,6 +148,18 @@ async def predict_house_type(
     except Exception as e:
         logger.error(f"Error classifying house type: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+# This is a GET route tho retrieve GeoJSON data for house prices.
+@app.get("/geojson")
+async def get_geojson():
+    try:
+        with open('house-price-heatmap/src/map.geojson', 'r') as f:
+            geojson_data = json.load(f)
+        return JSONResponse(content=geojson_data)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="GeoJSON file not found")
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="Error parsing GeoJSON file")
 
 
 if __name__ == "__main__":
