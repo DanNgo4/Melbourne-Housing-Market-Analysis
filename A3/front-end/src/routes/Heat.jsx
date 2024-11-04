@@ -150,5 +150,3 @@ const Heat = () => {
 };
 
 export default Heat;
-
-

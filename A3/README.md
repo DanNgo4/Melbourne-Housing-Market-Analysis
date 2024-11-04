@@ -16,11 +16,13 @@ The required libraries are as follows:
 - fastapi
 - uvicorn
 - scikit-learn
+- colorama
+- pydantic
 
 Run the following if you do not have all of them installed
 
 ```bash
-pip install pandas fastapi uvicorn scikit-learn
+pip install pandas fastapi uvicorn scikit-learn colorama pydantic
 ```
 
 ## Installing React
@@ -38,6 +40,7 @@ This installs react globally on your system
 Next navigate to the front-end folder in the terminal and run the following command
 
 ```
+cd front-end
 npm install
 ```
 
@@ -48,6 +51,7 @@ This installs the required react packages
 Firstly to run the backend API, navigate to the backend directory than you can run the following once those python packages have been installed
 
 ```bash
+cd back-end
 uvicorn app:app --reload
 ```
 
@@ -56,6 +60,7 @@ Once you have run the above the backend will be on
 Navigate to the frontend folder than run the following to start the react application
 
 ```bash
+cd front-end
 npm start
 ```
 
