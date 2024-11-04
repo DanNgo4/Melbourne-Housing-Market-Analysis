@@ -44,7 +44,7 @@ const Home = () => {
                             Indu Seth
                         </Typography>
                         <Typography variant="body2">
-                            Bachelor of Computer Science student focused on scope management and closure plan for the team. Passionate about machine learning and web design, eager to contribute technical skills to our project.
+                            I am Indu, a Computer Science student passionate about using technology to tackle real-world challenges. This application harnesses machine learning to provide accurate property price predictions for the Greater Melbourne area. Explore the features, input your property details, and gain valuable insights to navigate the housing market!
                         </Typography>
                     </Grid>
 
@@ -54,7 +54,7 @@ const Home = () => {
                         </Typography>
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={4}>
                         <Card sx={{ boxShadow: 2, padding: 2 }}>
                             <CardContent>
                                 <Typography variant="h5" component="div">
@@ -76,7 +76,29 @@ const Home = () => {
                         </Card>
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={4}>
+                        <Card sx={{ boxShadow: 2, padding: 2 }}>
+                            <CardContent>
+                                <Typography variant="h5" component="div">
+                                    Heatmap
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary" mt={1}>
+                                The chart provides a geographic visualisation of median house prices, allowing users to explore price variations across different council areas in Melbourne.
+                                </Typography>
+                                <Button 
+                                    variant="contained" 
+                                    color="secondary" 
+                                    component={Link} 
+                                    to="/heat" 
+                                    sx={{ mt: 2 }}
+                                >
+                                    Go to Heatmap Page
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+
+                    <Grid item xs={12} sm={4}>
                         <Card sx={{ boxShadow: 2, padding: 2 }}>
                             <CardContent>
                                 <Typography variant="h5" component="div">
