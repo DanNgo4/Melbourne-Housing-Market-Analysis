@@ -5,6 +5,7 @@ import MainRoute from "./MainRoute";
 import NavBar from "./components/NavBar";
 import ErrorBoundary from "./components/ErrorBoundary";
 
+
 function App() {
   return (
     <ErrorBoundary>

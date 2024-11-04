@@ -153,7 +153,7 @@ async def predict_house_type(
 @app.get("/geojson")
 async def get_geojson():
     try:
-        with open('house-price-heatmap/src/map.geojson', 'r') as f:
+        with open('map.geojson', 'r') as f:
             geojson_data = json.load(f)
         return JSONResponse(content=geojson_data)
     except FileNotFoundError:
