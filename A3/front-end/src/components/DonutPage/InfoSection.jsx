@@ -6,7 +6,7 @@ const InfoSection = () => {
         <Typography variant="h5" className="font-bold text-center md:text-left">About This Chart</Typography>
 
         <Typography className="mt-3 text-sm md:text-base">
-          This chart displays the percentage distribution of house types across price ranges.
+          This chart displays the percentage distribution of house types across price ranges. As we can see, the more expensive it gets, the more type h (House) takes up the ratio, opposed to the other 2, especially the minor type t (Townhouse) as already mentioned when building this model in assignment 2, that's why we needed upsampling methods for the classification models.
           Use the "House Types Distribution" form to filter and highlight specific segments based on your selections. Use the "Predict House Type" form to test out our Random Forest Classification model, which has achieved a 95% accuracy score.
         </Typography>
 

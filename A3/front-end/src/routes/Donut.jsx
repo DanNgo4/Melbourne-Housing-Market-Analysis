@@ -109,7 +109,7 @@ const Donut = () => {
     });
 
     setData({ labels: mappedLabels, datasets }); 
-  }, [dataset, mappedLabels]);
+  }, [dataset]);
 
   const options = {
     plugins: {
