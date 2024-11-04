@@ -3,6 +3,7 @@ import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { AppBar, Toolbar, IconButton, Typography, Button, Drawer, Box, ListItem, ListItemText, ListItemIcon, List, Divider } from "@mui/material";
 import { Menu, Home, ShowChart, DonutLarge } from "@mui/icons-material";
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 const NavBar = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -26,6 +27,11 @@ const NavBar = () => {
                 <ListItem button component={Link} to="/line">
                     <ListItemIcon><ShowChart /></ListItemIcon>
                     <ListItemText primary="Line" />
+                </ListItem>
+
+                <ListItem button component={Link} to="/heat">
+                    <ListItemIcon><BarChartIcon/></ListItemIcon>
+                    <ListItemText primary="Heatmap" />
                 </ListItem>
 
                 <ListItem button component={Link} to="/donut">
